@@ -1,0 +1,29 @@
+% !TEX root = ../main.tex
+
+
+
+\section{A Research Agenda}
+
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\begin{itemize}
+  \item better import/export of keys
+  \item better language and guidance on key management 
+  \item how do you know the key is in wallet.dat ?  
+  \item How do you know if a file has been read? Specifically, how do you know if your private key file has been read by an app other than your wallet? We have unix \texttt{atime} (time of last access), but we can't log what process read the file. 
+  \item publishing public keys. people need to keep these around, and they can use to check if they have the right privkey. 
+  \item if you have your pubkey and you have the salt, you can avoid rainbow tables, but your pubkeys get longer. (add salt via commitcoin) 
+  \item boyen iterated hashing of passwords -> compute amount of iterations based on money, script
+  \item digital death
+  \item sinkhole accounts
+  \item incentives are there because it's money. not like ssh or ssl. 
+  \item min password entropy as a function of how much money its protecting: examine in terms of falling cost to brute force (e.g. w/ EC2), vs rising price of bit coins. -> future proof against lowering EC2 costs and raising bitcoin costs
+  \item bitbills, oblivious printing and other physically intuitive media that can behave (sort of) like cash
+  \item theft/loss mitigation, making it easier to split wallets to mitigate loss
+  \item account rollover vs. password changes
+  \item graphical passwords
+  \item security of RNGs. i read that vanitygen (for making vanity bitcoin addresses) uses OpenSSL's RNG and it's secure because it's ``used on thousands of websites''. 
+  \item air gap -> how good is it?
+\end{itemize}
+

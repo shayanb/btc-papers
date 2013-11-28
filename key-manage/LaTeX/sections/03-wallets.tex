@@ -1,0 +1,42 @@
+% !TEX root = ../main.tex
+
+\section{Bitcoin Private Key Management}
+At the core of Bitcoin's functionality are keypairs. The public key allows users to receive coins and check their wallet balance, and the private key allows users to send coins to other addresses. In this Section, we review the main mechanisms used in the current Bitcoin ecosystem to manage these keys.
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\subsection{Default Client}
+On first launch, the official \bitcoinclient client creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions (\ie send coins). Anyone with access to the private keys inside \walletfile can spend the coins associated with those keys. Thus, access control on the \walletfile file is extremely important. 
+
+The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. 
+
+Unintentional sharing of the \walletfile file is also a concern in the default client. Users must be cautious to not inadvertently share their bitcoin application folder on the Internet or to a location outside of the user's control. Possible sharing includes peer to peer (P2P) file-sharing networks, off-site backups, or shared network drive. Physical theft of the system hosting the \walletfile file is also a concern, especially in the case of portable computers. 
+
+By keeping the \walletfile file locally, users must also be wary of \textit{threats to digital preservation}~\cite{BKM05} such as general equipment failure due to natural disasters and electrical failures; acts of war; mistaken erasure (\eg formatting the wrong drive or deleting the wrong folder); bit rot (\ie undetected storage failure); and possibly others. 
+
+Advantages of using the \bitcoinclient client in it's default configuration include immediate access to funds, no trust needed in a third party, and no need to recall yet another password. Additionally, the user can spend coins and receive change without the need to perform extra steps (see Section~\ref{sec:offline storage}). 
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\subsection{Password-protected Wallet}
+Some Bitcoin clients allow wallets (specifically the private keys in the wallet) to be encrypted with a user-chosen password.
+\begin{itemize}
+  \item malware can still mount an offline attack
+  \item mental model: you may think that you're making your password into a key, but it's actually 2 factor
+\end{itemize}
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\subsection{Offline Storage}
+\label{sec:offline storage}
+\begin{itemize}
+  \item print privkey to paper (paper wallet) (bitbills)
+  \item put wallet onto usb
+  \item mini cog walkthrough. how easy is it to import they back
+  \item hardware wallet (tpm and stuff can be future directions)
+  \item change accounts (\cf deterministic wallets: Armory and Electrum)
+\end{itemize}
+%New private keys are generated as keys in the keypool are used for transactions such that there always about 100 unused private keys (in addition to previously used keys) in \walletfile at any given time. 
+\subsection{Mobile Wallets}
+\begin{itemize}
+  \item apps, filesystem unavailable, must have export function into shared storage
+\end{itemize}

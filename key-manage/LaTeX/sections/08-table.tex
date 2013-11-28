@@ -1,0 +1,49 @@
+% !TEX root = ../main.tex
+
+\begin{table*}[t!]
+
+\renewcommand{\arraystretch}{1.3}
+
+\centering
+
+\begin{tabular*}{0.7\textwidth}{@{\extracolsep{\fill}} rcccccccccccccc}
+
+\headrow{ } &
+\headrow{Malware Resistant} & %Part if malware crosses air gap
+\headrow{Key Kept Offline} &  %Part if one of two factors are offline
+\headrow{No Trusted Third Party} &
+\headrow{Resistant to Physical Theft} &
+\headrow{Resistant to Physical Observation} &
+\headrow{Resilient to Equipment Failure} &
+\headrow{Resilient to Password Loss} & %Part if resettable by TTP
+\headrow{Compatible with Change Keys} &
+\headrow{Immediate Access} &
+\headrow{No New Software} & %Beyond a browser and the default client
+\headrow{Portable} & 
+\headrow{Blank} & 
+\headrow{Blank} & 
+\headrow{Blank} \\ \hline 
+
+%OTHERS:
+%
+
+Traditional cash			&\full	&\full	&\full	&	&\full	&\full	&\full	&\full	&\full	&\full	&\full	&	&	&	\\ \hline
+Key in file (default)		&	&	&\full	&	&\full	&	&\full	&\full	&\full	&\full	&	&	&	&	 \\
+Password-protected		&	&\prt	&\full	&	&\full	&	&	&\full	&\full	&\full	&	&	&	&	 \\
+Air gap				&\prt	&\full	&\full	&	&\full	&	&\full	&\full	&	&	&	&	&	&	 \\
+Offline storage			&	&\full	&\full	&	&	&\full	&\full	&	&	&	&\full	&	&	&	 \\ 
+Password-derived key	&	&\full	&\full	&\full	&	&\full	&	&	&\full	&	&\full	&	&	&	 \\ 
+Hosted (hot)			&	&	&	&	&	&\full	&\prt	&\full	&\full	&\full	&\full	&	&	&	 \\ 
+Hosted (cold)			&	&\full	&	&	&	&\full	&\prt	&\full	&	&\full	&\full	&	&	&	 \\
+\hline \\
+																					
+\end{tabular*}
+
+\caption{A Comparison of Key Management Techniques for Bitcoin.}
+\label{tab:prims}
+
+\end{table*}
+  
+
+
+
