@@ -9,11 +9,20 @@ On first launch, the official \bitcoinclient client creates a \walletfile file i
 
 The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. 
 
-Unintentional sharing of the \walletfile file is also a concern in the default client. Users must be cautious to not inadvertently share their bitcoin application folder on the Internet or to a location outside of the user's control. Possible sharing includes peer to peer (P2P) file-sharing networks, off-site backups, or shared network drive. Physical theft of the system hosting the \walletfile file is also a concern, especially in the case of portable computers. 
+Unintentional sharing of the \walletfile file is also a concern in the default client. Users must be cautious to not inadvertently share their bitcoin application folder on the Internet or to a location outside of the user's control. Possible sharing includes peer to peer (P2P) file-sharing networks, off-site backups, or shared network drive. Physical theft of the system hosting the \walletfile file is also a concern, especially in the case of portable computers. Although it is possible to encrypt \walletfile with a custom password.
 
 By keeping the \walletfile file locally, users must also be wary of \textit{threats to digital preservation}~\cite{BKM05} such as general equipment failure due to natural disasters and electrical failures; acts of war; mistaken erasure (\eg formatting the wrong drive or deleting the wrong folder); bit rot (\ie undetected storage failure); and possibly others. 
 
 Advantages of using the \bitcoinclient client in it's default configuration include immediate access to funds, no trust needed in a third party, and no need to recall yet another password. Additionally, the user can spend coins and receive change without the need to perform extra steps (see Section~\ref{sec:offline storage}). 
+
+One of the disadvantages of using \bitcoinclient is with the increase size of blockchain \textit {(Should explain blockchain in Bitcoin background section)}  it takes up storage space on the user's computer. On the time of writing this paper it uses around 13 gigabytes \footnote{\url{https://blockchain.info/charts/blocks-size}} for storing blockchain . Also for new \bitcoinclient's users it might take days to synchronize their local copy of blockchain.
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+\subsection{Simplified Payment Verification (SPV)}
+It is possible not store all the block-chain and verify everything but to connect to an arbitrary full node and download only the block headers. This would resolve the storage and synching problem \bitcoinclient's are facing now. \\
+bitcoinj\footnote{\url {https://code.google.com/p/bitcoinj/}} is an implementation of SPV.
+ \multibit \footnote{\url {http://multibit.org}} is a bitcoin wallet that uses this feature. \multibit is an open-source wallet with the intention to be fast and easy to use, it also keep its wallet file encrypted.
+
+
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -37,6 +46,11 @@ Some Bitcoin clients allow wallets (specifically the private keys in the wallet)
 \end{itemize}
 %New private keys are generated as keys in the keypool are used for transactions such that there always about 100 unused private keys (in addition to previously used keys) in \walletfile at any given time. 
 \subsection{Mobile Wallets}
+Bitcoin-wallet\footnote{\url{https://play.google.com/store/apps/details?id=de.schildbach.wallet }} is a Bitcoin wallet for Android and BlackBerry OS. It uses SPV to take less storage for the blockchain and it's completely peer-to-peer and does not use It uses a custom format for wallets which should be compatible between clients using bitcoinj and also possible to backup the wallet.\\
+Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} is another bitcoin wallet for mobile devices. It uses SPV for block-chain synchronization, has the ability to import private keys for secure cold-storage integration and it's possible to export the keys to external storage of the device. 
+
+
+
 \begin{itemize}
   \item apps, filesystem unavailable, must have export function into shared storage
 \end{itemize}
