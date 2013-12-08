@@ -10,6 +10,23 @@ Notes on the new changes/tools
 
 
 
+###Other Bitcoin Clients (Not yet in the paper)###
+* Electrum (http://electrum.org)
+    - wallet can be recovered from a secret phrase that you can write on paper or learn by heart.
+    - Instant on: Your client does not download the blockchain, it uses a remote server.
+    - Forgiving: Your wallet can be recovered from a secret seed.
+    - Safe: Your seed or private keys are not sent to the server. Information received from the server is verified using SPV
+    - No downtimes: Several public servers are available, you can switch instantly.
+    - Ubiquitous: You can use the same wallet on different computers, it will auto-synchronize.
+    - Cold Storage: You can have secure offline wallets and still safely spend from an online computer.
+    - Open: You can export your private keys into other Bitcoin clients.
+    - Tested and audited: Electrum is open source and was first released in November 2011.
+	- Also for Android
+	
+* CoinBase (https://coinbase.com)
+    - Mobile and Online
+	- Android: https://play.google.com/store/apps/details?id=com.coinbase.android
+	- Android Source: https://github.com/coinbase/coinbase-android
 
 ###Links (Not mentioned in the paper)###
 * multibit github: https://github.com/jim618/multibit
