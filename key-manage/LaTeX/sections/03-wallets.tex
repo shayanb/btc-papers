@@ -45,10 +45,11 @@ Some Bitcoin clients allow wallets (specifically the private keys in the wallet)
   \item change accounts (\cf deterministic wallets: Armory and Electrum)
 \end{itemize}
 %New private keys are generated as keys in the keypool are used for transactions such that there always about 100 unused private keys (in addition to previously used keys) in \walletfile at any given time. 
+
 \subsection{Mobile Wallets}
 Bitcoin-wallet\footnote{\url{https://play.google.com/store/apps/details?id=de.schildbach.wallet }} is a Bitcoin wallet for Android and BlackBerry OS. It uses SPV to take less storage for the blockchain and it's completely peer-to-peer and does not use It uses a custom format for wallets which should be compatible between clients using bitcoinj and also possible to backup the wallet.\\
-Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} is another bitcoin wallet for mobile devices. It uses SPV for block-chain synchronization, has the ability to import private keys for secure cold-storage integration and it's possible to export the keys to external storage of the device. 
-
+Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} is another bitcoin wallet for mobile devices. It uses SPV for block-chain synchronization, has the ability to import private keys for secure cold-storage integration and it's possible to export the keys to external storage of the device.\\ 
+However having the wallet file in a mobile device always has the cut back of losing your wallet when the device is stolen.
 
 
 \begin{itemize}
