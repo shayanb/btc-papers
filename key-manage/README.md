@@ -33,6 +33,8 @@ Notes on the new changes/tools
 * Bitcoin-wallet mobile source:  https://code.google.com/p/bitcoin-wallet
 * Mycelium Bitcoin wallet for android: https://github.com/mycelium-com/wallet
 
+* bitcoinpaperwallet (foldable design): https://bitcoinpaperwallet.com/bitcoinpaperwallet/generate-wallet.html
+* bitcoinpaperwallet github: https://github.com/cantonbecker/bitcoinpaperwallet
 
 
 

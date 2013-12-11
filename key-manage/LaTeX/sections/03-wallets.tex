@@ -27,21 +27,26 @@ bitcoinj\footnote{\url {https://code.google.com/p/bitcoinj/}} is an implementati
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \subsection{Password-protected Wallet}
-Some Bitcoin clients allow wallets (specifically the private keys in the wallet) to be encrypted with a user-chosen password.
-\begin{itemize}
-  \item malware can still mount an offline attack
-  \item mental model: you may think that you're making your password into a key, but it's actually 2 factor
-\end{itemize}
+Some Bitcoin clients allow wallets (specifically the private keys in the wallet) to be encrypted with a user-chosen password. This would be good for a stolen wallet file but still malwares could use keyloggers or other method to get the password. Also users might think that the password is applicable for their bitcoins in every client, like a password for an online wallet, however it's more of a two factor key to get to the funds. By forgetting the password, there might not be any solutions to recover the lost bitcoins, although there are services available to bruteforce the password only feasible depending on the complexity of the password\footnote{\url {http://www.walletrecoveryservices.com}}.
+
+ 
+%\begin{itemize}
+ % \item malware can still mount an offline attack
+ % \item mental model: you may think that you're making your password into a key, but it's actually 2 factor
+%\end{itemize}
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \subsection{Offline Storage}
 \label{sec:offline storage}
+The most secure way to save the private keys from being stolen is to have them disconnected from the internet, although it has drawbacks of not available to send the funds immediately.\\
+Paper Wallets are just a print out of the private keys, there are designs to keep it more secure but in the end whoever has the paper in hand can spend the bitcoins.\footnote{\url {https://bitcoinpaperwallet.com}}\\
+It is also possible to put the wallet file into a usb and keep it in a safe place that also needs to be physically secure and also a longer procedure to import the keys into a wallet and spend the bitcoins, also vulnerable to malwares. There has not been a Hardware wallet in production yet, but TREZOR\footnote{\url {http://www.bitcointrezor.com}} has promised a full functional and secure hardware wallet for bitcoin, it is a plug and play USB key that offers transaction signing for the common wallets on the computer without revealing the private keys.
 \begin{itemize}
-  \item print privkey to paper (paper wallet) (bitbills)
-  \item put wallet onto usb
+%  \item print privkey to paper (paper wallet) (bitbills)
+ % \item put wallet onto usb
   \item mini cog walkthrough. how easy is it to import they back
-  \item hardware wallet (tpm and stuff can be future directions)
+ % \item hardware wallet (tpm and stuff can be future directions)
   \item change accounts (\cf deterministic wallets: Armory and Electrum)
 \end{itemize}
 %New private keys are generated as keys in the keypool are used for transactions such that there always about 100 unused private keys (in addition to previously used keys) in \walletfile at any given time. 
@@ -52,6 +57,6 @@ Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store
 However having the wallet file in a mobile device always has the cut back of losing your wallet when the device is stolen.
 
 
-\begin{itemize}
-  \item apps, filesystem unavailable, must have export function into shared storage
-\end{itemize}
+%\begin{itemize}
+%  \item apps, filesystem unavailable, must have export function into shared storage
+%\end{itemize}
