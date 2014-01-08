@@ -1,0 +1,74 @@
+% !TEX root = ../main.tex
+
+\section{Benefits}
+
+In this paper, we evaluate different approaches to secure and use bitcoins (Key management techniques). Our approach is by defining the benefits that the user would get by using each application in the manner of usability and security.
+Some benefits might not inclusively be in usability category or security, thus our categorization is not completely error prone, however it is, by the time of the writing, the most comprehensive  study in this subject.
+The result of this evaluation is in Table 1\ref{tab:prims}. There are three different scores for each technique:\\
+
+\begin{itemize}
+\renewcommand{\labelitemi}{$\bullet$}
+\item Full score
+\renewcommand{\labelitemi}{$\circ$}
+\item Half Score - Not the full score but has some features related to the evaluated benefit
+\renewcommand{\labelitemi}{$\textvisiblespace$}
+\item No circle - no score at all, either not applicable or does not have any feature for the evaluated benefit
+\end{itemize}
+
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\subsection{Usability Benfits}
+
+\subsubsection{Resilient to Equipment Failure}
+\label{Resilient to Equipment Failure}
+Keys are stored in \walletfile or other wallet file formats. With hard disk failure or any relevant equipment failure that prevents the user to access this file, the keys and thus the bitcoins stored in it would be unusable.
+
+\subsubsection{Compatible with Change Keys}
+\label{Compatible with Change Keys}
+User can send the bitcoins from one address to the other, in this way the key that stores the bitcoins would be changed. In some approaches this might be a hard task to do, but in default client it would be as simple as a transaction.
+
+\subsubsection{Immediate Access}
+\label{Immediate Access}
+With the increasing size of the blockchain having access to the bitcoins and the ability to do transactions gets more important everyday. The user should get access to the up-to-date synced blockchain to be able to see his full amount of bitcoins to the date.
+
+\subsubsection{No New Software}  %Beyond a browser and the default client}
+\label{No New Software}
+Some approaches would need a new software to be installed on the system for the user to be able to access his funds or do transactions.
+
+\subsubsection{Portable}
+\label{Portable}
+Portability in this case means the access to the funds from different resources or places, either it's a new computer or different computer in a different location.
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+\subsection{Security Benfits}
+
+\subsubsection{Malware Resistant}
+\label{Malware Resistant}
+The value of bitcoins has increased in the past months and there has been malwares that focus on stealing keys\footnote{\url{http://www.zdnet.com/blog/security/new-bitcoin-malware-steals-bitcoin-wallets-infostealer-coinbit/8804}}. The ability to resist these kind of malwares and attacks is a viral feature of the key management techniques.
+
+\subsubsection{Key Kept Offline}  %Part if one of two factors are offline
+\label{Key Kept Offline}
+One way to secure the keys is to keep them offline, whether in a usb drive disconnected from the internet or cold storages. There are also methods to keep the keys in two parts, that both factors should be online for the user to be able to do a transaction.
+
+\subsubsection{No Trusted Third Party}
+\label{No Trusted Third Party}
+By trusting a third party, there would be another place that the keys are stored and this would be a security risk if the party is compromised.
+
+\subsubsection{Resistant to Physical Theft}
+\label{Resistant to Physical Theft}
+On the event that the hardware containing the keys is stolen, the thief can access the keys if they are not securely stored, such as strong encryption.
+
+\subsubsection{Resistant to Physical Observation}
+\label{Resistant to Physical Observation}
+Evesdropping is not applicable on the keys stored in the file but with the new approaches different ways of physical observation could be used to get the keys.
+
+\subsubsection{Resilient to Password Loss}  %Part if resettable by TTP
+\label{Resilient to Password Loss}
+Password loss usually is handled by the service provider and either there would be a password reset option or not. On cases that there is no user provider or third party to do so, it is only the key management techniques toward this issue
+
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
