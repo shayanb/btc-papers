@@ -1,14 +1,22 @@
 Notes on the new changes/tools
 ------------------------------
 
-* where should "Bitcoin Armory" be?
+* Brain Wallets would be a new category or in Password-Derived Keys?
+* Airgap... where is it applicable in this paper?
+
+
+* ~~ where should "Bitcoin Armory" be? 
     - new subsection as "Bitcoin wallet manager"? Cold Storage?
     - It is dependent on bitcoin-qt for the blockchain synchronization (https://bitcoinarmory.com/about/armory-and-bitcoin-qt)
     - Manage multiple wallets (deterministic and watching-only), print paper backups that work forever, import or sweep private keys, and keep your savings in a computer that never touches the internet, while still being able to manage incoming payments, and create outgoing payments with the help of a USB key
-    - https://github.com/etotheipi/BitcoinArmory/
+    - https://github.com/etotheipi/BitcoinArmory/ ~~
 
 
+-----------------
 
+TO DO:
+
+* Move some footnotes to bib
 
 ###Other Bitcoin Clients (Not yet in the paper)###
 * Electrum (http://electrum.org)
@@ -28,11 +36,19 @@ Notes on the new changes/tools
 	- Android: https://play.google.com/store/apps/details?id=com.coinbase.android
 	- Android Source: https://github.com/coinbase/coinbase-android
 
+
+### Deterministic Wallet ###
+* Brain Wallets?
+* https://en.bitcoin.it/wiki/Deterministic_wallet
+* Carbonwallet : http://carbonwallet.com/
+
 ###Links (Not mentioned in the paper)###
 * multibit github: https://github.com/jim618/multibit
 * Bitcoin-wallet mobile source:  https://code.google.com/p/bitcoin-wallet
 * Mycelium Bitcoin wallet for android: https://github.com/mycelium-com/wallet
 
+* bitcoinpaperwallet (foldable design): https://bitcoinpaperwallet.com/bitcoinpaperwallet/generate-wallet.html
+* bitcoinpaperwallet github: https://github.com/cantonbecker/bitcoinpaperwallet
 
 
 
