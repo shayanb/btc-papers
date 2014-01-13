@@ -10,32 +10,40 @@
 
 \headrow{ } &
 \headrow{Malware Resistant} & %Part if malware crosses air gap
-\headrow{Key Kept Offline} &  %Part if one of two factors are offline
+\headrow{Key Kept Offline} &  %Part if one of two factors are offline. Seems to be captured already.
 \headrow{No Trusted Third Party} &
 \headrow{Resistant to Physical Theft} &
 \headrow{Resistant to Physical Observation} &
 \headrow{Resilient to Equipment Failure} &
 \headrow{Resilient to Password Loss} & %Part if resettable by TTP
-\headrow{Compatible with Change Keys} &
+\headrow{Compatible with Change Addresses} &
 \headrow{Immediate Access} &
-\headrow{No New Software} & %Beyond a browser and the default client
-\headrow{Portable} & 
+\headrow{No New Software} & %Beyond a browser and the default client % Fails the long-lasting paper test
+\headrow{Portable} & % This is for keys. Should also thing about needing a client
 \headrow{Blank} & 
 \headrow{Blank} & 
 \headrow{Blank} \\ \hline 
+
+% Something about churn of software tools
+% Can you change your public key? (E.g., I get a vanity address)
+% Can you change your password?
+
 
 %OTHERS:
 %
 
 Traditional cash			&\full	&\full	&\full	&	&\full	&\full	&\full	&\full	&\full	&\full	&\full	&	&	&	\\ \hline
 Key in file (default)		&	&	&\full	&	&\full	&	&\full	&\full	&\full	&\full	&	&	&	&	 \\
-Password-protected		&	&\prt	&\full	&	&\full	&	&	&\full	&\full	&\full	&	&	&	&	 \\
+Password-protected		&\prt	&\prt	&\full	&\prt	&\full	&	&	&\full	&\full	&\full	&	&	&	&	 \\
 Air gap				&\prt	&\full	&\full	&	&\full	&	&\full	&\full	&	&	&	&	&	&	 \\
-Offline storage			&	&\full	&\full	&	&	&\full	&\full	&	&	&	&\full	&	&	&	 \\ 
-Password-derived key	&	&\full	&\full	&\full	&	&\full	&	&	&\full	&	&\full	&	&	&	 \\ 
-Hosted (hot)			&	&	&	&	&	&\full	&\prt	&\full	&\full	&\full	&\full	&	&	&	 \\ 
-Hosted (cold)			&	&\full	&	&	&	&\full	&\prt	&\full	&	&\full	&\full	&	&	&	 \\
-SPV					&	&\full	&\prt	&	&	&\full	&	&\full	&\full	&	&\prt	&	&	&	 \\
+Hardware Security Module&	&\full	&\full	&	&\full	&	&\full	&\full	&\full	&\full	&\full	&	&	&	 \\
+Physical Wallet			&\full	&\full	&\full	&	&	&\full	&\full	&	&	&	&\full	&	&	&	 \\ 
+Password-derived key	&\prt	&\full	&\full	&\prt	&	&\full	&	&	&\full	&	&\full	&	&	&	 \\ 
+Hosted (hot)			&	&	&	&	&	&\prt	&\prt	&\full	&\full	&\full	&\full	&	&	&	 \\ 
+Hosted (cold)			&\prt	&\full	&	&	&	&\prt	&\prt	&\full	&	&\full	&\full	&	&	&	 \\
+%SPV					&	&\full	&\prt	&	&	&\full	&	&\full	&\full	&	&\prt	&	&	&	 \\
+%Distributed Key?
+%TPM
 \hline \\
 																					
 \end{tabular*}
