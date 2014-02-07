@@ -12,13 +12,13 @@ Another method to evaluate the usability of these techniques is heuristic evalua
 The core tasks that we are going to perform for each key management technique are as follows.
 
 \begin{itemize}
-\renewcommand{\labelitemi}{\bf CT-1}
+\renewcommand{\labelitemi}{\bf CT-1} \label{sec:ct-1}
 \item Finalize a receiving address from the primary device\footnote{primary device is the initial device that the key is generated on} 
-\renewcommand{\labelitemi}{\bf CT-2}
+\renewcommand{\labelitemi}{\bf CT-2} \label{sec:ct-2}
 \item Authorize the transaction from the primary device 
-\renewcommand{\labelitemi}{\bf CT-3}
+\renewcommand{\labelitemi}{\bf CT-3} \label{sec:ct-3}
 \item Authorize the transaction from the secondary device\footnote{any device other than the primary device}
-\renewcommand{\labelitemi}{\bf CT-4}
+\renewcommand{\labelitemi}{\bf CT-4} \label{sec:ct-4}
 \item Losing the main credential (recovery options)
 \end{itemize}
 
@@ -37,7 +37,7 @@ The core tasks will be performed with the following clients with default configu
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \subsubsection{Key in file}
-The first step is to download and run \bitcoinclient, as it was described in section 4.1, it would take days to sync with current block chain, that being said, core task one that is the receiving address is available right after the first run in the "Receive" tab of the application. It is possible to send any owned funds from the "Send" tab of the application, also If the user clicks on his bitcoin address the "sign message" button would be enabled that the user could sign a custom message or just to show that he owns the address, this would be the CT2 as authorizing the transaction. CT-3 is not possible with \bitcoinclient as the new installation is needed on the new device thus new address is generated. As for CT4, if the user loses \walletfile, there is no way to recover the lost keys.
+The first step is to download and run \bitcoinclient, as it was described in section 4.1, it would take days to sync with current block chain, that being said, core task one that is the receiving address is available right after the first run in the "Receive" tab of the application. It is possible to send any owned funds from the "Send" tab of the application, also If the user clicks on his bitcoin address the "sign message" button would be enabled that the user could sign a custom message or just to show that he owns the address, this would be the CT2 as authorizing the transaction. CT-3 is not easily possible with \bitcoinclient as the new installation is needed on the new device thus new wallet is generated, however user can replace his own wallet with the newly generated one to have access to the funds. As for CT4, if the user loses \walletfile, there is no way to recover the lost keys.
 
 
 \subsubsection{Password Protected}
@@ -45,6 +45,7 @@ Analysis of the core tasks for the this section was done on \multibit that one o
 
 
 \subsubsection{Air gap}
+\label{sec:air gap}
 
 
 \subsubsection{Offline Storage}
@@ -56,3 +57,4 @@ To start using this technique user has to either run the offline brain wallet or
 
 
 \subsubsection{Hosted}
+Hosted services are the easiest ones to use for the new users. There would be a sign up for an online wallet that we chose blockchain.info \footnote{\url{https://blockchain.info/wallet}} as it is the most famous online wallet on the time of the writing. The user clicks on "Start a new wallet" and provides an email address with a password for his login. On the first page it has a warning that on forgetting the password there is no way to recover the account (CT4), however it gives the user a "Wallet Recovery Mnemonic" that is a set of words that could be used to recover the account. On the first login the user would have a finalized address that he can use to receive and send bitcoins. The interface is pretty user-friendly and easy to use. As for CT2 and CT3 there is no difference between the devices as a simple web browser would give access to the account for the user.
