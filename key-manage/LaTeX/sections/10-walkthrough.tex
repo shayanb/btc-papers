@@ -124,6 +124,18 @@ As it is mentioned on the "Welcome page", every option in \multibit would show h
 
 \subsubsection{Air gap}
 \label{air gap}
+This technique has not yet been documented well and it is suitable for advanced users only. For the cognitive walkthrough, we assume user has good knowledge of bitcoin terms (G6) and how the air gap method works (G1). Bitcoin Armory is one of the advanced bitcoin wallets that is going to be used for this walkthrough, although for the online system it should be executed while bitcoin-qt is already running to be able to load the blockchain. It is possible to use some other applications to do so, however we are going to walkthrough the most secure way to implement air gap for bitcoin wallet.
+
+\paragraph{CT1} 
+First, User should install Bitcoin Armory on the offline computer. On the start, the welcome page offers the option to "Import Existing Wallet" and "Create Your First Wallet!". User creates his wallet and passphrase is a mandatory option, Armory also asks for the third time verification of the passphrase and warns the user to not to forget his passphrase (appropriate guidelines for G5). After this step, a backup window pops up with the options to print a paper wallet or save a digital backup of the wallet, also warns the user if he decides not to backup his wallet. Now the Bitcoin address is generated but in order to see the final balance of the account, it needs to be online. User with less knowledge of air gap technique might click on the "Offline Transaction" button that offers a short documentation of the steps to be taken to sign a transaction. One point that has not been mentioned in the documentation is that user should click on "Receive Bitcoins" to generate the bitcoin address in the wallet file (G3,G4). On wallet window, there is the option to "Create Watching-Only Copy". This option is being used to copy the bitcoin addresses, not the private keys, for the online computer to show the balances.\\
+Now user should install Bitcoin Armory and \bitcoinclient on the online computer to have access to the updated balances of his accounts. This time on the first run, user should click on "Import Existing Wallet" and chose to import the digital backup or watch-only wallet, Then chose the watch-only back up file that has been copied from the offline computer. After the application is done with syncing with the blockchain and scanning it, the balance is shown and the user has finalized his receiving address.
+
+
+\paragraph{CT2, CT3} 
+In Airgap technique, There is no primary or secondary device in the sense that we have defined these terms. It's the offline computer that should be kept secure and disconnected from the internet, and there is the other device that should be online. Thus, the same steps (CT1) are required on any given new online device, to add the watch-only wallet and wait for it to synchronize with the blockchain.\\
+Now on the online device with the watch-only wallet added, user should click on "Offline Transactions" on the main window. In should be noted that unless the wallet client is online, the "Create New Offline Transaction" would be disabled. Now by clicking on this option, user will be asked to enter the receiving addresses, amounts and any comment on the transaction.
+
+\paragraph{CT4} 
 
 
 \subsubsection{Offline Storage}
