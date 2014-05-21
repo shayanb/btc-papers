@@ -5,25 +5,10 @@
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\begin{itemize}
-\item Different paradigm: protecting a key vs protecting a password. 
-Bitcoins are secured to their owners by the private key of the address that the bitcoins are stored in. This private keys are not a key or password that the user knows the value so the normal user might not have any ideas about how this works and might lose the private key by simple mistakes
+In all of the excitement surrounding Bitcoin, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of designing secure and usable public key cryptography for authenticating users. Despite decades of research on this issue in parallel technologies, such as digitally signed email, we show that Bitcoin technologies for managing user keys stall on many of the same basic issues. 
 
-\item Thesis: users aren't ready to manage keys. 
-\item State of the art in terms of usability is to somehow convert the key into a password
-\item security and deployability (availability) problems
-\item keys=something you have. 
-\end{itemize}
+At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving these issues. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
 
 
-
-
-
-Due to the meteoritic rise in Bitcoin's exchange rate, users are coming to the realization that it is no longer a crypto plaything; it is actual money. 
-
-
-We are not arguing that it will hinder adoption, as users will not realize what they are getting into. Rather it will harm traction, since users won't stick around to get fooled twice. 
-
-``Fool me once, shame on\ldots~shame on you. Fool me\ldots~you can't get fooled again.'' --W
 
 Scope: bitcoin can be split into 3 parts: buying bitcoins (involving exchanges, OTC, etc), holding bitcoins (involving wallets, keys, etc), and spending bitcoins (creating transactions, waiting for verifications, etc). this paper focuses on the middle point. 
