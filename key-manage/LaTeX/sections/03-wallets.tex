@@ -1,11 +1,11 @@
 % !TEX root = ../main.tex
 
 \section{Bitcoin Private Key Management}
-At the core of Bitcoin's functionality are keypairs. The public key allows users to receive coins and check their wallet balance, and the private key allows users to send coins to other addresses. In this Section, we review the main mechanisms used in the current Bitcoin ecosystem to manage these keys.
+At the core of Bitcoin's functionality are key pairs. The public key, also known as Bitcoin address, allows users to receive coins and check their balance, and the private key allows users to authorize a transaction to send coins to other addresses. In this Section, we review the main mechanisms used in the current Bitcoin ecosystem to manage these keys.
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \subsection{Default Client}
-On first launch, the official \bitcoinclient client creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions (\ie send coins). Anyone with access to the private keys inside \walletfile can spend the coins associated with those keys. Thus, access control on the \walletfile file is extremely important. 
+On first launch, the official bitcoin client, \bitcoinclient, creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions (\ie send coins). Anyone with access to the private keys inside \walletfile can spend the coins associated with those keys. Thus, access control on the \walletfile file is extremely important. 
 
 The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. 
 
@@ -15,12 +15,14 @@ By keeping the \walletfile file locally, users must also be wary of \textit{thre
 
 Advantages of using the \bitcoinclient client in it's default configuration no trust needed in a third party, and no need to recall yet another password. Additionally, the user can spend coins and receive change without the need to perform extra steps (see Section~\ref{sec:offline storage}). 
 
-One of the disadvantages of using \bitcoinclient is with the increase size of blockchain \textit {(Should explain blockchain in Bitcoin background section)}  it takes up storage space on the user's computer. On the time of writing this paper it uses around 13 gigabytes \footnote{\url{https://blockchain.info/charts/blocks-size}} for storing blockchain . Also for new \bitcoinclient's users it might take days to synchronize their local copy of blockchain.
+One of the disadvantages of using \bitcoinclient is with the increase size of blockchain it takes up storage space on the user's computer. On the time of writing this paper it uses around 18 gigabytes \footnote{\url{https://blockchain.info/charts/blocks-size}} for storing blockchain . Also for new \bitcoinclient's users it might take days to synchronize their local copy of blockchain.
 
-To score the \bitcoinclient it does not have malware resistant nor keep keys offline, there is no need for third party trust ad nothing to be physically observed. It is not resistant to physical theft nor equipment failure cause the keys would be lost in either way. On password loss, there are no ways to reset the password so resilient to password loss, however password is not set by default and should be enabled by the user. Due to huge size of blockchain it has somehow the immediate access score and none in portability, also there is no need to for any new software and it is compatible with change keys as it would be just a transaction to a new address.
+To score the \bitcoinclient it does not have malware resistant nor keep keys offline benefits, there is no need for third party trust ad nothing to be physically observed. It is not resistant to physical theft nor equipment failure cause the keys would be lost in either way. On password loss, there are no ways to reset the password so resilient to password loss, however password is not set by default and should be enabled by the user. Due to huge size of blockchain it has somehow the immediate access score and none in portability, also there is no need for any new software and it is compatible with change keys as it would be just a transaction to a new address.
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+% This Section should be moved to maybe the preliminary section and reduced. It is needed because SPV has been used in some other parts
 \subsection{Simplified Payment Verification (SPV)}
-It is possible not store all the block-chain and verify everything but to connect to an arbitrary full node and download only the block headers. This would resolve the storage and synching problem \bitcoinclient's are facing now. \\
+It is possible not to store all the blockchain and verify everything but to connect to an arbitrary full node and download only the block headers. This would resolve the storage and synching problem \bitcoinclient's are facing now. \\
 bitcoinj\footnote{\url {https://code.google.com/p/bitcoinj/}} is an implementation of SPV.
  \multibit \footnote{\url {http://multibit.org}} is a bitcoin wallet that uses this feature. \multibit is an open-source wallet with the intention to be fast and easy to use, it also keep its wallet file encrypted.
 SPV is more a technique to sync blockchain with the client, however because there are some clients different than the \bitcoinclient that uses SPV and have some different features with include this in our evaluation.
@@ -30,46 +32,26 @@ These clients are a new software to be installed, however they could be installe
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
-% this subsection could be intergrated in the previous two subsections for default wallet and SPV in the multibit part
 \subsection{Password-protected Wallet}
-Some Bitcoin clients allow wallets (specifically the private keys in the wallet) to be encrypted with a user-chosen password. This would be good for a stolen wallet file but still malwares could use keyloggers or other method to get the password. Also users might think that the password is applicable for their bitcoins in every client, like a password for an online wallet, however it's more of a two factor key to get to the funds. By forgetting the password, there might not be any solutions to recover the lost bitcoins, although there are services available to bruteforce the password only feasible depending on the complexity of the password\footnote{\url {http://www.walletrecoveryservices.com}}. All the benefits of these technique are the same as the default method, however it would be somehow more resistant to malwares.
-
- 
-%\begin{itemize}
- % \item malware can still mount an offline attack
- % \item mental model: you may think that you're making your password into a key, but it's actually 2 factor
-%\end{itemize}
+Some Bitcoin clients allow wallets files to be encrypted with a user-chosen password. This would be good for a stolen wallet file but still malwares could use keyloggers or other method to get the password. Also users might think that this password is applicable for their bitcoins in every client, like a password for an online wallet, however it's more of a two factor key to get to the funds. By forgetting the password, there might not be any solutions to recover the lost bitcoins, although there are services available to bruteforce the password but are only feasible depending on the complexity of the password\footnote{\url {http://www.walletrecoveryservices.com}}. All the benefits of these technique are the same as the default method, however it would be more resistant to simple malwares.
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \subsection{Offline Storage}
 \label{sec:offline storage}
-The most secure way to save the private keys from being stolen is to have them disconnected from the internet, although it has drawbacks of not available to send the funds immediately. Offline storage don't have the Immediate access benefit.\\
-Paper Wallets are just a print out of the private keys, there are designs to keep it more secure but in the end whoever has the paper in hand can spend the bitcoins.\footnote{\url {https://bitcoinpaperwallet.com}}\\, thus no resistant to physical observation but no need to trust any third parties.
-It is also possible to put the wallet file into a usb and keep it in a safe offline place that also needs to be physically secure and also a longer procedure to import the keys into a wallet and spend the bitcoins, also vulnerable to malwares and need new softwares for the import process. There has not been a Hardware wallet in production yet, but TREZOR\footnote{\url {http://www.bitcointrezor.com}} has promised a full functional and secure hardware wallet for bitcoin, it is a plug and play USB key that offers transaction signing for the common wallets on the computer without revealing the private keys. If the paper wallets tear off or the hardware wallets fail or even if the password for the encryption is lost, the keys would could not be retrieved thus resilient to equipment failure and password loss applies. although these methods are pretty portable, Changing keys due to the hard-coded-like keys needs to generate new keys and redo all the necessary work to get the new keys in proper formats.
+The most secure way to save the private keys from being stolen is to have them disconnected from the internet, although it has the drawback of not having them available to be able to send funds immediately. Offline storage don't have the Immediate access benefit.\\
+Paper Wallets are just a print out of the private keys, there are designs to keep them more secure but in the end whoever has the paper in his hand can spend the bitcoins.\footnote{\url {https://bitcoinpaperwallet.com}}\\, thus there is no resistant to physical observation, in the other hand no need to trust any third parties.
+It is also possible to put the wallet file into a usb drive and keep it in a safe offline place that also needs to be physically secured and also a longer procedure is needed to import the keys into a wallet and spend the bitcoins. This technique is vulnerable to malwares and need new softwares for the import process. There has not been a Hardware wallet in production yet, but TREZOR\footnote{\url {http://www.bitcointrezor.com}} has promised a full functional and secure hardware wallet for bitcoin, it is a plug and play USB key that offers transaction signing for the common wallets on the computer without revealing the private keys. If the paper wallets tear off or the hardware wallets fail or even if the password for the encryption is lost, the keys could not be retrieved thus resilient to equipment failure and password loss applies. Although these methods are pretty portable, Changing keys, due to the keys being printed out on a paper, need to generate new keys and redo all the necessary work to get the new keys in proper formats.
 
 \subsection{Air Gap}
-Air gap falls into offline storage methods but because some features differs we have it as a separate technique. The difference is that the device that holds the key is not connected to internet in any given time. One implementation of these method would be discussed on section \ref{air gap}. \\ \\ \\ DISCUSSION ABOUT THE BENEFITS IS NEEDED! I THINK THE TABLE IS WRONG IN SOME FIELDS! \\ \\ 
+Air gap falls into offline storage methods but because some features differ we have it as a separate technique. The difference is that the device that holds the key is not connected to internet in any given time and there is no need to import the keys in the online device. One implementation of these method would be discussed on section \ref{air gap}. 
+Although, the keys are stored in a separate device, There has been research on malwares trying to jump over the airgap\footnote{\url{http://arstechnica.com/security/2013/12/scientist-developed-malware-covertly-jumps-air-gaps-using-inaudible-sound/}}. One main property of air gap is that it keeps the keys offline and also there is no need to trust a third party with the keys, however in case the offline device is stoled, the thief has access to the keys and is able to steal the Bitcoins. %(WRONG ON THE TABLE)
+As the transaction signing happens on the device there is nothing to be physically observed that could danger user's funds. In case of hardware failure, it is possible for the user to lose his private keys and in result lose the access to his Bitcoins. %(WRONG ON THE TABLE) Also in the scenario that the user has encrypted his private keys on the offline device and he forgets his password, same downside applies.
+In clients such as Armory, the backup file includes a root seed that could be used to retrieve all the keys that has been generated with that seed, so it is compatible with change keys, however because there is the need to go back and forth on the online and offline computer for any transactions, it would not have the immediate access benefit nor the portability, Also the new software, such as Armory, is required to sign the transactions on the offline device and broadcast the signed transaction from the online device.
 
-
-% http://www.telegraph.co.uk/technology/internet-security/10490846/New-computer-virus-secretly-leaks-data-through-air.html
-
-
-%\begin{itemize}
-%  \item print privkey to paper (paper wallet) (bitbills)
- % \item put wallet onto usb
-%  \item mini cog walkthrough. how easy is it to import they back
- % \item hardware wallet (tpm and stuff can be future directions)
- % \item change accounts (\cf deterministic wallets: Armory and Electrum)
-%\end{itemize}
-%New private keys are generated as keys in the keypool are used for transactions such that there always about 100 unused private keys (in addition to previously used keys) in \walletfile at any given time. 
-
+% Do we need the mobile wallets section? it could be a sub-section of the clients or just to be in the paper for the cause of completness 
 \subsection{Mobile Wallets}
-Bitcoin-wallet\footnote{\url{https://play.google.com/store/apps/details?id=de.schildbach.wallet }} is a Bitcoin wallet for Android and BlackBerry OS. It uses SPV to take less storage for the blockchain and it's completely peer-to-peer and does not use It uses a custom format for wallets which should be compatible between clients using bitcoinj and also possible to backup the wallet.\\
-Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} is another bitcoin wallet for mobile devices. It uses SPV for block-chain synchronization, has the ability to import private keys for secure cold-storage integration and it's possible to export the keys to external storage of the device.\\ 
+Bitcoin-wallet\footnote{\url{https://play.google.com/store/apps/details?id=de.schildbach.wallet }} is a Bitcoin wallet for Android and BlackBerry OS. It uses SPV to take less storage for the blockchain and it's completely peer-to-peer and It uses a custom format for wallets which is compatible between clients that use bitcoinj\footnote{Java implementation of Bitcoin protocol \url{http://bitcoinj.github.io/}} and has the feature to backup the wallet.\\
+Mycelium Bitcoin Wallet for Android\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} is another bitcoin wallet for mobile devices. It uses SPV for blockchain synchronization, has the ability to import private keys for secure cold-storage integration and it's possible to export the keys to external storage of the device.\\ 
 However having the wallet file in a mobile device always has the cut back of losing your wallet when the device is stolen.
 Mobile wallets in the matter of evaluation do not differ from wallets, but may have more vulnerability to physical theft.
-
-%\begin{itemize}
-%  \item apps, filesystem unavailable, must have export function into shared storage
-%\end{itemize}
