@@ -74,7 +74,7 @@ Unintentional sharing of the \walletfile file is also a concern. Users must be c
 
 By keeping the \walletfile file locally, users must also be wary of \textit{threats to digital preservation}~\cite{BKM05} such as general equipment failure due to natural disasters and electrical failures; acts of war; mistaken erasure (\eg formatting the wrong drive or deleting the wrong folder); bit rot (\ie undetected storage failure); and possibly others. This must also preserve a specification of the exact format of \walletfile to ensure it can continue to be read. 
 
-The user must also be wary of \textit{key churn} as the \bitcoinclient client sends change to new addresses. By default, it creates private keys in batches of 100 (called a keypool). This has the unfortunate side-effect that backups become obsolete after the user churns through their current keypool. The user interface of \bitcoinclient does not display change addresses or give any indication that they are being used, and so it is quite natural that a novice users' mental model will not account for this behaviour, and they will not act accordingly to ensure they re-backup \walletfile each time they deplete the keypool (another event that is not communicated to the user in any way).
+The user must also be wary of \textit{key churn} as the \bitcoinclient client sends change to new addresses. By default, it creates private keys in batches of 100 (called a keypool). This has the unfortunate side-effect that backups become obsolete after the user churns through their current keypool. The user interface of \bitcoinclient does not display change addresses or give any indication that they are being used, and so it is quite natural that a novice users' mental model will not account for this behaviour, and they will not act accordingly to ensure they re-backup \walletfile each time they deplete the keypool (another event that is not communicated to the user in any way). To address key churn, alternative Bitcoin clients return all change to the same address or derive all change addresses, called a \textit{deterministic wallet}, from a single key.
 
 Another disadvantage of using \bitcoinclient is that it requires a copy of the entire blockchain to validate the balance associated with each of the keys it will create. At the time of writing, the blockchain is 18 GB.\footnote{\url{https://blockchain.info/charts/blocks-size}} For a new installation, it is not uncommon for it to take days to obtain a local copy of blockchain from the Bitcoin peer-to-peer network.
 
@@ -109,7 +109,10 @@ Note that the consequences of obtaining unauthorized access to the wallet itself
 
 
 \subsection{Password-Derived Key} 
-Also known as deterministic wallet, is a system that derives the keys from a starting point known as seed that could be random or user chosen string. This is good in the security manner that there is no need to save the private keys in a computer and just save the string or write it down on a paper. There are different methods to secure this technique such as high iteration counts to slow down the attacker on simple user-chosen strings. It is important to use a strong string as it would be the key to access the funds, services such as brainwallet \footnote{\url{http://brainwallet.org/}} make this technique available to users. Even though the keys are not stored in the computer and are resistant to physical theft, this technique is not malware resistant as a simple key logger could make the funds available to the attacker so does the physical observation. Most common methods are open source and also could be done in offline systems so no trust in third party is needed. However if the user forgets his keys the funds are lost forever as there is no way to recover the private keys without the initial seed, also for a new key the whole process should be repeated. One problem with this technique is that it is highly dependent on the software it uses to generate the keys from the initial seed and if the software is not available it would be hard to reproduce the keys from the string. That being said, as long as the software is available the funds are accessible from any computer that has access to the service. 
+
+All the tools analyzed to this point have required users to maintain cryptographic keys. The remaining two solutions enable users to access their XBT with a password instead. The first approach is to derive all cryptographic keys from a password---\eg form a seed from PBKDF2 applied to the password and expand the seed into the required number of keys with a PRG. Thus it is a special case of a deterministic wallet, where the initial seed is password-derived instead of randomly chosen. A notable tool here is Brainwallet.\footnote{\url{http://brainwallet.org/}}
+
+Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as the wallet can be regenerated from a memorized password, and this wallet can be regenerated on any device. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search as a fingerprint of the associated public key will be in the ledger if the account holds any amount of XBT. Rainbow tables for Brainwallet password-derived keys have been reportedly developed. Finally, it is not clear that memorization poses an advantage over maintaining a digital file at loss prevention---a forgotten password will orphan all funds in the account.
 
 
 \subsection{Hosted} 
@@ -131,9 +134,9 @@ With keys being offline, it would have resistance toward malwares but no immedia
 In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated):
 
 \begin{compactlist}
-	\item[\bf 1] Key in File:  \bitcoinclient 
+	\item[\bf 1] Key in Local Storage:  \bitcoinclient 
 	\item[\bf 2] Password Protected: \multibit 
-	\item[\bf 3] Air gap: Bitcoin Armory \footnote{\url{https://bitcoinarmory.com/}}
+	\item[\bf 3] Air gap: Bitcoin Armory
 	\item[\bf 4] Offline Storage: Paper Wallet
 	\item[\bf 5] Password-derived Key: Brain Wallet
 	\item[\bf 6] Hosted Wallet: Blockchain.info wallet
