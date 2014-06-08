@@ -59,7 +59,7 @@ The consequences of losing exclusive control over an account containing monetary
 
 Before turning to a detailed usability evaluation, we evaluate from a systems perspective each category of tool for managing Bitcoin private keys. We highlight security and deployability issues, and note relevant details of the Bitcoin protocol that create complexities and potential discrepancies with users' mental models.
 
-\subsection{Key in Local Storage}
+\subsection{Keys in Local Storage}
 On first launch, the official bitcoin client, \bitcoinclient, creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions. Anyone with access to the private keys inside \walletfile can spend the XBT associated with those keys.
 
 The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. Since then, numerous examples of malware and malicious Bitcoin tools have been discovered stealing \walletfile files. 
@@ -76,7 +76,7 @@ Another disadvantage of using \bitcoinclient is that it requires a copy of the e
 
 A number of mobile wallets for OSes like Android and BlackBerry have been proposed, including Bitcoin-wallet\footnote{\url{https://androidobservatory.org/app/9A33CF64239CC26F6E52F80BE83AF39B93F261C0}} and Mycelium.\footnote{\url{http://mycelium.com}} The main challenge for mobile platforms is the general unfeasibility of obtaining and storing the entire blockchain. Instead, they implement a `thin client' approach which shortcuts full validation of the blockchain by placing bounded trust in the Bitcoin peer-to-peer network (specifically, it uses a protocol called simplified payment verification or SPV~\cite{Nak08}). SPV is also used on some desktop clients. Regarding key management, mobile clients are not much different from \bitcoinclient and still store keys in a local file on the device that is subject to the same threats: unauthorized access and non-preservation.
 
-\subsection{Password-Protected Wallet}
+\subsection{Password-Protected Wallets}
 
 Some Bitcoin clients allow a locally stored wallet file to be encrypted with a key derived (\eg with PBKDF2) from a user-chosen password. At the time of our analysis, this was possible but not the default in \bitcoinclient, however it is enabled by default in Multibit\footnote{\url{https://www.multibit.org}}, another popular desktop client. Password-protected wallets address certain types of theft, requiring brute-force of the password if the file or a backup of the file is stolen physically or digitally. However, in the case of malware, the addition of keystroke logger would moot this protection.
 
@@ -102,14 +102,14 @@ While not literally an air gap, hardware security modules (HSMs) emulate the pro
 Note that the consequences of obtaining unauthorized access to the wallet itself is not much different from accessing a transaction-signing oracle for the wallet---both allow the current balance of XBT to be stolen (however future funds may be protected if access to the signing oracle is non-persistent). 
 
 
-\subsection{Password-Derived Key} 
+\subsection{Password-Derived Keys} 
 
 All the tools analyzed to this point have required users to maintain cryptographic keys. The remaining two solutions enable users to access their XBT with a password instead. The first approach is to derive all cryptographic keys from a password---\eg form a seed from PBKDF2 applied to the password and expand the seed into the required number of keys with a PRG. Thus it is a special case of a deterministic wallet, where the initial seed is password-derived instead of randomly chosen. A notable tool here is Brainwallet.\footnote{\url{http://brainwallet.org/}}
 
 Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as the wallet can be regenerated from a memorized password, and this wallet can be regenerated on any device. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search as a fingerprint of the associated public key will be in the ledger if the account holds any amount of XBT. Rainbow tables for Brainwallet password-derived keys have been reportedly developed. Finally, it is not clear that memorization poses an advantage over maintaining a digital file at loss prevention---a forgotten password will orphan all funds in the account.
 
 
-\subsection{Hosted Wallet} 
+\subsection{Hosted Wallets} 
 
 A final approach to key management is to host your accounts with a third party webservice; known as a \textit{hosted wallet}. In this case, the webservice maintains possession of the XBT. It provides the user with access to transactional functionalities through standard web authentication mechanisms, such as a password or two-factor authentication, as well as password recovery mechanisms. Exchange services that allow XBT to be bought and sold for standard currency effectively host a wallet, in addition to webservices deployed specifically to serve this purpose. 
 
@@ -121,7 +121,7 @@ As one counter-measure to theft, wallet hosts often keep only a small float of t
 
 \section{Usability Evaluation of Tools}
 
-In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated):
+In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated) on OS X:
 
 \begin{compactlist}
 	\item[\bf 1] Key in Local Storage: \bitcoinclient 
@@ -141,7 +141,7 @@ We evaluate the tools with the following four core tasks:
 	\item[\bf T4] Recover from the loss of the main credential.\label{sec:ct-4}
 \end{compactlist}
 
-The literature contains a variety of guidelines, or evaluation heuristics, to use for expert review of security-related tools. We chose to use the guidelines proposed in a usability evaluation of configuring the anonymity software Tor~\cite{COA07} since we share a focus on configuration. Their set is itself culled from numerous sources in the literature~\cite{WRLP94,WT99,Cra03,KBK05,COB06}.
+The literature contains a variety of evaluation guidelines or heuristics to use for expert review of security-related tools. We chose to use the guidelines proposed in a usability evaluation of configuring the anonymity software Tor~\cite{COA07} since we share a focus on configuration. This set is itself culled from numerous sources in the literature~\cite{WRLP94,WT99,Cra03,KBK05,COB06}.
 
 The set of guidelines, from~\cite{COA07}, are:
 	
@@ -158,40 +158,43 @@ The set of guidelines, from~\cite{COA07}, are:
 
 %===========================================================
 
-\subsection{Key in Local Storage}
+\subsection{Keys in Local Storage}
 
-We assume the user knows how to download the client from the main site. It has a straight forward wizard installation procedure, user runs the application for the first time. 
+We begin with an evaluation of \bitcoinclient which represents a client with locally-stored keys. We assume the user has downloaded and installed the \bitcoinclient client (it has a straight forward wizard installation procedure).
 
-\paragraph{T1: Configuration} On the first run user would see the "Overview" page that might be confusing for the first time user because it is only indicating "Out of Sync" in red. However the first task that is to have a bitcoin address is already done (CT1), and he can find the address with clicking on the "Receive Coins" tab of the application that also could be confused with the "Addresses" tab (Addresses tab is similar to a contact list of other addresses), this violates G2 and G3.
-User should be aware that the application must be connected to internet to get synced, however except small status indicator on the bottomright side of the window that shows a small red cross in-between two black windows, there is no other alerts and that is a violation of G1, even with mouse over on the icon it would say "0 active connections to bitcoin network" that for the user not familiar with the terminology, does not reflect the meaning that the client should be online(G4 and G6).\ 
-For the Balance he could not see the final balance until the sync is done (This is more than 18 GB of download and because of the peer to peer nature of the download it may take days to be synced \footnote {\url { https://en.bitcoin.it/wiki/Satoshi_Client_Block_Exchange\#Performance}} ).
+\paragraph{T1: Configuration} 
 
-\paragraph{T2: Authorization} This is the easiest task for this client as all the keys are already loaded in the application from \walletfile and user can use the "Send" tab to authorize a transaction to a given bitcoin address.
+On the first run, the user will see an `Overview' page that indicates `Out of Sync' in red. The first part of the task, to obtain a Bitcoin address, is actually completed although not indicated (G3). She can find the address by clicking on the `Receive Coins' tab of the application, however this could be easily confused with the `Addresses' tab which contains a contact list of other addresses (G2).
 
-%Remove this? -> the minimum knowledge of bitcoin addresses is needed, to not to make any mistakes. for example if the receiving address is in the wrong format, there is no error to show that is so but just a red background appears on the address which is a slight violation of G4. \
+In order to obtain the balance of the account, the application must be connected to internet to obtain the blockchain. Except for a small status indicator on the bottom-right side of the window that shows a small red cross in-between two black windows, there are no other alerts (G1). With a mouse over the icon, it says `0 active connections to bitcoin network' which is likely unfamiliar language that does not help resolve the error (G6, G4 and G8). With an active internet connection, a status bar at the bottom will complete synchronization with the blockchain, a process that may take days due to the large size of the blockchain. 
+
+\paragraph{T2: Authorization} 
+
+Authorizing a transaction is straightforward as the required keys are already loaded into the application from \walletfile. The user can use the `Send' tab to form a transaction. Since our focus is on key management, we do not evaluate the actual completion of transactions. We focus on ensuring the key is available to the software tool (which is not so straightforward with \eg offline storage). 
 
 \paragraph{T3: Authorization from Secondary Device} 
 
-By installing \bitcoinclient on the new device, a new wallet file is generated. In order to complete CT3, user might try looking for import options in the newly installed wallet client or drag and dropping the \walletfile into the client, but failing to do so because there is no such an option, even if the user tries to find the documentation he would fail as there is nothing in the help menu except debug window that is for advance user to tweak the application. Most of the users would stop here, However there is one way to do so and that is to replace his newly generated \walletfile with his previously owned \walletfile from the primary device, the one that was setup in CT1, to have access to his funds, but nothing has been mentioned about this in the documentations (G1). To do so user have to back up the \walletfile with the "backup wallet..." option in the "File" tab and chose a directory to save the \walletfile. \
+By installing \bitcoinclient on a secondary device, a new wallet file is generated. In order to complete the task, the user may not understand that something must be copied from the first installation (G1) and if so, what exact file it is (G2). The correct procedure is to back up the \walletfile with the `backup wallet...' option in the `File' tab of the first installation and chose a directory to save the \walletfile. Next the user must securely transfer this file to the secondary device, and no guidance is provided on how to do this (G2) or the dangers of transferring it through an insecure mechanism (G5).
 
-Now he need to have a secure way to transfer this file to the secondary device, which could be a USB flash drive. Depending on the nature of primary and secondary devices and also the wallet clients the method of copying the wallet file might differ. %refrence to secure file transfer?
+Assuming the user has transferred \walletfile to the secondary device, she could try looking for import options in the newly installed wallet client, or drag and drop the \walletfile into the client, but she would fail to do so as no import option exists (G2). The documentation is inadequate here as well---there is actually nothing in the help menu except a debug window that is for advance user to tweak the application (G2 and G6)!
 
-One more obstacle is to find the path to copy \walletfile on the new device since there is no import option on the \bitcoinclient, this could be possible by either searching the local file system for \walletfile, which he might not succeed due to non-searchable system reserved folders or not knowing the exact file name, another way is search on the internet for the answer. On Mac OS X, the path is /Users/User/Library/Application Support/Bitcoin/wallet.dat \footnote{\url{https://en.bitcoin.it/wiki/Data_directory}}. The next step is to replace the new \walletfile with the one from the primary device. it should be noted that the name of the file should be exactly \walletfile for the \bitcoinclient to be able to read the file. Some of errors that the user might encounter during this procedure are as follows:
+The only mechanism to activate the wallet on a secondary file is to actually overwrite \walletfile on the secondary device with \walletfile from the first. It is unlikely any novice user would be able to complete this step. It is actually even difficult to find the path to copy \walletfile to on the new device---this could be possible by searching the local file system for \walletfile, which might not succeed due to non-searchable system reserved folders or not knowing the exact file name (spotlight does not return any result for \walletfile). More likely, the user will search online.\footnote{\url{https://en.bitcoin.it/wiki/Data_directory}} On OS X, the path is \texttt{/Users/User/Library/Application Support/Bitcoin/wallet.dat}.
+
+The next step is to replace the new \walletfile with the one from the primary device. It should be noted that the name of the file should be exactly \walletfile for the \bitcoinclient to be able to read the file. Some of errors that the user might encounter during this procedure are:
 \begin{itemize}
-	\item User might accidentally copy \walletfile from the primary device wallet client path instead of the one he backed up, this would cause to have a corrupted \walletfile and not readable by the secondary device's \bitcoinclient, \bitcoinclient has a procedure to lock \walletfile while it is in use, this may cause to have a corrupted file if the file has been copied while it was locked % redescribe this one? remove it? 
-	\item There is the possibility to replace the backed up \walletfile instead of the newly generated wallet file and lose the backup file on the secondary device (G4)
-	\item On the secondary device the final balance might be wrong and there would be the need to resynchronize and rescan the blockchain to have the correct final balance (G3)
+	\item The user might copy \walletfile from the primary device wallet client path instead of the one exported through the back up option. This could cause a corrupted \walletfile that is not readable by the secondary device's \bitcoinclient. This is due to \bitcoinclient's procedure to lock \walletfile while it is in use. The error is recoverable by repeating the process correctly (G4). 
+	\item On the secondary device, the final balance might be wrong and there would be the need to resynchronize and rescan the blockchain to have the correct final balance (G3).
 \end{itemize}
-As for CT3, all guidelines (G1-G8) has been violated.\
+
+Finally, this process must be repeated if either client exhausts their keypool. If both do, there is no way to merge the new keys in the keypool, and replacing one \walletfile with the other will lead to unrecoverable funds (G5). 
 
 \paragraph{T4: Recovery} 
 
-For recovery options, the procedure is the same as CT3 but on the same device. It should be noted that the backed up \walletfile should be kept in a secure storage %refrence for secure storage?
-as it contains all the keys and so all the funds stored in the addresses. User might try to store the backed up file on the same device that could lead to losing all his funds due to hardware failure (G5).
+If only one device is used, there is no way to recover from loss of the \walletfile---\eg due to a memory failure, file corruption, or loss of the device itself (G5). If the user backed-up \walletfile using the mechanism described in core task 3, it would only be a meaningful backup if the file were moved to a different device. The process for recovering from a backup is the same as configuring a new device as described in core task 3 and shown to violate most of the usability guidelines.
 
 %===========================================================
 
-\subsection{Password Protected Wallet}
+\subsection{Password Protected Wallets}
 
 Although it is possible to encrypt the \walletfile in \bitcoinclient with a password, there is no emphasize or alerts to do so, however in \multibit client one of the recommended first steps is to password protect the wallet file, this is one of the reasons that this client has been chosen to be analyses for this cognitive walkthrough, also because it uses SPV for faster blockchain synchronization this client is more popular amongst new users.
 
