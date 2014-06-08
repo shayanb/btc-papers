@@ -1,0 +1,374 @@
+% !TEX root = ../main.tex
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\section{Introductory Remarks}
+
+In all of the excitement surrounding Bitcoin, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of usable public key cryptography for user authentication. Despite decades of research on this issue exact in parallel technologies, such as digitally signed email, we show that Bitcoin technologies for creating, storing, and managing keys stall on many of the same basic issues. 
+
+At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving the challenges of a key-based system. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
+
+\paragraph{Contributions}
+
+Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management, based on~\cite{BHOS13}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
+
+The particular focus of our framework regards usability issues. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert review enables the breadth of evaluation we require, and we utilize the cognitive walkthrough methodology to maintain rigour and objectively in the evaluation. 
+
+\paragraph{Scope}
+
+The focus of this work is configuring and managing the cryptographic keys required to hold Bitcoin. This paper is \emph{not} a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
+
+%Bitcoin can be split into 3 parts: buying bitcoins (involving exchanges, OTC, etc), holding bitcoins (involving wallets, keys, etc), and spending bitcoins (creating transactions, waiting for verifications, etc). this paper focuses on the middle point. 
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\section{Preliminaries}
+
+\subsection{Bitcoin}
+
+Bitcoin is a cryptographic currency deployed in 2009. It has reached a level of adoption unrealized by decades of previously proposed digital currencies. Unlike many previous proposals, Bitcoin does not distribute digital monetary units to users. Instead, a public ledger is maintained that contains every transaction, where a transaction in its most common form\footnote{Technically, a transaction specifies a short script that encodes how the balance can be claimed as the input to some future transaction.} moves some balance of the Bitcoin currency (XBT or BTC) from one or more accounts (called input addresses) into one or more accounts (called output addresses). Bitcoin addresses are indexed by the fingerprint of a public key from a digital signature scheme (ECDSA). They are not registered in any way---they become active when the first transaction moving money into them is added to the ledger. 
+
+Every transaction must be signed by the private signing key associated with each input address in the transaction. In order to spend XBT, users require access to the signing key of the account holding their Bitcoin. Thus users do not maintain any kind of units of currency; they maintain a set of keys that provide them signing authority over certain accounts recorded in the ledger. 
+
+The ledger (called the blockchain) is maintained and updated by a decentralized network using a novel method to reach consensus that involves incentivizing nodes in the network with the ability to mine new XBT and collect transaction fees. The details of the Bitcoin consensus model are not relevant to this paper.
+
+One subtly of Bitcoin transactions is that each XBT amount in the set of inputs must reference past transactions where the address received adequate XBT to cover the input amount. The complexity is that the transaction must completely spend the amount received in these past transactions even if it is larger than the amount in the current transaction. To enable this, transactions will output the surplus XBT back to the sender as `change.' Change can be sent back to the same input address, or to enhance privacy, it can be sent to a brand new address created by the sender's client (called `change addresses'). 
+
+\subsection{Usability of Key Management}
+
+Passwords remain the most common form of user authentication. By contrast, private keys are rarely used by non-expert users and are nearly never the default configuration. SSL client-side certificates never reached wide-spread deployment, and recent efforts to reintegrate them in a different form (\eg origin-bound certificates~\cite{}) still rely on passwords as the primary authentication mechanism. Similarly, while SSH can be used with certificates, passwords are the default mechanism.
+
+Password managers, when configured to set system-chosen random passwords, share at least one property of cryptographic keys: such passwords become something you `have' instead of `know.' However if access to such a password is lost, recovery mechanisms exist unlike cryptographic keys.
+
+The use of public keys by non-experts that is closet to Bitcoin is arguably encrypted/authenticated email, in particular PGP and its open-source alternatives (\ie GPG and OpenPGP). Beginning with `Why Johnny Can't Encrypt'~\cite{}, the usability of public key technology has been well-studied from a usability perspective~\cite{}. \textblue{The findings of this literature are diverse, but relevant observations include the following:} 
+
+\begin{compactlist}
+  \item The terminology of public and private keys is confusing~\footnote{\url{https://freedom-to-tinker.com/blog/randomwalker/why-king-george-iii-can-encrypt/}}~\cite{}
+  \item 
+  \item 
+\end{compactlist}
+
+\subsection{Usability Evaluation Methodologies}
+
+A number of usability evaluation methodologies employ exert review. We use a cognitive walkthrough \cite{cw}, which has been used previously to study closely-related subjects: public key technology~\cite{johnny} and software configuration~\cite{}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. In a cognitive walkthrough, we define the set of core tasks that users will be interested in performing, a set of evaluation guidelines that should hold true for the software, and use expert review to evaluate the application against the guidelines while performing the core tasks. 
+
+Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine \textblue{six} Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
+
+\subsection{Consumer Protection} 
+
+The consequences of losing exclusive control over an account containing monetary value connects the threat of losing a Bitcoin key to losing an online banking password. However, in reality, consumers are legally protected in many countries from any liability of such a loss, and because most bank transactions are traceable and reversible, such accounts are difficult to exact value from (most techniques involve a mule)~\cite{}. Bitcoin transactions are also traceable, however they are not reversible. Stolen Bitcoins cannot be recovered, consumers have no legal protection, and while stolen Bitcoins could be `tainted' in the blockchain, several mechanisms exist for laundering Bitcoins and similar digital currencies~\cite{}.
+
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\section{Systems Evaluation of Tools} 
+
+Before turning to a detailed usability evaluation, we evaluate from a systems perspective each category of tool for managing Bitcoin private keys. We highlight security and deployability issues, and note relevant details of the Bitcoin protocol that create complexities and potential discrepancies with users' mental models.
+
+\subsection{Key in Local Storage}
+On first launch, the official bitcoin client, \bitcoinclient, creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions. Anyone with access to the private keys inside \walletfile can spend the XBT associated with those keys.
+
+The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. Since then, numerous examples of malware and malicious Bitcoin tools have been discovered stealing \walletfile files. 
+
+Unintentional sharing of the \walletfile file is also a concern. Users must be cautious to not inadvertently share their bitcoin application folder on the Internet or to a location outside of the user's control. Possible sharing includes peer to peer (P2P) file-sharing networks, off-site backups, or shared network drive. Physical theft of the system hosting the \walletfile file is also a concern, especially in the case of portable computers.
+
+By keeping the \walletfile file locally, users must also be wary of \textit{threats to digital preservation}~\cite{BKM05} such as general equipment failure due to natural disasters and electrical failures; acts of war; mistaken erasure (\eg formatting the wrong drive or deleting the wrong folder); bit rot (\ie undetected storage failure); and possibly others. 
+
+The \bitcoinclient client sends change to new addresses. By default, it creates private keys in batches of 100 (called a keypool). This has the unfortunate side-effect that backups become obsolete after the user churns through their current keypool. The user interface of \bitcoinclient does not display change addresses or give any indication that they are being used, and so it is quite natural that a novice users' mental model will not account for this behaviour, and they will not act accordingly to ensure they re-backup \walletfile each time they deplete the keypool (another event that is not communicated to the user in any way). 
+
+Another disadvantage of using \bitcoinclient is that it requires a copy of the entire blockchain to validate the balance associated with each of the keys it will create. At the time of writing, the blockchain is 18 GB.\footnote{\url{https://blockchain.info/charts/blocks-size}} For a new installation, it is not uncommon for it to take days to obtain a local copy of blockchain from the Bitcoin peer-to-peer network.
+
+\subsubsection{Mobile Wallets}
+
+A number of mobile wallets for OSes like Android and BlackBerry have been proposed, including Bitcoin-wallet\footnote{\url{https://play.google.com/store/apps/details?id=de.schildbach.wallet }} and Mycelium Bitcoin Wallet for Android.\footnote{\url {https://play.google.com/store/apps/details?id=com.mycelium.wallet}} The main challenge for mobile platforms is the general unfeasibility of obtaining and storing the entire blockchain. Instead, they implement a `thin client' approach which shortcuts full validation of the blockchain by placing bounded trust in the Bitcoin peer-to-peer network (specifically, it uses a protocol called simplified payment verification or SPV~\cite{}). Regarding key management, mobile clients are not much different from \bitcoinclient and still store keys in a local file on the device that is subject to the same threats: unauthorized access and non-preservation.
+
+\subsection{Password-Protected Wallet}
+
+Some Bitcoin clients allow wallets files to be encrypted with a user-chosen password. This would be good for a stolen wallet file but still malwares could use keyloggers or other method to get the password. Also users might think that this password is applicable for their bitcoins in every client, like a password for an online wallet, however it's more of a two factor key to get to the funds. By forgetting the password, there might not be any solutions to recover the lost bitcoins, although there are services available to bruteforce the password but are only feasible depending on the complexity of the password\footnote{\url {http://www.walletrecoveryservices.com}}. All the benefits of these technique are the same as the default method, however it would be more resistant to simple malwares.
+
+
+\subsection{Offline Storage}
+\label{sec:offline storage}
+The most secure way to save the private keys from being stolen is to have them disconnected from the internet, although it has the drawback of not having them available to be able to send funds immediately. Offline storage don't have the Immediate access benefit.\\
+Paper Wallets are just a print out of the private keys, there are designs to keep them more secure but in the end whoever has the paper in his hand can spend the bitcoins.\footnote{\url {https://bitcoinpaperwallet.com}}\\, thus there is no resistant to physical observation, in the other hand no need to trust any third parties.
+It is also possible to put the wallet file into a usb drive and keep it in a safe offline place that also needs to be physically secured and also a longer procedure is needed to import the keys into a wallet and spend the bitcoins. This technique is vulnerable to malwares and need new softwares for the import process. There has not been a Hardware wallet in production yet, but TREZOR\footnote{\url {http://www.bitcointrezor.com}} has promised a full functional and secure hardware wallet for bitcoin, it is a plug and play USB key that offers transaction signing for the common wallets on the computer without revealing the private keys. If the paper wallets tear off or the hardware wallets fail or even if the password for the encryption is lost, the keys could not be retrieved thus resilient to equipment failure and password loss applies. Although these methods are pretty portable, Changing keys, due to the keys being printed out on a paper, need to generate new keys and redo all the necessary work to get the new keys in proper formats.
+
+%Change addresses - lose after using LIVE CD
+%Paper wallets are not like gift cards - reload them, 
+%http://bitzuma.com/posts/five-ways-to-lose-money-with-bitcoin-change-addresses/
+
+\subsection{Air Gap}
+Air gap falls into offline storage methods but because some features differ we have it as a separate technique. The difference is that the device that holds the key is not connected to internet in any given time and there is no need to import the keys in the online device. One implementation of these method would be discussed on section \ref{air gap}. 
+Although, the keys are stored in a separate device, There has been research on malwares trying to jump over the airgap\footnote{\url{http://arstechnica.com/security/2013/12/scientist-developed-malware-covertly-jumps-air-gaps-using-inaudible-sound/}}. One main property of air gap is that it keeps the keys offline and also there is no need to trust a third party with the keys, however in case the offline device is stoled, the thief has access to the keys and is able to steal the Bitcoins. %(WRONG ON THE TABLE)
+As the transaction signing happens on the device there is nothing to be physically observed that could danger user's funds. In case of hardware failure, it is possible for the user to lose his private keys and in result lose the access to his Bitcoins. %(WRONG ON THE TABLE) Also in the scenario that the user has encrypted his private keys on the offline device and he forgets his password, same downside applies.
+In clients such as Armory, the backup file includes a root seed that could be used to retrieve all the keys that has been generated with that seed, so it is compatible with change keys, however because there is the need to go back and forth on the online and offline computer for any transactions, it would not have the immediate access benefit nor the portability, Also the new software, such as Armory, is required to sign the transactions on the offline device and broadcast the signed transaction from the online device.
+
+
+
+
+
+\subsection{Password-Derived Key} 
+Also known as deterministic wallet, is a system that derives the keys from a starting point known as seed that could be random or user chosen string. This is good in the security manner that there is no need to save the private keys in a computer and just save the string or write it down on a paper. There are different methods to secure this technique such as high iteration counts to slow down the attacker on simple user-chosen strings. It is important to use a strong string as it would be the key to access the funds, services such as brainwallet \footnote{\url{http://brainwallet.org/}} make this technique available to users. Even though the keys are not stored in the computer and are resistant to physical theft, this technique is not malware resistant as a simple key logger could make the funds available to the attacker so does the physical observation. Most common methods are open source and also could be done in offline systems so no trust in third party is needed. However if the user forgets his keys the funds are lost forever as there is no way to recover the private keys without the initial seed, also for a new key the whole process should be repeated. One problem with this technique is that it is highly dependent on the software it uses to generate the keys from the initial seed and if the software is not available it would be hard to reproduce the keys from the string. That being said, as long as the software is available the funds are accessible from any computer that has access to the service. 
+
+
+\subsection{Hosted} 
+One easier way to manage the bitcoin wallet is by using online wallets. It has it's own advantages and cutbacks. Trusting third party is one issue and the party getting hacked is another. There has been known trustable third parties that just went out of business on their first big hack, such as instawallet\footnote{\url{http://www.theverge.com/2013/4/3/4180020/bitcoin-service-instawallet-suspended-indefinitely-after-hack}}, Bitcoinica\footnote{\url{http://www.theverge.com/2012/8/10/3233711/second-bitcoin-lawsuit-is-filed-in-california}}, etc. Bitcoinica in 2012 lost more than 60,000 bitcoins due to two successful attacks.\\
+In the time of writing this paper the most popular online wallet is blockchain.info\footnote{\url{https://blockchain.info/wallet}} that also offers two-factor authentication via email verification, but is resistant to forgetting the password in some extent, there is a backup phrase on the sign up step that could be used to recover the account, but other than that the account could be useless if that is forgotten.\\ These online services might shutdown due to legal implications or attacks, Also the user might be tricked to reveal his password on a phishing attack\footnote{\url{http://www.theverge.com/2013/4/5/4186808/bitcoin-banker-coinbase-phishing-attacks-user-information-leaked}}, thus these services are not resistant to physical observation.
+In short, Hosted (Hot) wallets are not malware resistant nor have the benefit of keeping the keys offline, also there is the need of trust and it is not resistant to physical theft, however because of the usual backups of such services it is resilient to equipment failure. They might offer password reset options to recover the lost password. Compatibility with change keys is as easy as doing a transaction to the new account and they offer immediate access to the funds as they are online services and synced with block chain and usually accessible through a browser thus portable and there is no need for a new software.
+
+% Ottawa exchange theft
+
+\subsubsection{Cold Storage} 
+It is possible to apply the offline storage method to hosted wallets but there are more drawbacks than benefits, not assuming security as the only measure. coinbase announced that more than 87\% of it's users bitcoins are stored in cold storage\footnote{\url {http://blog.coinbase.com/post/33197656699/coinbase-now-storing-87-of-customer-funds-offline}}. It would be secure for most uses but if the total withdrawal in a period of time becomes greater than the funds available in online storage there could be a 48 hours delay on the payments, for scoring purpose we assume this service is fully implemented in cold storage and there is no bitcoins in hot storage of the service.
+With keys being offline, it would have resistance toward malwares but no immediate access to the funds, however the user should trust the third party service. The rest of the benefits are the same as hosted on online storage.
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+\section{Usability Evaluation of Tools}
+
+In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated):
+
+\begin{compactlist}
+	\item[\bf 1] Key in File:  \bitcoinclient 
+	\item[\bf 2] Password Protected: \multibit 
+	\item[\bf 3] Air gap: Bitcoin Armory \footnote{\url{https://bitcoinarmory.com/}}
+	\item[\bf 4] Offline Storage: Paper Wallet
+	\item[\bf 5] Password-derived Key: Brain Wallet
+	\item[\bf 6] Hosted Wallet: Blockchain.info wallet
+\end{compactlist}
+
+We evaluate the tools with the following four core tasks:
+
+\begin{compactlist}
+	\item[\bf T1] Finalize a receiving address and balance from the primary device.\footnote{primary device is the initial device that the key is generated on}\label{sec:ct-1}
+	\item[\bf T2] Authorize the transaction from the primary device.\label{sec:ct-2}
+	\item[\bf T3] Authorize the transaction from the secondary device.\footnote{any device other than the primary device}\label{sec:ct-2}
+	\item[\bf T4] Losing the main credential (recovery options).\label{sec:ct-2}
+\end{compactlist}
+
+The set of guidelines that we use to evaluate each of the core tasks are as follows.
+	
+\begin{compactlist}
+	\item[\bf G1] Users should be aware of the steps they have to perform to complete a core task.
+	\item[\bf G2] Users should be able to determine how to perform these steps.
+	\item[\bf G3] Users should know when they have successfully completed a core task.
+	\item[\bf G4] Users should be able to recognize, diagnose, and recover from non-critical errors.
+	\item[\bf G5] Users should not make dangerous errors from which they cannot recover.
+	\item[\bf G6] Users should be comfortable with the terminology used in any interface dialogues or documentation.
+	\item[\bf G7] Users should be sufficiently comfortable with the interface to continue using it.
+	\item[\bf G8] Users should be aware of the application's status at all times.
+\end{compactlist}
+
+These guidelines are drawn from a variety of sources \cite{cw,johnny,karat,p3p,pvo,clark} and are intended for evaluating Bitcon Key management specifically. However they are suitably broad and may find application in other usable privacy walkthroughs. We now individually justify the inclusion of each.
+
+%===========================================================
+
+\subsection{Key in file}
+We assume the user knows how to download the client from the main site. It has a straight forward wizard installation procedure, user runs the application for the first time. 
+
+ \paragraph{CT1}  On the first run user would see the "Overview" page that might be confusing for the first time user because it is only indicating "Out of Sync" in red. However the first task that is to have a bitcoin address is already done (CT1), and he can find the address with clicking on the "Receive Coins" tab of the application that also could be confused with the "Addresses" tab (Addresses tab is similar to a contact list of other addresses), this violates G2 and G3.
+User should be aware that the application must be connected to internet to get synced, however except small status indicator on the bottomright side of the window that shows a small red cross in-between two black windows, there is no other alerts and that is a violation of G1, even with mouse over on the icon it would say "0 active connections to bitcoin network" that for the user not familiar with the terminology, does not reflect the meaning that the client should be online(G4 and G6).\ 
+For the Balance he could not see the final balance until the sync is done (This is more than 17 GB of download and because of the peer to peer nature of the download it may take days to be synced \footnote {\url { https://en.bitcoin.it/wiki/Satoshi_Client_Block_Exchange\#Performance}} ).
+
+\paragraph{CT2} This is the easiest task for this client as all the keys are already loaded in the application from \walletfile and user can use the "Send" tab to authorize a transaction to a given bitcoin address.
+%Remove this? -> the minimum knowledge of bitcoin addresses is needed, to not to make any mistakes. for example if the receiving address is in the wrong format, there is no error to show that is so but just a red background appears on the address which is a slight violation of G4. \
+
+\paragraph{CT3} By installing \bitcoinclient on the new device, a new wallet file is generated. In order to complete CT3, user might try looking for import options in the newly installed wallet client or drag and dropping the \walletfile into the client, but failing to do so because there is no such an option, even if the user tries to find the documentation he would fail as there is nothing in the help menu except debug window that is for advance user to tweak the application. Most of the users would stop here, However there is one way to do so and that is to replace his newly generated \walletfile with his previously owned \walletfile from the primary device, the one that was setup in CT1, to have access to his funds, but nothing has been mentioned about this in the documentations (G1). To do so user have to back up the \walletfile with the "backup wallet..." option in the "File" tab and chose a directory to save the \walletfile. \
+
+Now he need to have a secure way to transfer this file to the secondary device, which could be a USB flash drive. Depending on the nature of primary and secondary devices and also the wallet clients the method of copying the wallet file might differ. %refrence to secure file transfer?
+
+One more obstacle is to find the path to copy \walletfile on the new device since there is no import option on the \bitcoinclient, this could be possible by either searching the local file system for \walletfile, which he might not succeed due to non-searchable system reserved folders or not knowing the exact file name, another way is search on the internet for the answer. On Mac OS X, the path is /Users/User/Library/Application Support/Bitcoin/wallet.dat \footnote{\url{https://en.bitcoin.it/wiki/Data_directory}}. The next step is to replace the new \walletfile with the one from the primary device. it should be noted that the name of the file should be exactly \walletfile for the \bitcoinclient to be able to read the file. Some of errors that the user might encounter during this procedure are as follows:
+\begin{itemize}
+	\item User might accidentally copy \walletfile from the primary device wallet client path instead of the one he backed up, this would cause to have a corrupted \walletfile and not readable by the secondary device's \bitcoinclient, \bitcoinclient has a procedure to lock \walletfile while it is in use, this may cause to have a corrupted file if the file has been copied while it was locked % redescribe this one? remove it? 
+	\item There is the possibility to replace the backed up \walletfile instead of the newly generated wallet file and lose the backup file on the secondary device (G4)
+	\item On the secondary device the final balance might be wrong and there would be the need to resynchronize and rescan the blockchain to have the correct final balance (G3)
+\end{itemize}
+As for CT3, all guidelines (G1-G8) has been violated.\
+
+\paragraph{CT4} For recovery options, the procedure is the same as CT3 but on the same device. It should be noted that the backed up \walletfile should be kept in a secure storage %refrence for secure storage?
+as it contains all the keys and so all the funds stored in the addresses. User might try to store the backed up file on the same device that could lead to losing all his funds due to hardware failure (G5).
+
+%===========================================================
+
+\subsection{Password Protected}
+Although it is possible to encrypt the \walletfile in \bitcoinclient with a password, there is no emphasize or alerts to do so, however in \multibit client one of the recommended first steps is to password protect the wallet file, this is one of the reasons that this client has been chosen to be analyses for this cognitive walkthrough, also because it uses SPV for faster blockchain synchronization this client is more popular amongst new users.
+
+\paragraph{CT1}On the first run the welcome page pops up that has the explanation of the core tasks that could be done with \multibit such as where the send, request and transaction tabs are and how to password protect the wallet file and also help options for all the other functionalities (Good use of G1 and G2). 
+
+\multibit help option gives direct and non-technical guides on how to do the desired functions. The interface is pretty easy to understand and it shows the status of the program (Online, offline or Out of Sync) on the bottom left  status bar, the balance of the user's wallet on the up left and the latest price of bitcoin on the up right of the window(Complies G8). There are not too many jargons and technical vocabulary used (Complies G6). After the first run the receiving address is finalized with the updated final balance and it is possible to receive bitcoins (CT1). By clicking on "Request" tab the finalized address and it's relative QR Code\footnote{\url{http://en.wikipedia.org/wiki/QR_code}} appears, User can now enter his desired amount to be received to generate the appropriate QR code with his input value, even though just having the address suffice to complete this task. On the frame titled "Your receiving addresses" all the addresses stored in the wallet file is shown, By clicking on the "New" button user can generate a new bitcoin addresses. \multibit also has the short come of not showing the user that he has to be connected to internet to get synced and it will stay on "connecting" mode,this slightly violates G1 and G2.
+As it is mentioned on the "Welcome page" of the application, every option in \multibit has the ability to show help tips by hovering the mouse over that option.
+
+\paragraph{CT2} To authorize a transaction user has to click on the "send" tab, \multibit has a really simple and complete interface to do so(Good use of G7), where it is possible to import the sending address by QR code or from the clipboard or just by typing it in the "Address" field. If the address in not correctly formatted or the amount of the transaction is more than the balance, a fully detailed error message pops up to explain what went wrong (Complies G4). Also if the wallet client is not synced, the send button would be disabled. If it's synced and there is no error on the balance and the destination address, the transaction is complete after clicking on send button and approving the transaction.
+
+\paragraph{CT3} Same as the "Key in file" this task is not one of the main functionalities of \multibit. On the primary device user has to look in the options to find the backup options, It could be found in Tools - "Export Private Keys" (violates G6). It will show details about current wallet file, the path for the export file to be saved and also a password for the exported file that is enabled by default. In case user tries to save the exported file without password, there would be a warning saying "Anyone who can read your export file can spend your bitcoin." in red. By having a password protected export file, user can copy the file safer to the secondary device. By clicking on "Export Private Keys" button it will save the wallet file in the given path and also checks if the file is readable (no violation of G4 and G5). On the secondary device user installs a fresh copy of \multibit and looks for Import options that is under Tools - Import Private Keys. The window looks the same as the Export window but with import functionality. User has to browse for his exported file from the primary device and type in the password and then click on "Import Private Keys" button. It will confirm the completion of the import and changes the balance according to the balance of the new imported addresses. Now user is able to authorize a transaction to any given destination addresses.
+
+\paragraph{CT4} This task is the same as CT3 but on the same device. The password-protected back up file should be stored in a secure storage that prevents it from being lost or stolen, however it would be hard to recover the wallet file without knowing its password. 
+
+%===========================================================
+
+\subsection{Air gap}
+\label{air gap}
+This technique has not yet been documented well and it is suitable for advanced users only. For the cognitive walkthrough, we assume user has good knowledge of bitcoin terms (G6) and how the air gap method works (G1). Bitcoin Armory is one of the advanced bitcoin wallets that is going to be used for this walkthrough, although for the online system it should be executed while \bitcoinclient is already running, to be able to load the blockchain. It is possible to use some other applications to implement the airgap, however this is by far the most secure way to implement air gap for bitcoin wallet.
+
+\paragraph{CT1} 
+First, User should install Bitcoin Armory on the offline computer. On the start, the welcome page offers the option to "Import Existing Wallet" and "Create Your First Wallet!". User creates his wallet, passphrase is a mandatory option, Armory also asks for the third time verification of the passphrase and warns the user not to forget his passphrase (appropriate guidelines for G5). After this step, a backup window pops up with the options to print a paper wallet or save a digital backup of the wallet, also warns the user if he decides not to backup his wallet (Complies G5). Now the Bitcoin address is generated, however in order to see the final balance of the account, it needs to be connected to \bitcoinclient and \bitcoinclient must be online and synced, that should not be done on the offline computer. User with less knowledge of air gap technique might click on the "Offline Transaction" button that offers a short documentation of the steps to be taken to sign a transaction. One point that has not been mentioned in the documentation is that user must click on "Receive Bitcoins" to generate the bitcoin address in the wallet file (slightly violates G3,G4). On wallet window, there is the option to "Create Watching-Only Copy". This option is being used to copy the bitcoin addresses, not the private keys, for the online computer to display the balances. This option is used to create the file to be copied to the online computer.\\
+Now user should install Bitcoin Armory and \bitcoinclient on the online computer to have access to the updated balances of his accounts. This time on the first run, user should click on "Import Existing Wallet" and chose to import the digital backup or watch-only wallet, Then chose the watch-only back up file that has been copied from the offline computer. After the application is done with syncing with the blockchain and scanning it for transactions that contains the imported bitcoin address, the balance is shown and the user has finalized his receiving address.
+
+
+\paragraph{CT2, CT3} 
+In Airgap technique, There is no primary or secondary device in the sense that we have defined these terms. It's the offline computer that should be kept secure and disconnected from the internet, and there is the other device that should be online. Thus, the same steps (CT1) are required on any given new online device, to add the watch-only wallet and wait for it to synchronize with the blockchain.\\
+Now on the online device with the watch-only wallet added, user should click on "Offline Transactions" on the main window. It should be noted that unless the wallet client is online, the "Create New Offline Transaction" is disabled. Now by clicking on this option, user will be asked to enter the receiving addresses, amounts and any comment on the transaction. There should be enough balance in the sending account for the offline transaction option in Armory to generate the transaction data. If everything is fine with the configuration, by clicking on "Continue" the unsigned transaction data is generated. User can now save these data on a file in a usb stick and should transfer this data to the offline computer. Armory has good documentation of the needed steps on each window (good use of G1). As also mentioned in this step's documentation, these unsigned transaction data has no private data and no harm can be done by the attacker whom captures this file, but only privacy issues that these data includes the sending address.
+
+Next step is on the offline computer to sign the transaction. By clicking on "Offline Transaction" and then "Sign Offline Transaction" , there is now the option to load the unsigned transaction data file. Armory would alarm the user to review the transaction information such as the amount and the receiving addresses in each step (Good behaviour for G5). By clicking on "sign" button, it will show the transaction details and waits for user's approval.  Next it will show the signed transaction data and user can save it in the file. It should be noted that on the side of the window it will show if the shown data is a signed or unsigned transaction (follows G4). 
+Once again this file should be transferred to the online computer and get loaded in the offline transaction window. Now the difference is that the "sign" button is disabled but the "broadcast" button has been enabled. By clicking on "broadcast" it will once again show the detail of the transaction for the user to review(Complies G5). This would be the last window for the transaction and by clicking on "continue" button it will broadcast the transaction to the bitcoin network and the bitcoins will be sent to the receiving address.
+
+\paragraph{CT4} 
+Armory gives lots of options and opportunities for the user to back up his keys. In the time of creating the wallet, there are multiple windows and alerts convincing user to back up his wallet, either in digital format or paper wallet even if user decides not to back up his wallet at the start, he would have the chance to do so afterwards by going to his wallet and clicking on "Backup This Wallet". On the backup window, There are options to back up a digital copy or paper copy and also more options that are mostly more secure ways to backup the wallet and would fall outside the scope of this paper. By clicking on the "Make Paper Backup", The paper backup is shown to the user containing a Root key that consist of 18 sets of 4-characters words and a QR code with the ability to print the page. To restore the paper wallet backup, on the main page, user can click on "Import or Restore Wallet" and select "Single-sheet Backup" option, now he will be asked to input Root Key from the paper wallet, and on confirming the Root Key the wallet would be restored and added to the Armory wallet client. That being said, there is the "Digital Backup" option that would backup an unencrypted version of the wallet file and should be kept secure. The digital backup is an easier way to backup and recover as it the recovery would be just importing the file in the "Import or Restore Wallet" window by selecting "Import Digital Backup or watch-only wallet" as we did for the online computer in CT1. Armory also gives this option to do the import procedure for testing the backups to see if there is no error in the backup file.
+
+%===========================================================
+
+
+\subsection{Offline Storage}
+There are different methods to use for Offline Storage of a bitcoin as described in Section \ref{offline storage}. For the cognitive walkthrough we choose the paper wallet to include a different approach of saving the keys as the other methods has similar parts to Air gap technique. Bitaddress \footnote{\url{https://www.bitaddress.org}} is a well-known Bitcoin paper wallet generator. Also as it would be the first result in searching "Bitcoin Paper Wallet" in google, we could assume the new user would go with this site.\\
+
+\paragraph{CT1} On entering the site, The user is being asked to move the mouse or enter some random characters in the text box to make the random value to generate the bitcoin address. When the randomness is enough it will automatically redirects to the main page that shows the receiving bitcoin address and it's paired private key. The public key (Bitcoin address) is labeled by a green "SHARE" text and the private key by a red "SECRET" text that has to be kept secret. By clicking on "Print" Button the paper wallet is printed and is finalized. There is a short but complete documentation of the steps user has to take to achieve his desired functionality. So far user has his own bitcoin receiving address and as it is mentioned in the documentation to check his balance he has to go to block explorer sites such as blockchain.info and search for his Bitcoin Address. Although it has been mentioned to keep the private key secret, there might be users whom do not fully read the documentations and might expose the private key to public \footnote{A Bloomberg TV Host Gifted Bitcoin On Air And It Immediately Got Stolen\url{http://www.businessinsider.com/bloomberg-matt-miller-bitcoin-gift-stolen-2013-12}} (violates G5). The terminology and interface used in this site is really simple and user-friendly(complies G6).
+
+\paragraph{CT2, CT3} For this technique, as the keys are printed on a paper, there is no difference between primary and secondary device.
+To send funds from a bitcoin address that has been stored on a paper wallet, as it is mentioned in the documentation, user has to import his private key in one of the wallet clients available such as Armory(\ref{air gap}) blockchain.info online wallet (\ref{hosted}). For instance, on blockchain.info wallet, user can input the private key address and use the funds, however in this case the changes of the funds might be sent to his other addresses included in his online wallet and he might need to make another bitcoin paper wallet to send the remaining funds to. To do so, after making an online account in blockchain.info (\ref{hosted}), user could go to "Import/Export" tab and there is an option "Import Using Paper Wallet, Use your Webcam to scan a QR code from a paper wallet" that he can scan his paper wallet with the webcam and import the address into his online wallet. It is also possible to type in the private key in the "Import Private Key" text field. After this step, the address now is hosted on the online wallet and is the same as CT2 in Hosted wallet client (\ref{hosted transaction}).
+
+\paragraph{CT4} The printed copy of the private key is the only way to hold on to the funds stored in the paired address. User has to acknowledge this (also mentioned in the short documentation), and save a copy of his keys in a safe place such as a personal vault, to be able to recover the funds in case the first copy is destroyed. In case of theft, there is no such a way to recover the keys.
+
+%===========================================================
+
+\subsection{Password-drived key} We would use the implementation of brain wallet in brainwallet.org, as it is the most popular and complete implementation on the time of writing.
+
+\paragraph{CT1} On entering the site, There is an already generated address with the passphrase "correct horse battery staple". It should be mentioned that this is the default value and should not be used for personal use as the private key is publicly available\footnote{How to steal bitcoins \url{http://www.palkeo.com/code/stealing-bitcoin.html}}, this is a violation of G5. Now user has to type in his own passphrase and make sure his passphrase is not a commonly used phrase or anything that could be brute forced by a dictionary attack \footnote{Bitcoin “Brainwallets” and why they are a bad idea\url{http://insecurety.net/?p=866}} as this passphrase is everything that is needed to access the funds stored in the relevant bitcoin address. On entering the desired passphrase, the public and private keys are displayed in the same page. Now user has his own bitcoin address, and to check his balance, same as Paper Wallets, user has to go to a block explorer service and searches for his bitcoin address (nothing is mentioned in the site and this is a violation of G1,G2). There are lots of fields displayed that is not meaningful for the new user and might be confusing (violates G6 and G7).
+
+\paragraph{CT2, CT3} In any device with a browser, User can browse to the brain wallet site and enter his passphrase to recover his keys. Although to authorize a transaction, user should import the private keys into another wallet client to be able to spend the funds, the procedure is the same as it was used to import paper wallets.
+
+\paragraph{CT4} As long as user knows his passphrase, the keys are safe. That being said, one of the cons of using brainwallet is that if the site stops its service, the algorithm used to derive the keys from the passphrase is no longer available, in this case the best practice is to save the private key in a secure storage to be able to access it in case the site no longer worked.
+
+%===========================================================
+
+\subsection{Hosted}
+\label{hosted}
+There are different online services that offer online hosted wallet clients to users such as blockchain.info, coinbase \footnote{\url{https://coinbase.com/}}, same as previous sections we would work on todays popular online wallet, blockchain.info wallet.
+
+\paragraph{CT1} User needs to go to the site\footnote{\url{https://blockchain.info/wallet}} and start a new wallet with his email address and a minimum of 10 character long password. There is a warning on the bottom of the form that on password loss the account is unrecoverable (Good use for G5), However the first pop up window titled "Wallet Recovery Mnemonic" would show a phrase that can be used to recover the account in case the password is forgotten. After this step user can login to the site and view his bitcoin address and the balance it holds.
+
+\paragraph{CT2, CT3}
+\label{hosted transaction}
+One of the advantages of using hosted wallets is that it is accessible from any browser on any device. User can go to the site, log in and he has access to his funds. To do a transaction, user would click on "Send Money" tab of the main page, and there is a simple easy to use interface that asks for the destination bitcoin address and the amount of Bitcoins to be sent. Although in case of errors, errors might use a terminology that is unfamiliar for the user such as for insufficient funds this error that would be shown is "No free outputs to spend" (violates G4 and G6).
+
+\paragraph{CT4} There are two methods of recovering, one is to use the phrase given on account registration, and the other is to use the backups. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the "Recover Wallet" option, it will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The better recovery option is to have backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the "Import/Export" option and Export either encrypted or unencrypted backup. It should be noted that unencrypted backup do not need a password to be read and should be kept in a secure and safe storage. There are different options for the unencrypted backup procedure that could confuse user and might result in unrecoverable back ups (Violates G5 and G6), also the back up would be shown on a text field that the user has to copy and paste in a text file to be able to save it on his computer (Violates G2, G3 and G7). To restore the backups, User need to go to Import Wallet option and copy and paste the backup file in the text field, in case of having the encrypted backup, the previously used password is also needed. 
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\input{sections/08-table}
+
+\section{Evaluation Framework}
+
+In this paper, we evaluate different approaches to secure and use of Bitcoins (Key management techniques). Our approach is by defining the benefits that the user would get by using each application in the manner of usability and security.
+Some benefits might not inclusively be in usability category or security, thus our categorization is not completely error prone, however it is, by the time of the writing, the most comprehensive  study in this subject.
+The result of this evaluation is in Table 1\ref{tab:prims}. There are three different scores for each technique:\\
+
+\begin{itemize}
+\renewcommand{\labelitemi}{$\bullet$}
+\item Full score
+\renewcommand{\labelitemi}{$\circ$}
+\item Half Score - Not the full score but has some features related to the evaluated benefit
+\renewcommand{\labelitemi}{$\textvisiblespace$}
+\item No circle - no score at all, either not applicable or does not have any feature for the evaluated benefit
+\end{itemize}
+
+
+
+\subsection{Usability Benfits}
+
+\subsubsection{Resilient to Equipment Failure}
+\label{Resilient to Equipment Failure}
+Keys are stored in \walletfile or other wallet file formats. With hard disk failure or any relevant equipment failure that prevents the user to access this file, the keys and thus the bitcoins stored in it would be unusable.
+
+\subsubsection{Compatible with Change Keys}
+\label{Compatible with Change Keys}
+User can send the bitcoins from one address to the other, in this way the key that stores the bitcoins is changed. In some approaches this might be a hard task to do, but in some others it can be as simple as a transaction.
+
+\subsubsection{Immediate Access}
+\label{Immediate Access}
+With the increasing size of the blockchain having access to the bitcoins, the final balance of the addresses and the ability to do transactions gets more important everyday, User must have access to the up-to-dated synced blockchain to be able to do so.
+
+\subsubsection{No New Software} 
+\label{No New Software}
+Some approaches would need a new software to be installed on the system for the user to be able to access his funds or do transactions.
+
+\subsubsection{Portable}
+\label{Portable}
+Portability in this case means the access to the funds from different resources or devices, either it's a new computer or different computer in a different location.
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+\subsection{Security Benifits}
+
+\subsubsection{Malware Resistant}
+\label{Malware Resistant}
+The increase of Bitcoin value in the past year has made more malware developers to focus on stealing Bitcoin keys\footnote{\url{http://www.zdnet.com/blog/security/new-bitcoin-malware-steals-bitcoin-wallets-infostealer-coinbit/8804}}. The ability to resist these kind of malwares and attacks is a viral feature of the key management techniques.
+
+\subsubsection{Key Kept Offline} 
+\label{Key Kept Offline}
+One way to secure the keys is to keep them offline, whether in a usb drive disconnected from the internet or cold storages. There are also methods to keep the keys in two parts, that both factors should be online for the user to be able to do a transaction.
+
+\subsubsection{No Trusted Third Party}
+\label{No Trusted Third Party}
+By trusting a third party, there would be another place that the keys are stored and this could be a security risk if the third party is compromised.
+
+\subsubsection{Resistant to Physical Theft}
+\label{Resistant to Physical Theft}
+On the event that the hardware containing the keys is stolen, the thief can access the keys if they are not securely stored, such as strong encryption.
+
+\subsubsection{Resistant to Physical Observation}
+\label{Resistant to Physical Observation}
+Eavesdropping is not applicable on the keys stored in the file but with the new approaches different ways of physical observation could be used to get the keys, such as capturing QR codes with a camera.
+
+\subsubsection{Resilient to Password Loss}
+\label{Resilient to Password Loss}
+Password loss usually is handled by the service provider and either there would be a password reset option or not. On cases that there is no service provider or third party to do so, it is only the key management techniques that could resolve this issue.
+
+%To score the \bitcoinclient it does not have malware resistant nor keep keys offline benefits, there is no need for third party trust ad nothing to be physically observed. It is not resistant to physical theft nor equipment failure cause the keys would be lost in either way. On password loss, there are no ways to reset the password so resilient to password loss, however password is not set by default and should be enabled by the user. Due to huge size of blockchain it has somehow the immediate access score and none in portability, also there is no need for any new software and it is compatible with change keys as it would be just a transaction to a new address.
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+%\section{Discussion}
+Some setups of the bitcoin wallet clients might not work as they are supposed to in a non-default settings. Specially setups such as Bitcoin-QT and Armory that need to have the access to the complete Blockchain files in local computer. As the blockchain size increases (21 Gigabytes in May 2014), it could be a hard task to keep all the files in the computers hard drive and user might have the need to store them in an external storage such as an external hard. One obstacle for normal user would be that as soon as there is the need to use a setting other than the default one, user has to go through command-line switches run the application. For setups such as Armory in Airgap, most of the non-default settings would fail, such as standalone Bitcoin-QT installation or non-default Bitcoin-QT data directory to store the blockchain file in an external storage. All these would be in usability issues that should be overcome to have a better user-friendly Bitcoin wallet clients. 
+
+
+%\section{A Research Agenda}
+
+\section{Concluding Remarks}
+
+We conclude by defining a research agenda for moving forward on the issues we have uncovered through our detailed security and usability evaluation of six competing tools for key management in Bitcoin. 
+
+%\begin{itemize}
+%  \item better import/export of keys
+%  \item better language and guidance on key management 
+%  \item how do you know the key is in wallet.dat ?  
+%  \item How do you know if a file has been read? Specifically, how do you know if your private key file has been read by an app other than your wallet? We have unix \texttt{atime} (time of last access), but we can't log what process read the file. 
+%  \item publishing public keys. people need to keep these around, and they can use to check if they have the right privkey. 
+%  \item if you have your pubkey and you have the salt, you can avoid rainbow tables, but your pubkeys get longer. (add salt via commitcoin) 
+%  \item boyen iterated hashing of passwords -> compute amount of iterations based on money, script
+%  \item digital death
+%  \item sinkhole accounts
+%  \item incentives are there because it's money. not like ssh or ssl. 
+%  \item min password entropy as a function of how much money its protecting: examine in terms of falling cost to brute force (e.g. w/ EC2), vs rising price of bit coins. -> future proof against lowering EC2 costs and raising bitcoin costs
+%  \item bitbills, oblivious printing and other physically intuitive media that can behave (sort of) like cash
+%  \item theft/loss mitigation, making it easier to split wallets to mitigate loss
+%  \item account rollover vs. password changes
+%  \item graphical passwords
+%  \item security of RNGs. i read that vanitygen (for making vanity bitcoin addresses) uses OpenSSL's RNG and it's secure because it's ``used on thousands of websites''. 
+%  \item air gap -> how good is it?
+%  \item How do Bitcoin millionaires sleep at night?
+%\end{itemize}
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+

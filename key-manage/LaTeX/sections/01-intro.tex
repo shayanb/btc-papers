@@ -5,10 +5,18 @@
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-In all of the excitement surrounding Bitcoin, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of designing secure and usable public key cryptography for authenticating users. Despite decades of research on this issue in parallel technologies, such as digitally signed email, we show that Bitcoin technologies for managing user keys stall on many of the same basic issues. 
+In all of the excitement surrounding Bitcoin, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of usable public key cryptography for user authentication. Despite decades of research on this issue exact in parallel technologies, such as digitally signed email, we show that Bitcoin technologies for creating, storing, and managing keys stall on many of the same basic issues. 
 
-At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving these issues. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
+At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving the challenges of a key-based system. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
 
+\paragraph{Contributions}
 
+Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management, based on~\cite{BHOS13}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
 
-Scope: bitcoin can be split into 3 parts: buying bitcoins (involving exchanges, OTC, etc), holding bitcoins (involving wallets, keys, etc), and spending bitcoins (creating transactions, waiting for verifications, etc). this paper focuses on the middle point. 
+The particular focus of our framework regards usability issues. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert review enables the breadth of evaluation we require, and we utilize the cognitive walkthrough methodology to maintain rigour and objectively in the evaluation. 
+
+\paragraph{Scope}
+
+The focus of this work is configuring and managing the cryptographic keys required to hold Bitcoin. This paper is \emph{not} a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
+
+%Bitcoin can be split into 3 parts: buying bitcoins (involving exchanges, OTC, etc), holding bitcoins (involving wallets, keys, etc), and spending bitcoins (creating transactions, waiting for verifications, etc). this paper focuses on the middle point. 
