@@ -97,7 +97,7 @@ To further enhance theft-protection from malware-based threats, wallets can be s
 
 A special case of offline storage are paper wallets,\footnote{\url {https://bitcoinpaperwallet.com}}\ where the private keys are printed onto paper typically in the form of a QR code. Securing a paper wallet becomes similar to securing cash, a mental model novice users should be comfortable with. However there are differences. First, funds can be stolen from a paper wallet by being able to observe the QR code (\eg on live television\footnote{``A Bloomberg TV Host Gifted Bitcoin On Air And It Immediately Got Stolen,'' \textit{Business Insider}, 10/23/2013.}), which is not possible with physical money. Thus transporting a paper wallet securely requires the QR code to be hidden. Second, users must preserve software capable of decoding the QR code as the paper wallet generation service (\eg a website) may be unavailable when reloading the funds into a device. Finally, users must recognize a paper wallet does not contain XBT itself, but rather signing authority over an account. For example, if a paper wallet is discarded after the XBT are spent, the paper wallet still provides access to any future funds that may be added to the account.\footnote{\url{http://bitzuma.com/posts/five-ways-to-lose-money-with-bitcoin-change-addresses/}} Finally, users still need to be cautious of key churn and that spending XBT from a paper wallet does not result in XBT being sent to a change address not included in the paper wallet. 
 
-\subsection{Air Gap Storage}
+\subsection{Air Gapped Storage}
 
 In offline storage, we assume the device or media holding the wallet cannot perform computations, such as signing transactions. We distinguish this from air gap storage where wallets are stored offline on a device that generates, signs, and exports transactions onto some portable media, which can be imported and transmitted to the Bitcoin network by a secondary online device. A notable client supporting this setup is Armory.\footnote{\url{https://bitcoinarmory.com}} 
 
@@ -115,19 +115,15 @@ All the tools analyzed to this point have required users to maintain cryptograph
 Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as the wallet can be regenerated from a memorized password, and this wallet can be regenerated on any device. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search as a fingerprint of the associated public key will be in the ledger if the account holds any amount of XBT. Rainbow tables for Brainwallet password-derived keys have been reportedly developed. Finally, it is not clear that memorization poses an advantage over maintaining a digital file at loss prevention---a forgotten password will orphan all funds in the account.
 
 
-\subsection{Hosted} 
-One easier way to manage the bitcoin wallet is by using online wallets. It has it's own advantages and cutbacks. Trusting third party is one issue and the party getting hacked is another. There has been known trustable third parties that just went out of business on their first big hack, such as instawallet\footnote{\url{http://www.theverge.com/2013/4/3/4180020/bitcoin-service-instawallet-suspended-indefinitely-after-hack}}, Bitcoinica\footnote{\url{http://www.theverge.com/2012/8/10/3233711/second-bitcoin-lawsuit-is-filed-in-california}}, etc. Bitcoinica in 2012 lost more than 60,000 bitcoins due to two successful attacks.\\
-In the time of writing this paper the most popular online wallet is blockchain.info\footnote{\url{https://blockchain.info/wallet}} that also offers two-factor authentication via email verification, but is resistant to forgetting the password in some extent, there is a backup phrase on the sign up step that could be used to recover the account, but other than that the account could be useless if that is forgotten.\\ These online services might shutdown due to legal implications or attacks, Also the user might be tricked to reveal his password on a phishing attack\footnote{\url{http://www.theverge.com/2013/4/5/4186808/bitcoin-banker-coinbase-phishing-attacks-user-information-leaked}}, thus these services are not resistant to physical observation.
-In short, Hosted (Hot) wallets are not malware resistant nor have the benefit of keeping the keys offline, also there is the need of trust and it is not resistant to physical theft, however because of the usual backups of such services it is resilient to equipment failure. They might offer password reset options to recover the lost password. Compatibility with change keys is as easy as doing a transaction to the new account and they offer immediate access to the funds as they are online services and synced with block chain and usually accessible through a browser thus portable and there is no need for a new software.
+\subsection{Hosted Wallet} 
 
-% Ottawa exchange theft
+A final approach to key management is to host your accounts with a third party webservice; known as a \textit{hosted wallet}. In this case, the webservice maintains possession of the XBT. It provides the user with access to transactional functionalities through standard web authentication mechanisms, such as a password or two-factor authentication, as well as password recovery mechanisms. Exchange services that allow XBT to be bought and sold for standard currency effectively host a wallet, in addition to webservices deployed specifically to serve this purpose. 
 
-\subsubsection{Cold Storage} 
-It is possible to apply the offline storage method to hosted wallets but there are more drawbacks than benefits, not assuming security as the only measure. coinbase announced that more than 87\% of it's users bitcoins are stored in cold storage\footnote{\url {http://blog.coinbase.com/post/33197656699/coinbase-now-storing-87-of-customer-funds-offline}}. It would be secure for most uses but if the total withdrawal in a period of time becomes greater than the funds available in online storage there could be a 48 hours delay on the payments, for scoring purpose we assume this service is fully implemented in cold storage and there is no bitcoins in hot storage of the service.
-With keys being offline, it would have resistance toward malwares but no immediate access to the funds, however the user should trust the third party service. The rest of the benefits are the same as hosted on online storage.
+The popularity of hosted wallets is understandable as they provide the closest experience to traditional online banking, however their use has also been hampered by high profile breeches and fraud. Users' funds have been unrecovered from services such as Mt. Gox and Bitcoinica, while popular exchanges such as BTC-E have suffered losses but fully reimbursed users. Thefts and losses from/by third party services are catelogued online\footnote{https://bitcointalk.org/index.php?topic=576337.0} and include over 40 events involving losses greater than 1000 XBT.\footnote{At the time of writing, 1000 XBT > 650\,000 USD.}
+
+As one counter-measure to theft, wallet hosts often keep only a small float of their holdings online (called \textit{hot storage}) and store the majority of their holdings offline in \textit{cold storage}. This has the drawback of causing delays if the float is exhausted, and is still susceptible if hot storage theft goes undetected as the float will be persistently replenished. Services may also allow audits, where they prove possession of sufficient XBT to match their liabilities, to demonstrate that they are not covering up any missing XBT (which would not necessarily be immediately apparent---\cf a fractional reserve).  
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 
 \section{Usability Evaluation of Tools}
 
@@ -195,7 +191,7 @@ as it contains all the keys and so all the funds stored in the addresses. User m
 
 %===========================================================
 
-\subsection{Password Protected}
+\subsection{Password Protected Wallet}
 Although it is possible to encrypt the \walletfile in \bitcoinclient with a password, there is no emphasize or alerts to do so, however in \multibit client one of the recommended first steps is to password protect the wallet file, this is one of the reasons that this client has been chosen to be analyses for this cognitive walkthrough, also because it uses SPV for faster blockchain synchronization this client is more popular amongst new users.
 
 \paragraph{CT1}On the first run the welcome page pops up that has the explanation of the core tasks that could be done with \multibit such as where the send, request and transaction tabs are and how to password protect the wallet file and also help options for all the other functionalities (Good use of G1 and G2). 
@@ -211,7 +207,7 @@ As it is mentioned on the "Welcome page" of the application, every option in \mu
 
 %===========================================================
 
-\subsection{Air gap}
+\subsection{Air Gap Storage}
 \label{air gap}
 This technique has not yet been documented well and it is suitable for advanced users only. For the cognitive walkthrough, we assume user has good knowledge of bitcoin terms (G6) and how the air gap method works (G1). Bitcoin Armory is one of the advanced bitcoin wallets that is going to be used for this walkthrough, although for the online system it should be executed while \bitcoinclient is already running, to be able to load the blockchain. It is possible to use some other applications to implement the airgap, however this is by far the most secure way to implement air gap for bitcoin wallet.
 
@@ -245,7 +241,7 @@ To send funds from a bitcoin address that has been stored on a paper wallet, as 
 
 %===========================================================
 
-\subsection{Password-drived key} We would use the implementation of brain wallet in brainwallet.org, as it is the most popular and complete implementation on the time of writing.
+\subsection{Password-Derived Keys} We would use the implementation of brain wallet in brainwallet.org, as it is the most popular and complete implementation on the time of writing.
 
 \paragraph{CT1} On entering the site, There is an already generated address with the passphrase "correct horse battery staple". It should be mentioned that this is the default value and should not be used for personal use as the private key is publicly available\footnote{How to steal bitcoins \url{http://www.palkeo.com/code/stealing-bitcoin.html}}, this is a violation of G5. Now user has to type in his own passphrase and make sure his passphrase is not a commonly used phrase or anything that could be brute forced by a dictionary attack \footnote{Bitcoin “Brainwallets” and why they are a bad idea\url{http://insecurety.net/?p=866}} as this passphrase is everything that is needed to access the funds stored in the relevant bitcoin address. On entering the desired passphrase, the public and private keys are displayed in the same page. Now user has his own bitcoin address, and to check his balance, same as Paper Wallets, user has to go to a block explorer service and searches for his bitcoin address (nothing is mentioned in the site and this is a violation of G1,G2). There are lots of fields displayed that is not meaningful for the new user and might be confusing (violates G6 and G7).
 
@@ -255,7 +251,7 @@ To send funds from a bitcoin address that has been stored on a paper wallet, as 
 
 %===========================================================
 
-\subsection{Hosted}
+\subsection{Hosted Wallets}
 \label{hosted}
 There are different online services that offer online hosted wallet clients to users such as blockchain.info, coinbase \footnote{\url{https://coinbase.com/}}, same as previous sections we would work on todays popular online wallet, blockchain.info wallet.
 
