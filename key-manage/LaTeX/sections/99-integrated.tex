@@ -322,79 +322,69 @@ There are two methods of recovering an account if the user's password is forgott
 
 \section{Evaluation Framework}
 
-In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. In this section, we systemize the major category-wide issues we have uncovered in the previous sections through an evaluation framework summarized in Table~\ref{tab:prime}. 
+In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. In this section, we systemize the major category-wide issues we have uncovered in the previous sections through an evaluation framework summarized in Table~\ref{tab:prims}. This framework both summarizes the advantages and disadvantages of the various approaches we have evaluated, while also providing a benchmark for evaluating future proposals. The framework is based on a similar framework for evaluating password replacement schemes~\cite{BHOS12}.
 
-\begin{itemize}
-\renewcommand{\labelitemi}{$\bullet$}
-\item Full score
-\renewcommand{\labelitemi}{$\circ$}
-\item Half Score - Not the full score but has some features related to the evaluated benefit
-\renewcommand{\labelitemi}{$\textvisiblespace$}
-\item No circle - no score at all, either not applicable or does not have any feature for the evaluated benefit
-\end{itemize}
+\subsection{Evaluation Criteria}
 
-\subsection{Benefits}
+We briefly enumerate the criteria used to evaluate each proposal in the framework below. 
 
-\subsubsection{Resilient to Equipment Failure}
-\label{Resilient to Equipment Failure}
+\subsubsection{Malware Resistant}
+\label{Malware Resistant}
+Malware designed to steal XBT wallets and related passwords has been observed in the wild. Wallets that are not stored on an online/computational devices are considered malware resistant (\full), unless forming a transaction involves transferring to a computational device (\prt). 
 
-Keys are stored in \walletfile or other wallet file formats. With hard disk failure or any relevant equipment failure that prevents the user to access this file, the keys and thus the bitcoins stored in it would be unusable.
+\subsubsection{Key Stored Offline} 
+\label{Key Kept Offline}
+For archival storage of infrequently used keys, keys not directly accessible from an internet-connect device---either due to being offline (\full) or online but password-protected (\prt)---are preferable. (For traditional banking online, we interpret this benefit as authority over the account being kept offline, which it is not).
 
-\subsubsection{Compatible with Change Keys}
+\subsubsection{No Trusted Third Party}
+\label{No Trusted Third Party}
+All Bitcoin key management tools are trusted to a certain extent. Even an open source Bitcoin client might contain an undiscovered backdoor that kleptographicly steals high value private keys. Here we consider the absence of a persistent trusted third party (\full) that maintains direct signing authority over a users' XBT. 
+
+\subsubsection{Resistant to Physical Theft}
+\label{Resistant to Physical Theft}
+If the cryptographic keys are stored on some media or device that can be physically stolen, we do not consider the tool to be resistant to physical theft. Within our framework, the only tools meeting this requirement rely on a human memorized password being necessary for key recovery. These are awarded \prt since passwords tend to be weak and may not resist the kind of unthrottled guessing possible against a stolen password-protected wallet. 
+
+\subsubsection{Resistant to Physical Observation}
+\label{Resistant to Physical Observation}
+Physical observation, such as observing key strokes or capturing QR codes with a camera, may result in access to a user's Bitcoin account. 
+
+\subsubsection{Resilient to Password Loss}
+\label{Resilient to Password Loss}
+If passwords are used (\full~if not), the loss of a password could result in XBT becoming unrecoverable if it is a necessary authentication factor in obtaining access to the signing key. For solutions where funds are held by third parties, these entities could provide a password recovery/reset mechanism (\full).
+
+\subsubsection{Resilient to Key Churn}
 \label{Compatible with Change Keys}
 
-User can send the bitcoins from one address to the other, in this way the key that stores the bitcoins is changed. In some approaches this might be a hard task to do, but in some others it can be as simple as a transaction.
+Assuming the client sends change from transactions to a newly created change addresses, a tool is resilient to key churn if it can maintain access to the funds even after exhausting the initial keypool (\full). Tools not awarded this benefit are not guaranteed to maintain persistent access to new change addresses, and XBT sent to these addresses may be lost.
 
 \subsubsection{Immediate Access}
 \label{Immediate Access}
 
-With the increasing size of the blockchain having access to the bitcoins, the final balance of the addresses and the ability to do transactions gets more important everyday, User must have access to the up-to-dated synced blockchain to be able to do so.
+Tools that maintain direct access to the wallet enable XBT to be transacted, effectively, immediately (\full). We include tools that require a user to enter a password. We omit the benefit for tools that require data to be obtained from external storage medium or secondary device. 
 
-\subsubsection{No New Software} 
+\subsubsection{No New User Software} 
 \label{No New Software}
 
-Some approaches would need a new software to be installed on the system for the user to be able to access his funds or do transactions.
+Some approaches require users to install new software on their system, for which the user may not have suitable permission, or software may not be developed for their specific platform (\eg some mobile platforms). By contrast, some tools can be run from common software, like any standards-compliant web browser (\full). 
 
-\subsubsection{Portable}
+\subsubsection{Cross-Device Portablity}
 \label{Portable}
 
-Portability in this case means the access to the funds from different resources or devices, either it's a new computer or different computer in a different location.
+A tool is cross-device portable (\full) if it allows easy sharing of the a Bitcoin address across multiple devices with minimal configuration or usability issues due to complexities like key churn.
 
-\subsubsection{Malware Resistant}
-\label{Malware Resistant}
-The increase of Bitcoin value in the past year has made more malware developers to focus on stealing Bitcoin keys\footnote{\url{http://www.zdnet.com/blog/security/new-bitcoin-malware-steals-bitcoin-wallets-infostealer-coinbit/8804}}. The ability to resist these kind of malwares and attacks is a viral feature of the key management techniques.
+\subsection{Discussion}
 
-\subsubsection{Key Kept Offline} 
-\label{Key Kept Offline}
-One way to secure the keys is to keep them offline, whether in a usb drive disconnected from the internet or cold storages. There are also methods to keep the keys in two parts, that both factors should be online for the user to be able to do a transaction.
-
-\subsubsection{No Trusted Third Party}
-\label{No Trusted Third Party}
-By trusting a third party, there would be another place that the keys are stored and this could be a security risk if the third party is compromised.
-
-\subsubsection{Resistant to Physical Theft}
-\label{Resistant to Physical Theft}
-On the event that the hardware containing the keys is stolen, the thief can access the keys if they are not securely stored, such as strong encryption.
-
-\subsubsection{Resistant to Physical Observation}
-\label{Resistant to Physical Observation}
-Eavesdropping is not applicable on the keys stored in the file but with the new approaches different ways of physical observation could be used to get the keys, such as capturing QR codes with a camera.
-
-\subsubsection{Resilient to Password Loss}
-\label{Resilient to Password Loss}
-Password loss usually is handled by the service provider and either there would be a password reset option or not. On cases that there is no service provider or third party to do so, it is only the key management techniques that could resolve this issue.
-
-%To score the \bitcoinclient it does not have malware resistant nor keep keys offline benefits, there is no need for third party trust ad nothing to be physically observed. It is not resistant to physical theft nor equipment failure cause the keys would be lost in either way. On password loss, there are no ways to reset the password so resilient to password loss, however password is not set by default and should be enabled by the user. Due to huge size of blockchain it has somehow the immediate access score and none in portability, also there is no need for any new software and it is compatible with change keys as it would be just a transaction to a new address.
+From Table~\ref{tab:prims}, no one tool provides a clearly beneficial set of properties over another. We also note that the approaches are not necessarily mutually exclusive. One tool may be used for a small float of XBT, while longer term savings may utilize a different mechanism. The hosted wallet solution provides essentially the same set of properties as online banking---what it lacks is regulatory maturity, consumer protection, and established businesses with track records that earn the trust (encapsulated by the trusted third party criteria) instilled in them. Of all the solutions, further development in hosted wallets seems the most promising for further Bitcoin adoption, primarily among novice users. 
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-%\section{Discussion}
-%Some setups of the bitcoin wallet clients might not work as they are supposed to in a non-default settings. Specially setups such as Bitcoin-QT and Armory that need to have the access to the complete Blockchain files in local computer. As the blockchain size increases (21 Gigabytes in May 2014), it could be a hard task to keep all the files in the computers hard drive and user might have the need to store them in an external storage such as an external hard. One obstacle for normal user would be that as soon as there is the need to use a setting other than the default one, user has to go through command-line switches run the application. For setups such as Armory in Airgap, most of the non-default settings would fail, such as standalone Bitcoin-QT installation or non-default Bitcoin-QT data directory to store the blockchain file in an external storage. All these would be in usability issues that should be overcome to have a better user-friendly Bitcoin wallet clients. 
-
-
 \section{Concluding Remarks}
 
-We conclude by defining a research agenda for moving forward on the issues we have uncovered through our detailed security and usability evaluation of six competing tools for key management in Bitcoin. 
+Our detailed security and usability evaluation of six competing tools for key management in Bitcoin essentially demonstrates that no silver bullet solution has been deployed. Addressing the documented usability issues, fundamental to Bitcoin's design due to its reliance on cryptographic keys, is an important first step toward wider adoption of Bitcoin or similar cryptocurrencies. 
+
+While usability is often pitched with the novice user in mind, the issue of key management can be equally troubling for expert users. As a thought experiment, imagine how you would protect your Bitcoin wallet were it to contain XBT worth the equivalent of millions of dollars. With a complete lack of consumer protection, the reality that a loss of the associated private key will orphan the funds, and the threat of malware and targeted attacks tailored to Bitcoin theft, it is doubtful that anyone would prefer the dubious task of maintaining a Bitcoin wallet over depositing the funds into an insured bank account. 
+
+\balancecolumns
 
 %\begin{itemize}
 %  \item better import/export of keys
