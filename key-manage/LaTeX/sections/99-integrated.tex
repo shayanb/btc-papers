@@ -300,32 +300,29 @@ If the user forgets her passphrase, her funds cannot be recovered (G5). As long 
 
 \subsection{Hosted Wallets}
 \label{hosted}
-There are different online services that offer online hosted wallet clients to users such as blockchain.info, coinbase \footnote{\url{https://coinbase.com/}}, same as previous sections we would work on todays popular online wallet, blockchain.info wallet.
+
+A variety of online services offer online hosted wallet clients to users. We use the popular \block webservice for our evaluation.
 
 \paragraph{T1: Configuration} 
 
-User needs to go to the site\footnote{\url{https://blockchain.info/wallet}} and start a new wallet with his email address and a minimum of 10 character long password. There is a warning on the bottom of the form that on password loss the account is unrecoverable (Good use for G5), However the first pop up window titled "Wallet Recovery Mnemonic" would show a phrase that can be used to recover the account in case the password is forgotten. After this step user can login to the site and view his bitcoin address and the balance it holds.
+Th user navigates to the \block site and starts a new wallet by providing her email address and a minimum of 10 character long password. There is a warning on the bottom of the form that on password loss the account is unrecoverable (G5), however the first pop-up window titled `Wallet Recovery Mnemonic' would show a phrase that can be used to recover the account in case the password is forgotten. After this step user can login to the site and view her bitcoin address and the balance it holds.
 
 \paragraph{T2 \& T3: Authorization}
 \label{hosted transaction}
 
-One of the advantages of using hosted wallets is that it is accessible from any browser on any device. User can go to the site, log in and he has access to his funds. To do a transaction, user would click on "Send Money" tab of the main page, and there is a simple easy to use interface that asks for the destination bitcoin address and the amount of Bitcoins to be sent. Although in case of errors, errors might use a terminology that is unfamiliar for the user such as for insufficient funds this error that would be shown is "No free outputs to spend" (violates G4 and G6).
+One of the advantages of using hosted wallets is that it is accessible from any browser on any device. The user can visit the site, log in, and have access to her funds. To perform a transaction, the user would click on the `Send Money' tab of the main page, and use a straight-forward interface to form the transaction. We note that in the case of some errors, \block uses jargon that is likely to be unfamiliar to novice users. As one example, if the transaction has insufficient funds, a cryptic error us displayed: ``No free outputs to spend'' (G4 and G6).
 
 \paragraph{T4: Recovery}
 
-There are two methods of recovering, one is to use the phrase given on account registration, and the other is to use the backups. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the "Recover Wallet" option, it will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The better recovery option is to have backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the "Import/Export" option and Export either encrypted or unencrypted backup. It should be noted that unencrypted backup do not need a password to be read and should be kept in a secure and safe storage. There are different options for the unencrypted backup procedure that could confuse user and might result in unrecoverable back ups (Violates G5 and G6), also the back up would be shown on a text field that the user has to copy and paste in a text file to be able to save it on his computer (Violates G2, G3 and G7). To restore the backups, go to Import Wallet option and copy and paste the backup file in the text field, in case of having the encrypted backup, the previously used password is also needed. 
+There are two methods of recovering an account if the user's password is forgotten---one is to use the phrase given on account registration, and the other is to use a backup. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the `Recover Wallet' option, the site will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The second recovery option is to make backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the `Import/Export' option and `Export' either an encrypted or unencrypted backup. Unencrypted backups should be kept in a secure storage. There are different options for the unencrypted backup procedure that could confuse the user and might result in an unrecoverable backup (G5 and G6)---the back up is shown on a text field that the user has to copy and paste into a text file to be able to save it on her computer (G2, G3 and G7). To restore the backups, there is an `Import Wallet' option.
+
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 \input{sections/08-table}
 
 \section{Evaluation Framework}
 
-
-In this paper, we evaluate different approaches to secure and use of Bitcoins (Key management techniques). Our approach is by defining the benefits that the user would get by using each application in the manner of usability and security.
-
-Some benefits might not inclusively be in usability category or security, thus our categorization is not completely error prone, however it is, by the time of the writing, the most comprehensive  study in this subject.
-
-The result of this evaluation is in Table 1\ref{tab:prims}. There are three different scores for each technique:\\
+In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. In this section, we systemize the major category-wide issues we have uncovered in the previous sections through an evaluation framework summarized in Table~\ref{tab:prime}. 
 
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$}
