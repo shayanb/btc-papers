@@ -124,11 +124,11 @@ As one counter-measure to theft, wallet hosts often keep only a small float of t
 In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated) on OS X:
 
 \begin{compactlist}
-	\item[\bf 1] Key in Local Storage: \bitcoinclient 
-	\item[\bf 2] Password Protected: \multibit 
+	\item[\bf 1] Key in Local Storage: Bitcoin-Qt
+	\item[\bf 2] Password Protected: Multibit 
 	\item[\bf 3] Air gap: Bitcoin Armory
-	\item[\bf 4] Offline Storage: Paper Wallet
-	\item[\bf 5] Password-derived Key: Brain Wallet
+	\item[\bf 4] Offline Storage: Bitaddress
+	\item[\bf 5] Password-derived Key: Brainwallet
 	\item[\bf 6] Hosted Wallet: Blockchain.info wallet
 \end{compactlist}
 
@@ -160,7 +160,7 @@ The set of guidelines, from~\cite{COA07}, are:
 
 \subsection{Keys in Local Storage}
 
-We begin with an evaluation of \bitcoinclient which represents a client with locally-stored keys. We assume the user has downloaded and installed the \bitcoinclient client (it has a straight forward wizard installation procedure).
+We begin with an evaluation of \bitcoinclient, the original Bitcoin wallet client, which uses locally-stored keys. We assume the user has downloaded and installed the \bitcoinclient client (it has a straight forward wizard installation procedure).
 
 \paragraph{T1: Configuration} 
 
@@ -196,27 +196,34 @@ If only one device is used, there is no way to recover from loss of the \walletf
 
 \subsection{Password Protected Wallets}
 
-Although it is possible to encrypt the \walletfile in \bitcoinclient with a password, there is no emphasize or alerts to do so, however in \multibit client one of the recommended first steps is to password protect the wallet file, this is one of the reasons that this client has been chosen to be analyses for this cognitive walkthrough, also because it uses SPV for faster blockchain synchronization this client is more popular amongst new users.
+Although it is possible to encrypt the \walletfile with a password-derived key in \bitcoinclient, it is not the default option nor is there any cue to do so. Instead we evaluate the \multibit client, where one of the recommended first steps is to password protect the wallet file. \multibit is a popular client in particular for its use of SPV for lightweight blockchain validation that can complete within minutes instead of, relative to \bitcoinclient, days.
 
 \paragraph{T1: Configuration} 
 
-On the first run the welcome page pops up that has the explanation of the core tasks that could be done with \multibit such as where the send, request and transaction tabs are and how to password protect the wallet file and also help options for all the other functionalities (Good use of G1 and G2). 
+On the first run, a welcome page contains an explanation of common tasks that could be done with \multibit---where the send, request and transaction tabs are and, importantly, how to password protect the wallet file (good evaluation on G1 and G2). It provides help options for other functionalities with direct and non-technical guides (good G6). 
 
-\multibit help option gives direct and non-technical guides on how to do the desired functions. The interface is pretty easy to understand and it shows the status of the program (Online, offline or Out of Sync) on the bottom left  status bar, the balance of the user's wallet on the up left and the latest price of bitcoin on the up right of the window(Complies G8). There are not too many jargons and technical vocabulary used (Complies G6). After the first run the receiving address is finalized with the updated final balance and it is possible to receive bitcoins (CT1). By clicking on "Request" tab the finalized address and it's relative QR Code\footnote{\url{http://en.wikipedia.org/wiki/QR_code}} appears, User can now enter his desired amount to be received to generate the appropriate QR code with his input value, even though just having the address suffice to complete this task. On the frame titled "Your receiving addresses" all the addresses stored in the wallet file is shown, By clicking on the "New" button user can generate a new bitcoin addresses. \multibit also has the short come of not showing the user that he has to be connected to internet to get synced and it will stay on "connecting" mode,this slightly violates G1 and G2.
+After opening the application, a new receiving address is immediately created. The interface shows the status of the program (online, offline, or out of sync) on the bottom left status bar, the balance of the user's wallet on the upper left, and the latest price of bitcoin on the upper right of the window (G8). The interface seems to minimize jargon and technical vocabulary (G6). As it is mentioned on the `welcome page' of the application, every option in \multibit has the ability to show help tips by hovering the mouse over that option (G6 and G7).
 
-As it is mentioned on the "Welcome page" of the application, every option in \multibit has the ability to show help tips by hovering the mouse over that option.
+The displayed balance is not necessarily current until synchronization is completed, however there is no direct cue in the balance area indicating this (G8). By navigating to a `request' tab along the top of the application, the user can view her address, as well as copy or drag a QR code of it. Within a frame titled `Your receiving addresses' all the addresses stored in the wallet file is shown and the user may click on the `new' button to generate additional addresses. 
 
 \paragraph{T2: Authorization}
 
-To authorize a transaction user has to click on the "send" tab, \multibit has a really simple and complete interface to do so(Good use of G7), where it is possible to import the sending address by QR code or from the clipboard or just by typing it in the "Address" field. If the address in not correctly formatted or the amount of the transaction is more than the balance, a fully detailed error message pops up to explain what went wrong (Complies G4). Also if the wallet client is not synced, the send button would be disabled. If it's synced and there is no error on the balance and the destination address, the transaction is complete after clicking on send button and approving the transaction.
+To authorize a transaction the user navigates to the tab labeled `send.' If the client is not synced, the send button is disabled (G4). If it is synced, the user fills out the transaction details, destination address and amount and clicks send (recall we are not evaluating these details, only the authorization step). After clicking send, the client cannot immediately authorize the transaction since the wallet is password-protected. The client prompts the user for her password (G2). An incorrect password displays the error `The wallet password is incorrect' but otherwise allows immediate and unlimited additional attempts. Entering the correct password authorizes the transaction (G3). Subsequent transactions require reentering the password.
+
+% =JC= Upon the transaction being authorize, how is this communicated to the user?
 
 \paragraph{T3: Authorization from Secondary Device}
 
-Same as the "Key in file" this task is not one of the main functionalities of \multibit. On the primary device user has to look in the options to find the backup options, It could be found in Tools - "Export Private Keys" (violates G6). It will show details about current wallet file, the path for the export file to be saved and also a password for the exported file that is enabled by default. In case user tries to save the exported file without password, there would be a warning saying "Anyone who can read your export file can spend your bitcoin." in red. By having a password protected export file, user can copy the file safer to the secondary device. By clicking on "Export Private Keys" button it will save the wallet file in the given path and also checks if the file is readable (no violation of G4 and G5). On the secondary device user installs a fresh copy of \multibit and looks for Import options that is under Tools - Import Private Keys. The window looks the same as the Export window but with import functionality. User has to browse for his exported file from the primary device and type in the password and then click on "Import Private Keys" button. It will confirm the completion of the import and changes the balance according to the balance of the new imported addresses. Now user is able to authorize a transaction to any given destination addresses.
+On the primary device, the user has to look under `options' to find the backup options, where it is under `Tools - Export Private Keys' which contains jargon (G6). The interface will display details about current wallet file, the path for the export file to be saved and also a password for the exported file that is enabled by default. If the user attempts to save the exported file without password, a warning is displayed in red: `Anyone who can read your export file can spend your bitcoin' (G5). By having a password-protected file exported, the user can securely copy the file to the secondary device with some protection against interception. After clicking to export, wallet file is saved in the given path and the client checks that the file is readable (G4 and G5). 
+
+On the secondary device, the user installs a fresh copy of \multibit and looks for the import option that is under `Tools - Import Private Keys.' The window looks the same as the export window. The user browses to her copy of the exported wallet file, enters the password protecting the wallet, and clicks on the `Import Private Keys' button. The client confirms the completion of the import (G4) and changes the balance according to the balance of the new imported addresses (G8). The user is now able to authorize transactions from the secondary device. \multibit sends change to the originating address, so keypool churn is not an issue.
+
+% =JC= "details about the current wallet files" -> be more specific, what details?
+% =JC= Can the wallet file have any name?
 
 \paragraph{T4: Recovery}
 
-This task is the same as CT3 but on the same device. The password-protected back up file should be stored in a secure storage that prevents it from being lost or stolen, however it would be hard to recover the wallet file without knowing its password. 
+As with \bitcoinclient, recovery is not possible if no backup of the wallet file was made. Creating a backup and importing it follows the same procedure as core task 3. With a password-protected wallet, it is also necessary to remember the password that protects the wallet. Without both a backup of the wallet and the password (short of exhaustive search of the password space), recovery is not possible (G4). The welcome page could emphasize the importance of a backup.  
 
 %===========================================================
 
