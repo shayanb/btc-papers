@@ -2,27 +2,40 @@
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Introductory Remarks}
+\section{Introduction}
 
-In all of the excitement surrounding Bitcoin~\cite{Nak08}, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of usable public key cryptography for user authentication. Despite decades of research on this issue exact in parallel technologies, such as digitally signed email, we show that Bitcoin technologies for creating, storing, and managing keys stall on many of the same basic issues. 
+In all of the excitement surrounding Bitcoin~\cite{Nak08}, it is easy to forget that the decentralized currency assumes a solution to the longstanding problem of usable public key cryptography for user authentication. Decades of research in the area of usability of key management as well as numerous studies have shown that the problem of giving users control over cryptographic keys is extremely complex, with no clear solution in sight. 
 
-At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving the challenges of a key-based system. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
+Despite the known complexity in creating and managing keys, the Bitcoin network and software clients use cryptographic keys extensively for most operations. For example, digital signatures, which require the Bitcoin software to read private keys into memory, are used to assert ownership over a specific set of Bitcoins. Thus, managing the same coins on multiple devices (\eg a desktop and a phone) requires the corresponding private keys to be copied and available on these devices. 
 
-\paragraph{Contributions}
+%\subsection{Consumer Protection} 
 
-Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management, based on~\cite{BHOS12}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
+The consequences of losing exclusive control over an account containing monetary value connects the threat of losing a Bitcoin key to losing an online banking password. However, in reality, consumers are legally protected in many countries from any liability of such a loss, and because most bank transactions are traceable and reversible, such accounts are difficult to exact value from (most techniques involve a mule)~\cite{FH12}. Bitcoin transactions are also traceable, however they are not reversible. Stolen Bitcoins cannot be recovered, consumers have no legal protection, and while stolen Bitcoins could be `tainted' in the blockchain, several mechanisms exist for laundering Bitcoins and similar digital currencies~\cite{MGGR13,BNMC+14}.
 
-The particular focus of our framework regards usability issues. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert review enables the breadth of evaluation we require, and we utilize the cognitive walkthrough methodology to maintain rigour and objectively in the evaluation. 
+In an effort to solve, or at least mask, some of the complexities of key management, developers of Bitcoin software have created a variety of innovative technologies. These technologies range  from password-derived keys to physical printouts of private keys in the form of 2D barcodes. Since none of these proposals have been evaluated in the Bitcoin context, it remains unclear which or why it has advantages. 
 
-\paragraph{Scope}
+As Bitcoin adoption grows beyond developers and tech-savvy enthusiasts, novice users may be interested in participating in the new technology. However, failing to fully understand the details of key management on Bitcoin may result in the loss of funds, dissuading further user adoption. 
 
-The focus of this work is configuring and managing the cryptographic keys required to hold Bitcoin. This paper is \emph{not} a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
+In this paper, we aim to investigate the usability challenges surrounding key management in Bitcoin. To do this, we survey and categorize the most prominent Bitcoin proposals. Next we conduct an expert usability inspection technique known as a cognitive walkthrough on popular examples of each proposal. Our goal is to identify overarching usability issues and advantages of specific proposals, allowing us to propose design recommendations for future Bitcoin clients. \\
+
+%Despite decades of research on this exact issue in parallel technologies, such as digitally signed email, Bitcoin software technologies for creating, storing, and managing keys stall on many of the same basic issues. 
+
+%At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving the challenges of a key-based system. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
+
+\noindent\textbf{Contributions.}
+Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management, based on the framework of Bonneau \etal~\cite{BHOS12}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
+
+The particular focus of our framework regards usability issues. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert review enables the breadth of evaluation we require, and we utilize the cognitive walkthrough methodology to maintain rigour and objectivity in the evaluation. 
+
+%\paragraph{Scope}
+
+%The focus of this work is configuring and managing the cryptographic keys required to hold Bitcoin. This paper is \emph{not} a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
 
 %Bitcoin can be split into 3 parts: buying bitcoins (involving exchanges, OTC, etc), holding bitcoins (involving wallets, keys, etc), and spending bitcoins (creating transactions, waiting for verifications, etc). this paper focuses on the middle point. 
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Preliminaries}
+\section{Background}
 
 \subsection{Bitcoin}
 
@@ -32,7 +45,7 @@ Every transaction must be signed by the private signing key associated with each
 
 The ledger (called the blockchain) is maintained and updated by a decentralized network using a novel method to reach consensus that involves incentivizing nodes in the network with the ability to mine new XBT and collect transaction fees. The details of the Bitcoin consensus model are not relevant to this paper.
 
-One subtly of Bitcoin transactions is that each XBT amount in the set of inputs must reference past transactions where the address received adequate XBT to cover the input amount. The complexity is that the transaction must completely spend the amount received in these past transactions even if it is larger than the amount in the current transaction. To enable this, transactions will output the surplus XBT back to the sender as `change.' Change can be sent back to the same input address, or to enhance privacy, it can be sent to a brand new address created by the sender's client (called `change addresses'). 
+One subtlety of Bitcoin transactions is that each XBT amount in the set of inputs must reference past transactions where the address received adequate XBT to cover the input amount. The complexity is that the transaction must completely spend the amount received in these past transactions even if it is larger than the amount in the current transaction. To enable this, transactions will output the surplus XBT back to the sender as `change.' Change can be sent back to the same input address, or to enhance privacy, it can be sent to a brand new address created by the sender's client (called `change addresses'). 
 
 \subsection{Usability of Key Management}
 
@@ -40,26 +53,22 @@ Passwords remain the most common form of user authentication. By contrast, priva
 
 Password managers, when configured to set system-chosen random passwords, share at least one property of cryptographic keys: such passwords become something you `have' instead of `know'. However if access to such a password is lost, recovery mechanisms exist unlike cryptographic keys.
 
-The use of public keys by non-experts that is closest to Bitcoin is arguably encrypted/authenticated email, in particular PGP and its open-source alternatives (\ie GPG and OpenPGP). Beginning with `Why Johnny Can't Encrypt'~\cite{WT99}, the usability of public key technology has been well-studied from a usability perspective\footnote{``Why King George III can encrypt,'' \textit{Freedom to Tinker} (blog), 6/6/2014.}~\cite{GM05,GMSN+05,SBKH06,GFF06}. The findings of this literature are diverse but relevant observations include the following: the terminology of public and private keys is confusing, it is difficult to correctly obtain other users' public keys, key mitigation between devices is difficult, \etc. That said, this literature tends to focus primarily on encryption and not signatures, limiting its applicability.
-
-\subsection{Usability Evaluation Methodologies}
-
-A number of usability evaluation methodologies employ expert review. We use a cognitive walkthrough \cite{WRLP94}, which has been used previously to study closely-related subjects: public key technology~\cite{WT99} and software configuration~\cite{COA07}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. In a cognitive walkthrough, we define the set of core tasks that users will be interested in performing, a set of evaluation guidelines that should hold true for the software, and use expert review to evaluate the application against the guidelines while performing the core tasks. 
-
-Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
-
-\subsection{Consumer Protection} 
-
-The consequences of losing exclusive control over an account containing monetary value connects the threat of losing a Bitcoin key to losing an online banking password. However, in reality, consumers are legally protected in many countries from any liability of such a loss, and because most bank transactions are traceable and reversible, such accounts are difficult to exact value from (most techniques involve a mule)~\cite{FH12}. Bitcoin transactions are also traceable, however they are not reversible. Stolen Bitcoins cannot be recovered, consumers have no legal protection, and while stolen Bitcoins could be `tainted' in the blockchain, several mechanisms exist for laundering Bitcoins and similar digital currencies~\cite{MGGR13,BNMC+14}.
-
+The use of public keys by non-experts that is closest to Bitcoin is arguably encrypted/authenticated email, in particular PGP and its open-source alternatives (\ie GPG and OpenPGP). Beginning with `Why Johnny Can't Encrypt'~\cite{WT99}, the usability of public key technology has been well-studied from a usability perspective\footnote{``Why King George III can encrypt,'' \textit{Freedom to Tinker} (blog), 6/6/2014.}~\cite{GM05,GMSN+05,SBKH06,GFF06}. The findings of this literature are diverse but relevant observations include the following: the terminology of public and private keys is confusing, it is difficult to correctly obtain other users' public keys, key migration between devices is difficult, \etc. That said, this literature tends to focus primarily on encryption and not signatures, limiting its applicability.
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Systems Evaluation of Tools} 
+\section{Bitcoin Key Management Approaches} 
 
 Before turning to a detailed usability evaluation, we evaluate from a systems perspective each category of tool for managing Bitcoin private keys. We highlight security and deployability issues, and note relevant details of the Bitcoin protocol that create complexities and potential discrepancies with users' mental models.
 
 \subsection{Keys in Local Storage}
+\label{sec:localstorage}
+One approach to key management is to store cryptographic keys on device's local storage. Private keys are stored in a file or database, typically in a pre-configured or default file system path. 
+
+%loss of file
+%sharing of file
+%key churn/continuous backup
+
 On first launch, the official bitcoin client, \bitcoinclient, creates a \walletfile file in the Bitcoin data directory (usually a hidden folder inside the user's application folder). The \walletfile file contains the set of all private keys belonging to the user, allowing the user to sign transactions. Anyone with access to the private keys inside \walletfile can spend the XBT associated with those keys.
 
 The \walletfile file can be read by any application with access to the user's application folder. Malware is a particularly noteworthy example here, since theft of the \walletfile file by a malicious developer results in immediate access to the victim's funds. In 2011, Symantec discovered the \textit{Infostealer.Coinbit}\footnote{\url{http://www.symantec.com/security_response/writeup.jsp?docid=2011-061615-3651-99}} malware, which targeted Windows systems in an attempt to find \walletfile files and sent them via email to the attacker. Since then, numerous examples of malware and malicious Bitcoin tools have been discovered stealing \walletfile files. 
@@ -122,6 +131,15 @@ Another approach that falls under Hosted Wallet categories is Hybrid hosted wall
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \section{Usability Evaluation of Tools}
+\subsection{Usability Evaluation Methodologies}
+
+A number of usability evaluation methodologies employ expert review. We use a cognitive walkthrough \cite{WRLP94}, which has been used previously to study closely-related subjects: public key technology~\cite{WT99} and software configuration~\cite{COA07}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. In a cognitive walkthrough, we define the set of core tasks that users will be interested in performing, a set of evaluation guidelines that should hold true for the software, and use expert review to evaluate the application against the guidelines while performing the core tasks. 
+
+Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
+
+\subsection{Design}
+
+
 
 In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated) on OS X:
 

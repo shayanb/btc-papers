@@ -1,5 +1,10 @@
 \documentclass{llncs}
-
+% make a proper TOC despite llncs
+\setcounter{tocdepth}{2}
+\makeatletter
+\renewcommand*\l@author[2]{}
+\renewcommand*\l@title[2]{}
+\makeatletter
 % = = = = = Packages = = = = = %
 
 \input{setup/packages}
