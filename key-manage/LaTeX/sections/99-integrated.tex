@@ -85,47 +85,130 @@ For efficiency, the reference Bitcoin client pre-generates keys in batches of 10
 % \paragraph{Mobile Wallets} A number of mobile wallets for OSes like Android and BlackBerry have been proposed, including Bitcoin-wallet\footnote{\url{https://androidobservatory.org/app/9A33CF64239CC26F6E52F80BE83AF39B93F261C0}} and Mycelium.\footnote{\url{http://mycelium.com}} The main challenge for mobile platforms is the general unfeasibility of obtaining and storing the entire blockchain. Instead, they implement a `thin client' approach which shortcuts full validation of the blockchain by placing bounded trust in the Bitcoin peer-to-peer network (specifically, it uses a protocol called simplified payment verification or SPV~\cite{Nak08}). SPV is also used on some desktop clients. Regarding key management, mobile clients are not much different from \bitcoinclient and still store keys in a local file on the device that is subject to the same threats: unauthorized access and non-preservation.
 
 \subsection{Password-protected (Encrypted) Wallets}
-Certain Bitcoin clients allow a locally stored wallet file to be encrypted with a key derived from a user-chosen password or passphrase. A common approach is to use the well known password-based key derivation function (PBKDF2~\cite{pbkdf2}). Password-protected wallets appear to address only physical theft of the underlying storage device, requiring brute-force of the password if the file containing private keys is stolen. Password protection seems less useful in the case of digital theft; if malware can be installed on to the device storing the wallet, it is reasonable to assume a keystroke-logging module would be present, limiting or nullifying the benefits of the password protection.
+Certain Bitcoin clients allow a locally stored wallet file to be encrypted with a key derived from a user-chosen password or passphrase. 
+%A common approach is to use the well known password-based key derivation function (PBKDF2~\cite{pbkdf2}). 
+Password-protected wallets appear to address only physical theft of the underlying storage device, requiring brute-force of the password if the file containing private keys is stolen. Password protection seems less useful in the case of digital theft; if malware can be installed on to the device storing the wallet, it is reasonable to assume a keystroke-logging module would be present, limiting or nullifying the benefits of the password protection.
 
 % At the time of our analysis, this was possible but not the default in \bitcoinclient, however it is enabled by default in Multibit\footnote{\url{https://www.multibit.org}}, another popular desktop client. 
-Password-protected wallets share the advantages and disadvantages of non-encrypted wallets (see Section~\ref{sec:localstorage}), with a few subtle difference. Password-protected wallets trade usability for the mitigation of physical theft. If the password is forgotten, users lose the balance of their password-protected wallet since no mechanism exists for recovery\footnote{Of course, an exhaustive search of the password space is always theoretically possible, and is available as a service: \url{http://www.walletrecoveryservices.com}}. For day-to-day use, users must unlock the wallet by entering their password when new transactions are made. 
+Password-protected wallets share the advantages and disadvantages of non-encrypted wallets (see Section~\ref{sec:localstorage}), with a few subtle differences. Password-protected wallets trade recoverability and usability for the mitigation of physical theft. If the password is forgotten, users lose the balance of their password-protected wallet since no mechanism exists for recovery\footnote{Of course, an exhaustive search of the password space is always theoretically possible, and is available as a service: \url{http://www.walletrecoveryservices.com}}. For day-to-day use, users must unlock the wallet by entering their password when new transactions are made. 
 
 % The trade-off of a password-protected wallet is that users can lose their XBT by forgetting the password protecting their wallet. No recovery mechanism exists (as this mechanism could itself be exploited in the case of theft) short of exhaustive search, which is an available service.\footnote{\url{http://www.walletrecoveryservices.com}}
 
 Password-protected wallets may mislead the user to believe that the password itself provides access to their funds regardless of the location of the device storing the wallet, as would be congruent with a traditional mental model for web-based online banking. Users may be surprised to discover that that they cannot access their funds at a new device by simply entering their encryption password; the wallet file must also be transferred to the new device. 
 
-\subsection{Offline Storage}
+\subsection{Offline Storage of Keys}
 \label{sec:offline storage}
+To further protect Bitcoin private keys from malware-based threats, wallets can be stored offline on some form of portable media, such as a USB thumbdrive. Keeping keys offline enables the use of traditional physical security techniques (\eg storing the drive in a fire-proof safe) to protect the wallet. However, offline storage has the drawback of making the wallet inaccessible for immediate use by software, preventing users from spending funds unless the offline storage media is nearby. As expected, offline storage can be used for backup, but all copies of the wallet must be kept offline for the full benefits of theft-protection to be realized.
 
-To further enhance theft-protection from malware-based threats, wallets can be stored offline on some form of portable media, such as a USB thumbdrive. This enables the use of traditional physical security to protect the media, which users may have a better mental model of. However offline storage has the drawback of leaving the wallet not immediately accessible for use. Offline storage can be used for backup as well, however unless if all copies of the wallet are offline, the theft-protection benefits are not realized. 
+\begin{figure}[pt]
+  \includegraphics[width=.48\textwidth]{figures/paperwallet.png}
+  \caption{Bitcoin paper wallet generated using \url{https://bitcoinpaperwallet.com}. The printout is designed to be folded such that the private key (right) remains hidden while the public component (left) remains visible.}
+  \label{fig:paperwallet}
+\end{figure}
 
-A special case of offline storage are paper wallets,\footnote{\url {https://bitcoinpaperwallet.com}}\ where the private keys are printed onto paper typically in the form of a QR code. Securing a paper wallet becomes similar to securing cash, a mental model novice users should be comfortable with. However there are differences. First, funds can be stolen from a paper wallet by being able to observe the QR code (\eg on live television\footnote{``A Bloomberg TV Host Gifted Bitcoin On Air And It Immediately Got Stolen,'' \textit{Business Insider}, 10/23/2013.}), which is not possible with physical money. Thus transporting a paper wallet securely requires the QR code to be hidden. Second, users must preserve software capable of decoding the QR code as the paper wallet generation service (\eg a website) may be unavailable when reloading the funds into a device. Finally, users must recognize a paper wallet does not contain XBT itself, but rather signing authority over an account. For example, if a paper wallet is discarded after the XBT are spent, the paper wallet still provides access to any future funds that may be added to the account.\footnote{``Five Ways to Lose Money with Bitcoin Change Addresses,'' \textit{Bitzuma} (Blog), 17/03/2014.} Finally, users still need to be cautious of key churn and that spending XBT from a paper wallet does not result in XBT being sent to a change address not included in the paper wallet. 
+An interesting case of offline key storage are paper wallets (see ~\autoref{fig:paperwallet})
+%\footnote{\url {https://bitcoinpaperwallet.com}}\
+where private keys are printed onto paper typically in the form of a 2D barcode (\eg a QR code) or as a long sequence of characters. Barcodes facilitate reading the key back into a Bitcoin client by, for example, scanning the code with a smartphone camera. Securing a paper wallet is similar to securing cash, which most users should be comfortable with. However, funds can be stolen from a paper wallet by simply observing the QR code (\eg on live television\footnote{``A Bloomberg TV Host Gifted Bitcoin On Air And It Immediately Got Stolen,'' \textit{Business Insider}, 10/23/2013.}), which is not possible with physical money. Thus transporting a paper wallet securely requires that the printed contents remain unobservable at all times.  Users must remember that a paper wallet does not contain the funds itself, but rather enables signing authority over a set of Bitcoins. For example, if a paper wallet is discarded after funds are spent, the paper wallet still provides access to any future funds that may be sent to that address.\footnote{``Five Ways to Lose Money with Bitcoin Change Addresses,'' \textit{Bitzuma} (Blog), 17/03/2014.} 
 
-\subsection{Air Gapped Storage}
+%Finally, users still need to be cautious of key churn and that spending XBT from a paper wallet does not result in XBT being sent to a change address not included in the paper wallet. 
 
-In offline storage, we assume the device or media holding the wallet cannot perform computations, such as signing transactions. We distinguish this from air gap storage where wallets are stored offline on a device that generates, signs, and exports transactions onto some portable media, which can be imported and transmitted to the Bitcoin network by a secondary online device. A notable client supporting this setup is Armory.\footnote{\url{https://bitcoinarmory.com}} 
+As with any long-term storage, users must preserve software capable of decoding the QR code in the event that the paper wallet generation service is unavailable when attempting to reload keys onto a device. As of writing, many Bitcoin clients as well as offline storage solution use a common ``wallet import format'', which involves manipulating an ECDSA private key by performing cryptographic hashes, adding a checksum for integrity, and encoding the resulting string into Base58.\footnote{Base58 avoids the use of characters such as ``0, O, I, and l'' which may look visually similar, an also avoids punctuation characters which may trigger software (\eg e-mail clients) to perform line breaks.}.
 
-An air gap also enhances theft-resistance in different ways than offline storage. It offers stronger protection against digital theft by never directly exposing the key to an internet-connect device. By contrast, air gap devices are capable of actually executing malware if infected which may attempt to jump the air gap through a variety of methods observed in the wild.
+\subsection{Air-gapped Key Storage}
+In offline storage, we assume the device or media on which the wallet resides cannot perform computations such as authorizing (\ie creating digital signatures) transactions. We distinguish this type of storage from air-gapped storage, where wallets are stored on a secondary device that generates, signs, and exports transactions, but this secondary device is never connected to a network. When spending Bitcoin funds using an air-gapped device, a transaction is created from the air-gapped device and the resulting signed output transported (usually through portable media) to an Internet-enabled device for transmission onto the Bitcoin network. 
+%A notable client supporting this setup is Armory.\footnote{\url{https://bitcoinarmory.com}} 
 
-While not literally an air gap, hardware security modules (HSMs) emulate the properties of an air gap by isolating the key material from the host device, and only exposing the ability to sign transactions. Bitcoin-specific HSMs are under active development at the time of writing and a few have been recently released\footnote{Trezor\url{http://www.bitcointrezor.com}} .
+An air gap improves theft-resistance by never directly using a private key on an Internet-connected device. However, air gapped devices are capable of actually executing malware if infected. Malware may jump the air gap by infecting the portable media used to export signed transactions.
 
-Note that the consequences of obtaining unauthorized access to the wallet itself is not much different from accessing a transaction-signing oracle for the wallet---both allow the current balance of XBT to be stolen (however future funds may be protected if access to the signing oracle is non-persistent). 
+While not literally an air gap, hardware security modules (HSMs) emulate the properties of an air gap by isolating the key material from the host device, and only exposing the ability to sign transactions. Bitcoin-specific HSMs are under active development at the time of writing and a few have been recently released (\eg Trezor\footnote{\url{http://www.bitcointrezor.com}}).
+
+Note that the consequences of obtaining unauthorized access to the private keys in a wallet is not much different from accessing a transaction-signing oracle for the wallet---both allow the current balance of Bitcoin to be stolen. However, future funds may be protected if access to the signing oracle is non-persistent. 
 
 
-\subsection{Password-Derived Keys} 
-All the tools analyzed to this point have required users to maintain cryptographic keys. The remaining two solutions enable users to access their XBT with a password instead. The first approach is to derive all cryptographic keys from a password---\eg form a seed from PBKDF2 applied to the password and expand the seed into the required number of keys with a PRG. Thus it is a special case of a deterministic wallet, where the initial seed is password-derived instead of randomly chosen. A notable tool here is Brainwallet.\footnote{\url{http://brainwallet.org/}}
+\subsection{Password-derived Keys} 
+Thus far, all key management solutions have required users to maintain cryptographic keys. The remaining two solutions enable users to access their Bitcoin with a password instead. 
 
-Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as the wallet can be regenerated from a memorized password, and this wallet can be regenerated on any device. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search as a fingerprint of the associated public key will be in the ledger if the account holds any amount of XBT. Rainbow tables for Brainwallet password-derived keys have been reportedly developed. Finally, it is not clear that memorization poses an advantage over maintaining a digital file at loss prevention---a forgotten password will orphan all funds in the account.
+The first general approach is to derive cryptographic keys from a password (\eg using PBKDF2~\cite{pbkdf2}), manipulating the output to produce a valid Bitcoin private key). The disadvantage of using this approach directly is that only one resulting keypair is created, requiring the user to select a new (different) password for a new keypair. 
+
+A more robust approach is described in the Bitcoin Enhancement Proposal 32~\cite{bip32}, and is known as a Hierarchical Deterministic Wallet (HD Wallet). HD wallets take a master secret (the user's password) and deterministically derive a set of private keys, which themselves can be used to derive new private keys. The deterministic nature allows the password holder to view the balance, as well as spend the funds, of any sub-account derived from the password. However, if the private key on one of the sub-accounts is compromised, only the funds sent to that key (or sub-keys derived from it) may be spent. 
+
+% applied to the password and expand the seed into the required number of keys with a PRG. Thus it is a special case of a deterministic wallet, where the initial seed is password-derived instead of randomly chosen. A notable tool here is Brainwallet.\footnote{\url{http://brainwallet.org/}}
+
+Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as long as the wallet can be re-generated from a memorized password. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search since a fingerprint of the associated public key will be in the global public ledger if the account holds any amount of Bitcoin. Rainbow tables~\cite{rainbowtables} for password-derived keys have been reportedly developed. Finally, it remains unclear whether memorization poses an advantage over maintaining a digital file when preventing loss---a forgotten password will orphan all funds in the account.
 
 
 \subsection{Hosted Wallets} 
-A final approach to key management is to host your accounts with a third party webservice; known as a \textit{hosted wallet}. In this case, the webservice maintains possession of the XBT. It provides the user with access to transactional functionalities through standard web authentication mechanisms, such as a password or two-factor authentication, as well as password recovery mechanisms. Exchange services that allow XBT to be bought and sold for standard currency effectively host a wallet, in addition to webservices deployed specifically to serve this purpose, e.g \coinbase.
+A final approach to key management is to host user accounts on a third-party web service. In this case, the web service maintains possession of the private keys and any associated Bitcoins. Hosted wallet web services provide the user with access to transactional functionalities through standard web authentication mechanisms, such as a password or two-factor authentication, an may also offer password recovery mechanisms. Currency exchange services that allow Bitcoin to be purchased and sold for fiat currency effectively host a wallet, in addition to web services deployed specifically to serve this purpose.
 
-The popularity of hosted wallets is understandable as they provide the closest experience to traditional online banking, however their use has also been hampered by high profile breeches and fraud. Users' funds have been unrecovered from services such as Mt.Gox and Bitcoinica, while popular exchanges such as BTC-E have suffered losses but fully reimbursed users. Thefts and losses from/by third party services are catalogued online\footnote{https://bitcointalk.org/index.php?topic=576337.0} and include over 40 events involving losses greater than 1000 XBT.\footnote{At the time of writing, 1000 XBT > 650\,000 USD.}
+% The popularity of hosted wallets appears to be justified, since these services provide the closest experience to traditional online banking. However, their use has also been hampered by high profile breaches and fraud. Users' funds have been unrecovered from services such as Mt.Gox and Bitcoinica, while popular exchanges such as BTC-E have suffered losses but fully reimbursed users. Thefts and losses from/by third party services are catalogued online\footnote{https://bitcointalk.org/index.php?topic=576337.0} and include over 40 events involving losses greater than 1000 XBT.\footnote{At the time of writing, 1000 XBT > 650\,000 USD.}
 
-As one counter-measure to theft, wallet hosts often keep only a small float of their holdings online (called \textit{hot storage}) and store the majority of their holdings offline in \textit{cold storage}. This has the drawback of causing delays if the float is exhausted, and is still susceptible if hot storage theft goes undetected as the float will be persistently replenished. Services may also allow audits, where they prove possession of sufficient XBT to match their liabilities, to demonstrate that they are not covering up any missing XBT (which would not necessarily be immediately apparent---\cf a fractional reserve).  
+%proofs of solvency?
+It is natural to expect hosted wallet services to become primary targets of attack since these services typically hold large amounts of Bitcoin. Offloading the task of key management to a third-party requires users to assume the risk that the service could be breached and funds lost, in exchange for a traditional online banking-style user experience. 
 
-Another approach that falls under Hosted Wallet categories is Hybrid hosted wallets. Other than server side encryption and security measures, It uses client side encryption (javascript) to encrypt all the private keys and sensitive data with user's password and sends the encrypted data as a random base64 string to the server. With this implementation, there is no access to the private keys and the final balance from anyone whom have access to the server's data \footnote{\url{http://bitcoin.stackexchange.com/questions/5249/how-secure-is-blockchain-info}}. Blockchain.info uses this implementation for its hosted wallet.
+As a counter-measure to theft, hosted wallet providers often keep only a small float of their holdings online (called \textit{hot storage}) and store the majority of their holdings offline in \textit{cold storage}. This has the drawback of causing delays in transactions for users if the hot storage amount is exhausted.
+%and is still susceptible if hot storage theft goes undetected as the float will be persistently replenished. 
+Hosted wallet services may also allow audits, where they prove possession of sufficient Bitcoin to match their liabilities.  
+%to demonstrate that they are not covering up any missing XBT (which would not necessarily be immediately apparent---\cf \fixme{a fractional reserve)}.  
+
+Another approach that falls under the hosted wallet category is a hybrid hosted wallet. Hybrid wallets use client side encryption (typically in Javascript) to encrypt all private keys and sensitive data. The web service is then only used for broadcasting transactions to the network and for displaying the user's balance (which requires inspecting the entire blockchain, saving the user from downloading up to 24 GiB as of writing). 
+
+%Other than server side encryption and security measures, It uses client side encryption (javascript) to encrypt all the private keys and sensitive data with user's password and sends the encrypted data as a random base64 string to the server. With this implementation, there is no access to the private keys and the final balance from anyone whom have access to the server's data \footnote{\url{http://bitcoin.stackexchange.com/questions/5249/how-secure-is-blockchain-info}}. Blockchain.info uses this implementation for its hosted wallet.
+
+% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+\input{sections/08-newtable}
+\section{Evaluation Framework}
+% In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. 
+In this section, we systematize the major category-wide issues we have uncovered in describing the various key management approaches used by Bitcoin clients. We present an evaluation framework based on 10 criteria as shown in Table~\ref{tab:prims} and discussed in the following subsections. This framework both summarizes the advantages and disadvantages of the various approaches we have evaluated, while also providing a benchmark for evaluating future key management proposals. The framework is based on a similar framework for evaluating password replacement schemes~\cite{BHOS12}.
+
+\subsection{Evaluation Criteria}
+We briefly enumerate the criteria used to evaluate each proposal in the framework below. 
+
+\paragraph{Malware Resistant}
+\label{Malware Resistant}
+Malware designed to steal Bitcoin wallets and related passwords has been observed in the wild. Wallets that are not stored on an Internet-connected device, or devices capable of performing computations are considered malware resistant (\full), unless creating a transaction involves transferring to a computational device (\prt). 
+
+\paragraph{Key Stored Offline}
+\label{Key Kept Offline}
+For archival storage of infrequently used keys, keys not directly accessible from an Internet-connected device---either due to being offline (\full) or online but password-protected (\prt)---are preferable. 
+%(For traditional banking online, we interpret this benefit as authority over the account being kept offline, which it is not).
+
+\paragraph{No Trusted Third Party}
+\label{No Trusted Third Party}
+All Bitcoin key management tools are trusted to a certain extent. 
+%Even an open source Bitcoin client might contain an undiscovered backdoor that kleptographicly steals high value private keys. 
+This criteria considers the absence of a persistent trusted third party (\full) that maintains direct signing authority over a user's Bitcoin. 
+
+\paragraph{Resistant to Physical Theft}
+\label{Resistant to Physical Theft}
+If the cryptographic keys are stored on some media or device that can be physically stolen, we do not consider the tool to be resistant to physical theft. Within our framework, the only tools meeting this requirement rely on a human memorized password being necessary for key recovery. These are awarded \prt since passwords tend to be weak and may not resist the kind of unthrottled guessing possible against a stolen password-protected wallet. 
+
+\paragraph{Resistant to Physical Observation}
+\label{Resistant to Physical Observation}
+Physical observation, such as observing key strokes or capturing QR codes with a camera, may result in access to a user's Bitcoin account. 
+
+\paragraph{Resilient to Password Loss}
+\label{Resilient to Password Loss}
+If passwords are used (\full~if not), the loss of a password could result in some Bitcoin becoming unrecoverable if it is a necessary authentication factor in obtaining access to the signing key. For solutions where funds are held by third parties, these entities could provide a password recovery/reset mechanism (\full).
+
+\paragraph{Resilient to Key Churn}
+\label{Compatible with Change Keys}
+Assuming the client sends change from transactions to a newly created change addresses, a tool is resilient to key churn if it can maintain access to the funds even after exhausting the initial keypool (\full). Tools not awarded this benefit are not guaranteed to maintain persistent access to new change addresses, and any balance sent to these addresses may be lost.
+
+\paragraph{Immediate Access}
+\label{Immediate Access}
+Key management mechanisms that maintain direct access to the wallet enable Bitcoin to be transacted immediately (\full). We award this benefit to techniques that require a user to enter a password. We omit the benefit for techniques that require data to be obtained from external storage medium or secondary device. 
+
+\paragraph{No New User Software}
+\label{No New Software}
+Some approaches require users to install new software on their system, for which the user may not have suitable permission, or software may not be developed for their specific platform (\eg some mobile platforms). By contrast, some tools can be executed from widely available software such as any standards-compliant web browser (\full). 
+
+\paragraph{Cross-Device Portability}
+\label{Portable}
+A key management technique is cross-device portable (\full) if it allows easy sharing of the a Bitcoin address across multiple devices with minimal configuration or usability issues due to complexities like key churn.
+
+\subsection{Discussion}
+From Table~\ref{tab:prims}, no one tool provides a clearly beneficial set of properties over another. We also note that the approaches are not necessarily mutually exclusive. One tool may be used for a small float of XBT, while longer term savings may utilize a different mechanism. The hosted wallet solution provides essentially the same set of properties as online banking---what it lacks is regulatory maturity, consumer protection, and established businesses with track records that earn the trust (encapsulated by the trusted third party criteria) instilled in them. Of all the solutions, further development in hosted wallets seems the most promising for further Bitcoin adoption, primarily among novice users.
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -300,55 +383,7 @@ One of the advantages of using hosted wallets is that it is accessible from any 
 \textbf{T4: Recovery}.
 There are two methods of recovering an account if the user's password is forgotten---one is to use the phrase given on account registration, and the other is to use a backup. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the `Recover Wallet' option, the site will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The second recovery option is to make backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the `Import/Export' option and `Export' either an encrypted or unencrypted backup. Unencrypted backups should be kept in a secure storage. There are different options for the unencrypted backup procedure that could confuse the user and might result in an unrecoverable backup (G5 and G6)---the back up is shown on a text field that the user has to copy and paste into a text file to be able to save it on her computer (G2, G3 and G7). To restore the backups, there is an `Import Wallet' option.
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-\input{sections/08-table}
-\section{Evaluation Framework}
-In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. In this section, we systemize the major category-wide issues we have uncovered in the previous sections through an evaluation framework summarized in Table~\ref{tab:prims}. This framework both summarizes the advantages and disadvantages of the various approaches we have evaluated, while also providing a benchmark for evaluating future proposals. The framework is based on a similar framework for evaluating password replacement schemes~\cite{BHOS12}.
-
-\subsection{Evaluation Criteria}
-We briefly enumerate the criteria used to evaluate each proposal in the framework below. 
-
-\textbf{Malware Resistant}.
-\label{Malware Resistant}
-Malware designed to steal XBT wallets and related passwords has been observed in the wild. Wallets that are not stored on an online/computational devices are considered malware resistant (\full), unless forming a transaction involves transferring to a computational device (\prt). 
-
-\textbf{Key Stored Offline}.
-\label{Key Kept Offline}
-For archival storage of infrequently used keys, keys not directly accessible from an internet-connect device---either due to being offline (\full) or online but password-protected (\prt)---are preferable. (For traditional banking online, we interpret this benefit as authority over the account being kept offline, which it is not).
-
-\textbf{No Trusted Third Party}.
-\label{No Trusted Third Party}
-All Bitcoin key management tools are trusted to a certain extent. Even an open source Bitcoin client might contain an undiscovered backdoor that kleptographicly steals high value private keys. Here we consider the absence of a persistent trusted third party (\full) that maintains direct signing authority over a users' XBT. 
-
-\textbf{Resistant to Physical Theft}.
-\label{Resistant to Physical Theft}
-If the cryptographic keys are stored on some media or device that can be physically stolen, we do not consider the tool to be resistant to physical theft. Within our framework, the only tools meeting this requirement rely on a human memorized password being necessary for key recovery. These are awarded \prt since passwords tend to be weak and may not resist the kind of unthrottled guessing possible against a stolen password-protected wallet. 
-
-\textbf{Resistant to Physical Observation}.
-\label{Resistant to Physical Observation}
-Physical observation, such as observing key strokes or capturing QR codes with a camera, may result in access to a user's Bitcoin account. 
-
-\textbf{Resilient to Password Loss}.
-\label{Resilient to Password Loss}
-If passwords are used (\full~if not), the loss of a password could result in XBT becoming unrecoverable if it is a necessary authentication factor in obtaining access to the signing key. For solutions where funds are held by third parties, these entities could provide a password recovery/reset mechanism (\full).
-
-\textbf{Resilient to Key Churn}.
-\label{Compatible with Change Keys}
-Assuming the client sends change from transactions to a newly created change addresses, a tool is resilient to key churn if it can maintain access to the funds even after exhausting the initial keypool (\full). Tools not awarded this benefit are not guaranteed to maintain persistent access to new change addresses, and XBT sent to these addresses may be lost.
-
-\textbf{Immediate Access}.
-\label{Immediate Access}
-Tools that maintain direct access to the wallet enable XBT to be transacted, effectively, immediately (\full). We include tools that require a user to enter a password. We omit the benefit for tools that require data to be obtained from external storage medium or secondary device. 
-
-\textbf{No New User Software}.
-\label{No New Software}
-Some approaches require users to install new software on their system, for which the user may not have suitable permission, or software may not be developed for their specific platform (\eg some mobile platforms). By contrast, some tools can be run from common software, like any standards-compliant web browser (\full). 
-
-\textbf{Cross-Device Portablity}.
-\label{Portable}
-A tool is cross-device portable (\full) if it allows easy sharing of the a Bitcoin address across multiple devices with minimal configuration or usability issues due to complexities like key churn.
-
-\subsection{Discussion}
-From Table~\ref{tab:prims}, no one tool provides a clearly beneficial set of properties over another. We also note that the approaches are not necessarily mutually exclusive. One tool may be used for a small float of XBT, while longer term savings may utilize a different mechanism. The hosted wallet solution provides essentially the same set of properties as online banking---what it lacks is regulatory maturity, consumer protection, and established businesses with track records that earn the trust (encapsulated by the trusted third party criteria) instilled in them. Of all the solutions, further development in hosted wallets seems the most promising for further Bitcoin adoption, primarily among novice users. 
+ 
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

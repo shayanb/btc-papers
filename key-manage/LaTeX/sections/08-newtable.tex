@@ -1,0 +1,57 @@
+% !TEX root = ../main.tex
+
+\begin{table*}[ht!]
+
+\renewcommand{\arraystretch}{1.3}
+
+\centering
+
+\begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}} llccccccccccccc}
+
+\textit{Category} &
+\textit{Example} & 
+\headrow{Malware Resistant} & %Part if malware crosses air gap. Malware: theft? what about DoS? Ransomware
+\headrow{Key Kept Offline} &  %Part if one of two factors are offline
+\headrow{No Trusted Third Party} &
+\headrow{Resistant to Physical Theft} &
+\headrow{Resistant to Physical Observation} &
+\headrow{Resilient to Password Loss} & %Part if resettable by TTP
+\headrow{Resilient to Key Churn} &
+\headrow{Immediate Access} &
+\headrow{No New User Software} & %Beyond a browser and the default client
+\headrow{Cross-Device Portability} & 
+\headrow{ } & % Something about format decay
+\headrow{ } \\ \hline 
+
+Keys in Local Storage & \bitcoinclient	&	&	&\full	&	&\full	&\full	&\full	&\full	&	&	&&\\
+Password-protected Wallets &\multibit	&	&\prt	&\full	&\prt	&\full	&	&\full	&\full	&	&	&&\\
+Offline Storage	&\paper				&\prt	&\full	&\full	&	&	&\full	&	&	&	&\full	&&\\ 
+Air-gapped Storage & \armory 		&\prt	&\full	&\full	&	&\full	&\full	&\full	&	&	&	&&\\
+Password-derived Keys & \brain		&	&\full	&\full	&\prt	&	&	&\full	&\full	&\full	&\full	&&\\ 
+Hosted Wallet (Hot) & \coinbase			&	&	&	&	&	&\full	&\full	&\full	&\full	&\full	&&\\ 
+Hosted Wallet (Cold)	&				&\prt	&\full	&	&	&	&\full	&\full	&	&\full	&\full	&&\\
+Hosted Wallet (Hybrid)	&	\block			&	&\prt	&\prt	&	&	&\full	&\full	&\full	&\full	&\full	&&\\\hline
+Cash &							&\full	&\full	&\full	&	&\full	&\full	&\full	&\full	&\full	&\full	&&\\ 
+Online Banking &					&	&	&	&	&	&\full	&\full	&\full	&\full	&\full	&&\\ \hline 
+\\
+																					
+\end{tabular*}
+
+\caption{A Comparison of Key Management Techniques for Bitcoin (and Contrasted with Traditional Financial Services).}
+\label{tab:prims}
+\end{table*}
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
