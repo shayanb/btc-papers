@@ -9,7 +9,7 @@ Despite the known complexity in creating and managing cryptographic keys, the Bi
 
 %\subsection{Consumer Protection} 
 
-The consequences of losing exclusive control over an account containing monetary value connects the threat of losing a Bitcoin private key to that of losing an online banking password. However, consumers in many countries are legally protected from any liability of banking credential loss. Furthermore, most bank transactions are traceable and reversible, making it difficult to extract value from stolen banking credentials (most techniques involve a mule~\cite{FH12}). Bitcoin transactions are also traceable, however they are not reversible. Stolen Bitcoins can thus not be (centrally or automatically) recovered. Bitcoin users typically no legal protection against loss or theft, and while stolen Bitcoins could be traced as they change ownership\footnote{Public keys associated with specific Bitctoins are publicly available in the Bitcoin blockchain, but the identities of users who control those keys is not.}, several mechanisms exist for laundering Bitcoins and similar digital currencies~\cite{MGGR13,BNMC+14}.
+The consequences of losing exclusive control over an account containing monetary value connects the threat of losing a Bitcoin private key to that of losing an online banking password. However, consumers in many countries are legally protected from any liability of banking credential loss. Furthermore, most bank transactions are traceable and reversible, making it difficult to extract value from stolen banking credentials (most techniques involve a mule~\cite{FH12}). Bitcoin transactions are also traceable, however they are not reversible. Stolen Bitcoins can thus not be (centrally or automatically) recovered. Bitcoin users typically no legal protection against loss or theft, and while stolen Bitcoins could be traced as they change ownership\footnote{Public keys associated with specific Bitcoins are publicly available in the Bitcoin blockchain, but the identities of users who control those keys is not.}, several mechanisms exist for laundering Bitcoins and similar digital currencies~\cite{MGGR13,BNMC+14}.
 
 In an effort to solve, or at least mask, some of the complexities of key management, developers of Bitcoin software have created a variety of innovative technologies. These technologies range  from password-derived keys to air-gapped computers to physical printouts of private keys in the form of 2D barcodes. However, since none of these proposals have been evaluated in the Bitcoin context, it remains unclear which technique(s) have usability advantages.
 
@@ -225,11 +225,48 @@ Based on our analysis, users can be given the concrete advice of treating digita
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Usability Evaluation of Tools}
-\subsection{Usability Evaluation Methodologies}
-A number of usability evaluation methodologies employ expert review. We use a cognitive walkthrough \cite{WRLP94}, which has been used previously to study closely-related subjects: public key technology~\cite{WT99} and software configuration~\cite{COA07}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. In a cognitive walkthrough, we define the set of core tasks that users will be interested in performing, a set of evaluation guidelines that should hold true for the software, and use expert review to evaluate the application against the guidelines while performing the core tasks. 
+\section{Usability Evaluation of Bitcoin Tools}
 
-Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
+\subsection{Methodology}
+
+We used a series of cognitive walkthroughs~\cite{WRLP94} to evaluate the usability of six Bitcoin clients. Cognitive walkthrough is a form of expert evaluation where an expert (or group of experts) steps through the design to evaluate aspects of its usability. The focus of the walkthrough is on the novice user and emphasizes \emph{learnability}. At each step, the evaluators ask three questions: Will the user see what to do? Will the user see how to do it? And once it is done, will the user know if they have done the right thing?
+
+We chose to use cognitive walkthroughs for several reasons. First, it allowed us to choose and compare standard tasks on disparate tools, and gave us easily compared insight into the common problems and successes of different Bitcoin clients. The cognitive walkthrough also allowed us to keep the focus on the novice user. Gathering novice users of Bitcoin for a user study could potentially be quite difficult; Bitcoin is still comparatively uncommon, and most users are also Bitcoin enthusiasts, often with additional knowledge of cryptography or PKI. Bitcoin is only in the process of developing a base of novice users~\cite{WhatToCite??}.
+
+%A number of usability evaluation methodologies employ expert review. We use a cognitive walkthrough \cite{WRLP94}, which has been used previously to study closely-related subjects: public key technology~\cite{WT99} and software configuration~\cite{COA07}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. 
+
+For our cognitive walkthrough, we defined a set of core tasks that a typical user need to perform. We compared the results of each walkthrough against a standard set of evaluation guidelines, combining aspects of an heuristic evaluation~\cite{} with the walkthrough in order to effectively understand our results. 
+
+\subsection{Tasks}
+We used the following four tasks to evaluate each of the tools.
+
+\begin{compactlist}
+	\item[\bf T1] Configure a new Bitcoin address and obtain its balance.\label{sec:ct-1}
+	\item[\bf T2] Authorize a transaction.\label{sec:ct-2}
+	\item[\bf T3] Authorize a transaction from the same address on a secondary device.\label{sec:ct-3}
+	\item[\bf T4] Recover from the loss of the main credential.\label{sec:ct-4}
+\end{compactlist}
+
+Since the focus of our walkthrough was on configuration and learnability, we used a set of heuristics first developed for a usability evaluation of Tor~\cite{COA07}. We chose to use these guidelines because like the anonymity software, successfully managing Bitcoin involves the application of complex cryptographic knowledge in an everyday activity. The set of guidelines, from~\cite{COA07}, are: 
+
+%The literature contains a variety of evaluation guidelines or heuristics to use for expert review of security-related tools. We chose to use the guidelines proposed in a usability evaluation of configuring the anonymity software Tor~\cite{COA07} since we share a focus on configuration. 
+%This set is itself culled from numerous sources in the literature~\cite{WRLP94,WT99,Cra03,KBK05,COB06}.
+
+
+	
+\begin{compactlist}
+	\item[\bf G1] Users should be aware of the steps they have to perform to complete a core task.
+	\item[\bf G2] Users should be able to determine how to perform these steps.
+	\item[\bf G3] Users should know when they have successfully completed a core task.
+	\item[\bf G4] Users should be able to recognize, diagnose, and recover from non-critical errors.
+	\item[\bf G5] Users should not make dangerous errors from which they cannot recover.
+	\item[\bf G6] Users should be comfortable with the terminology used in any interface dialogues or documentation.
+	\item[\bf G7] Users should be sufficiently comfortable with the interface to continue using it.
+	\item[\bf G8] Users should be aware of the application's status at all times.
+\end{compactlist}
+
+
+%Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
 
 \subsection{Tools}
 Real-world evaluation of the general approaches detailed in \autoref{sec:approaches} is difficult. Thus, we select six distinct Bitcoin clients or utilities that implement the key management approaches described. For the purposes of our usability evaluation, unless otherwise stated each client was evaluated in its default configuration on OS X. 
@@ -246,30 +283,7 @@ Real-world evaluation of the general approaches detailed in \autoref{sec:approac
 
 \paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
 
-\subsection{Tasks}
-We evaluate the tools with the following four core tasks:
 
-\begin{compactlist}
-	\item[\bf T1] Configure a new Bitcoin address and obtain its balance.\label{sec:ct-1}
-	\item[\bf T2] Authorize a transaction.\label{sec:ct-2}
-	\item[\bf T3] Authorize a transaction the same address on a secondary device.\label{sec:ct-3}
-	\item[\bf T4] Recover from the loss of the main credential.\label{sec:ct-4}
-\end{compactlist}
-
-The literature contains a variety of evaluation guidelines or heuristics to use for expert review of security-related tools. We chose to use the guidelines proposed in a usability evaluation of configuring the anonymity software Tor~\cite{COA07} since we share a focus on configuration. This set is itself culled from numerous sources in the literature~\cite{WRLP94,WT99,Cra03,KBK05,COB06}.
-
-The set of guidelines, from~\cite{COA07}, are:
-	
-\begin{compactlist}
-	\item[\bf G1] Users should be aware of the steps they have to perform to complete a core task.
-	\item[\bf G2] Users should be able to determine how to perform these steps.
-	\item[\bf G3] Users should know when they have successfully completed a core task.
-	\item[\bf G4] Users should be able to recognize, diagnose, and recover from non-critical errors.
-	\item[\bf G5] Users should not make dangerous errors from which they cannot recover.
-	\item[\bf G6] Users should be comfortable with the terminology used in any interface dialogues or documentation.
-	\item[\bf G7] Users should be sufficiently comfortable with the interface to continue using it.
-	\item[\bf G8] Users should be aware of the application's status at all times.
-\end{compactlist}
 
 %===========================================================
 
