@@ -21,16 +21,20 @@ In this paper, we aim to investigate the usability challenges surrounding key ma
 
 %At the same time, the developer-heavy Bitcoin community has been very prolific in producing deployed technologies with a wide variety of approaches to solving the challenges of a key-based system. We therefore argue that studying this suite of technology offers the clearest picture yet of the challenges in usable key management for digital signatures. 
 
-\paragraph{Contributions}
-We perform a broad survey of six Bitcoin key management techniques which cover the vast majority of deployed Bitcoin software. 
+Specifically, the contributions of the paper are as follows:
 
-Using the results from our survey, we propose an evaluation and comparison framework for Bitcoin key management techniques. The framework is based on 10 security, usability and deployability criteria, and enables direct comparison of current and future key management proposals. Using our framework we find that certain criteria, such as trust in a central party enables 
+\begin{itemize}
+\item We perform a broad survey of six Bitcoin key management techniques which cover the vast majority of deployed Bitcoin software. 
 
+\item Using the results from our survey, we propose an evaluation and comparison framework for Bitcoin key management techniques. The framework is based on 10 security, usability and deployability criteria, and enables direct comparison of current and future key management proposals. Using our framework we find that certain properties, such as trust in a central party enable additional beneficial properties. We also find that the disadvantages of certain properties, such as malware protection, outweigh the relative benefits.
 
+\item We perform a cognitive walkthrough of six distinct Bitcoin clients and tools to identify usability issues while performing basic Bitcoin tasks (\eg viewing account balance, sending funds, \etc). \fixme{We find that...} 
 
-Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management techniques, based on the framework of Bonneau \etal~\cite{BHOS12}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
+\end{itemize}
 
-Second, we perform cognitive walkthroughs focusing on the usability of six distinct Bitcoin key management approaches. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are considered the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert evaluation enables the breadth of evaluation we require, and we use the cognitive walkthrough methodology to maintain rigour and objectivity in our evaluation. 
+%Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management techniques, based on the framework of Bonneau \etal~\cite{BHOS12}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
+
+%Second, we perform cognitive walkthroughs focusing on the usability of six distinct Bitcoin key management approaches. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are considered the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert evaluation enables the breadth of evaluation we require, and we use the cognitive walkthrough methodology to maintain rigour and objectivity in our evaluation. 
 
 % \paragraph{Scope}
 % The focus of this work is the configuration and management of the cryptographic keys required to hold and spend Bitcoin. This paper is not a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
@@ -101,7 +105,7 @@ Password-protected wallets share the advantages and disadvantages of non-encrypt
 
 % The trade-off of a password-protected wallet is that users can lose their XBT by forgetting the password protecting their wallet. No recovery mechanism exists (as this mechanism could itself be exploited in the case of theft) short of exhaustive search, which is an available service.\footnote{\url{http://www.walletrecoveryservices.com}}
 
-Password-protected wallets may mislead the user to believe that the password itself provides access to their funds regardless of the location of the device storing the wallet, as would be congruent with a traditional mental model for web-based online banking. Users may be surprised to discover that that they cannot access their funds at a new device by simply entering their encryption password; the wallet file must also be transferred to the new device. 
+Password-protected wallets may mislead the user to believe that the password itself provides access to their funds regardless of the location of the device storing the wallet, as would be congruent with a traditional mental model for web-based online banking. Users may be surprised to discover that they cannot access their funds at a new device by simply entering their encryption password; the wallet file must also be transferred to the new device. 
 
 \subsection{Offline Storage of Keys}
 \label{sec:offline storage}
@@ -237,7 +241,6 @@ We chose to use cognitive walkthroughs for several reasons. First, it allowed us
 
 For our cognitive walkthrough, we defined a set of core tasks that a typical user need to perform. We compared the results of each walkthrough against a standard set of evaluation guidelines, combining aspects of an heuristic evaluation~\cite{} with the walkthrough in order to effectively understand our results. 
 
-\subsection{Tasks}
 We used the following four tasks to evaluate each of the tools.
 
 \begin{compactlist}
@@ -268,7 +271,7 @@ Since the focus of our walkthrough was on configuration and learnability, we use
 
 %Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
 
-\subsection{Tools}
+\subsection{Evaluated Clients}
 Real-world evaluation of the general approaches detailed in \autoref{sec:approaches} is difficult. Thus, we select six distinct Bitcoin clients or utilities that implement the key management approaches described. For the purposes of our usability evaluation, unless otherwise stated each client was evaluated in its default configuration on OS X. 
 
 \paragraph{Keys in Local Storage} The reference Bitcoin client, Bitcoin Core~\cite{bitcoinqt}, is a cross-platform client that stores keys locally (optionally encrypted with a password). Bitcoin Core is the first recommended client for download on the \url{bitcoin.org} website. 
@@ -283,6 +286,30 @@ Real-world evaluation of the general approaches detailed in \autoref{sec:approac
 
 \paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
 
+
+\section{Results}
+For space reasons, we do not present the detailed results of each walkthrough. Instead, we categorize the results into several emergent themes and describe illustrative examples from the walkthroughs. 
+
+\subsection{Metaphors}
+Bitcoin naturally invites a metaphor to traditional currency. This metaphor is often used in the clients (\eg send coins, receive coins, wallet), but does not always support the usability of the clients. The coin metaphor fails in both of the ways that user interface metaphors traditionally fail~\cite{metaphorpaper}: aspects of Bitcoin transactions do not easily fit the coin metaphor, and the coin metaphor encourages users to overextend the metaphor. Both of these lead to confusion on the part of users.  
+
+One way in which the metaphor of physical coins fails is in the sending and receiving of Bitcoin. In the physical world, the same physical token is almost always used to represent the same unit of currency (\ie giving a dollar to a friend involves handing them the coin). However, when Bitcoins are exchanged, the private key is not transferred along with the balance. Private keys remain in possession of the sender, and can be reused and associated with new coins. 
+
+Many of the evaluated clients use the word ``Send'' to describe authorizing (digitally signing) a transaction. The notion of private keys never appears in any of the evaluated clients at the moment of transaction. It may appear counterintuitive that this is a bad thing, but never mentioning the existence of keys may cause further confusion. Some clients (password-protected wallets, \eg Multibit) require the user to input their password, but the program does not clarify the reason for the password.
+
+Related to the issue of sending and transacting is the notion of addresses. The evaluated clients use the word ``Address'' to refer to the public key associated with a private key held by some user. This seems to be a relatively successful metaphor: it emphasizes the public nature of the public key, and also divorces the user's perception of a relationship between the public and private keys. To momentarily extend the metaphor, a user is accustomed to the idea that they will need to share their address in order to receive an item. However, the private key is more akin to the key to their mailbox, and a user would never think that they should share their mailbox key in order to receive mail to an address. 
+
+Another pervasive metaphor in the evaluated clients is the Bitcoin ``wallet'', where the user's Bitcoins are stored. The wallet metaphor is deeply entrenched in the foundations of Bitcoin. The reference client, \emph{Bitcoin Core}, stores private keys in a file named wallet.dat and the \emph{Bitcoin Armory} client invites users to ``create your first wallet!'' on first launch. The hosted clients also use the metaphor: Blockchain.info prominently shows a Wallet tab, under which users are invited to ``Create My Free Wallet". 
+
+The wallet metaphor is descriptive for users, but fails to encompass the complexity of a user's collection of keys. In reality, the Bitcoin wallet contains private keys, but the term wallet is used to describe both the main interface of Bitcoin clients (as in Blockchain.info), and the file storing the private keys. ``\fixme{My homepage}'' could be a more suitable term for the main interface of the Bitcoin client, which might include the wallet.
+
+\subsection{Abstractions}
+
+Abstraction and automation are complex issues for security software. Often, security is too complex to be completely automated, and the problem cases are often punted to the user (\eg in the case of TLS certificates~\cite{Jenn Sobey work on browser}). 
+
+At the time of first run, all of the evaluated clients transparently generate keypairs, without informing the user. This behaviour continues through transactions, where clients generate new addresses (\eg for receiving change) with no user notification. It is unclear how well this abstraction works: while users do not need to be burdened with the knowledge of each private key, there are still situations in which a user might need to manage those keys, and the abstraction prevents users from doing so. Error recovery depends on the existence of an up-to-date backup. While backup sounds like a simple task, in many of the evaluated clients, it involves finding the right menu (), or the right file (Bitcoin Core). Some clients do prompt the user to backup their wallets (\eg Bitcoin Armory). With the private keys so completely abstracted away, users may not even understand what they are backing up, or why. The issues of key churn, and the need for semi-regular backups complicate the issue even farther (\eg even Bitcoin Armory's single key and user-prompted backups approach introduces privacy issues to avoid key churn).\
+
+Abstractions are sometimes beneficial for users, for example in the case of displaying a user's balance. Typically, a user's Bitcoin balance is made up of many small amounts corresponding to many private keys. However, most of the evaluated clients abstracted these balances into a single figure. This highlights a usability disadvantage of paper wallets -- the user must manage these multiple balances manually, and there is no method of seeing an aggregate balance.
 
 
 %===========================================================
