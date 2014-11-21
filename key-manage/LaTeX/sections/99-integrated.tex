@@ -24,7 +24,7 @@ In this paper, we aim to investigate the usability challenges surrounding key ma
 \paragraph{Contributions}
 Our contribution is two-fold. First, the breadth of techniques that have been deployed for Bitcoin key management---from air gapped computers to paper printouts of QR codes to password-derived keys---demands an equally broad benchmark for objectively rating and comparing solutions. To address this, we develop an evaluation framework for Bitcoin key management techniques, based on the framework of Bonneau \etal~\cite{BHOS12}, to enable direct comparison between the various proposed solutions on usability, deployability and security criteria.
 
-Second, we perform cognitive walkthroughs focusing on the usability of \fixme{five} distinct Bitcoin key management approaches. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are considered the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert evaluation enables the breadth of evaluation we require, and we use the cognitive walkthrough methodology to maintain rigour and objectivity in our evaluation. 
+Second, we perform cognitive walkthroughs focusing on the usability of six distinct Bitcoin key management approaches. Evaluating any set of competing approaches is difficult to do in a thorough, objective way without employing a formal usability evaluation. While user studies are considered the gold standard for this purpose, user studies have been traditionally employed to rigorously compare a small number of systems according to a narrow set of measurable properties. By contrast, we are interested in revealing broader mental model issues across a wider spectrum of tools. Expert evaluation enables the breadth of evaluation we require, and we use the cognitive walkthrough methodology to maintain rigour and objectivity in our evaluation. 
 
 % \paragraph{Scope}
 % The focus of this work is the configuration and management of the cryptographic keys required to hold and spend Bitcoin. This paper is not a study of the usability of Bitcoin itself---\eg sending and receiving transactions with various software tools. There is no doubt that such a study would be a valuable contribution to the literature, however we believe key management is the harder, fundamental problem that ultimately cannot be addressed with better user interfaces or dialogues. Without a secure, usable path-forward, we expect Bitcoin adoption among non-experts to stall.
@@ -57,6 +57,7 @@ The use of public key systems by non-experts that is closest to Bitcoin is argua
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \section{Bitcoin Key Management Approaches} 
+\label{sec:approaches}
 
 \fixme{Before turning to a detailed usability evaluation, we evaluate from a systems perspective each category of tool for managing Bitcoin private keys. We highlight security and deployability issues, and note relevant details of the Bitcoin protocol that create complexities and potential discrepancies with users' mental models.}
 
@@ -224,18 +225,22 @@ A number of usability evaluation methodologies employ expert review. We use a co
 
 Cognitive walkthroughs are primarily relied on when the breadth of the evaluation makes a user or field study prohibitive to run due to time and cost. We examine six Bitcoin key managers, from configuration through transaction authorization through key recovery. If the results of the cognitive walkthrough narrows the field significantly, user studies are an appropriate follow-up for detailed examination of the most challenging set of tasks within one or two solutions. Thus while our result can be considered a first-pass at the problem, we felt the richness of the result merits sole presentation.
 
-\subsection{Design}
-In this section, we evaluate the usability of the following tools (with default configurations, unless otherwise stated) on OS X:
+\subsection{Tools}
+Real-world evaluation of the general approaches detailed in \autoref{sec:approaches} is difficult. Thus, we select six distinct Bitcoin clients or utilities that implement the key management approaches described. For the purposes of our usability evaluation, unless otherwise stated each client was evaluated in its default configuration on OS X. 
 
-\begin{compactlist}
-	\item[\bf 1] Key in Local Storage: Bitcoin-Qt
-	\item[\bf 2] Password Protected: Multibit 
-	\item[\bf 3] Air gap: Bitcoin Armory
-	\item[\bf 4] Offline Storage: Bitaddress
-	\item[\bf 5] Password-derived Key: Brainwallet
-	\item[\bf 6] Hosted Wallet: Blockchain.info wallet
-\end{compactlist}
+\paragraph{Keys in Local Storage} The reference Bitcoin client, Bitcoin Core~\cite{bitcoinqt}, is a cross-platform client that stores keys locally (optionally encrypted with a password). Bitcoin Core is the first recommended client for download on the \url{bitcoin.org} website. 
 
+\paragraph{Password-protected (Encrypted) Wallet} We use the MultiBit~\cite{multibit} client (also recommended on \url{bitcoin.org}) since by default all private keys are encrypted with a user-chosen password. 
+
+\paragraph{Offline Storage} We use paper wallets as offline storage. While paper wallets can be as simple as printing private keys on to paper, we select the paper wallet creation website \url{Bitaddress.org}~\cite{bitaddress}. Bitaddress allows users to generate new keys in their web browsers, and then print QR encoded keys. 
+
+\paragraph{Air-gapped Storage} We select the Bitcoin Armory~\cite{bitcoinarmory} client which includes functionality for creating an offline wallet that can be used to sign and export transactions. 
+
+\paragraph{Password-derived Keys} One of the simplest ways to create a password-derived key is on the \url{Brainwallet.org}~\cite{brainwallet} website. The site allows users to enter a passphrase which is converted into a private key. 
+
+\paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
+
+\subsection{Tasks}
 We evaluate the tools with the following four core tasks:
 
 \begin{compactlist}
