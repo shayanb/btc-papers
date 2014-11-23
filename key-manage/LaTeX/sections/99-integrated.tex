@@ -126,7 +126,7 @@ where private keys are printed onto paper typically in the form of a 2D barcode 
 As with any long-term storage, users must preserve software capable of decoding the QR code in the event that the paper wallet generation service is unavailable when attempting to reload keys onto a device. As of writing, many Bitcoin clients as well as offline storage solution use a common ``wallet import format'', which involves manipulating an ECDSA private key by performing cryptographic hashes, adding a checksum for integrity, and encoding the resulting string into Base58.\footnote{Base58 avoids the use of characters such as ``0, O, I, and l'' which may look visually similar, an also avoids punctuation characters which may trigger software (\eg e-mail clients) to perform line breaks.}.
 
 \subsection{Air-gapped Key Storage}
-In offline storage, we assume the device or media on which the wallet resides cannot perform computations such as authorizing (\ie creating digital signatures) transactions. We distinguish this type of storage from air-gapped storage, where wallets are stored on a secondary device that generates, signs, and exports transactions, but this secondary device is never connected to a network. When spending Bitcoin funds using an air-gapped device, a transaction is created from the air-gapped device and the resulting signed output transported (usually through portable media) to an Internet-enabled device for transmission onto the Bitcoin network. 
+In offline storage, we assume the device or media on which the wallet resides cannot perform computations such as authorizing transactions (\ie creating digital signatures). We distinguish this type of storage from air-gapped storage, where wallets are stored on a secondary device that generates, signs, and exports transactions, but this secondary device is never connected to a network. When spending Bitcoin funds using an air-gapped device, a transaction is created from the air-gapped device and the resulting signed output transported (usually through portable media) to an Internet-enabled device for transmission onto the Bitcoin network. 
 %A notable client supporting this setup is Armory.\footnote{\url{https://bitcoinarmory.com}} 
 
 An air gap improves theft-resistance by never directly using a private key on an Internet-connected device. However, air gapped devices are capable of actually executing malware if infected. Malware may jump the air gap by infecting the portable media used to export signed transactions.
@@ -145,7 +145,7 @@ A more robust approach is described in the Bitcoin Enhancement Proposal 32~\cite
 
 % applied to the password and expand the seed into the required number of keys with a PRG. Thus it is a special case of a deterministic wallet, where the initial seed is password-derived instead of randomly chosen. A notable tool here is Brainwallet.\footnote{\url{http://brainwallet.org/}}
 
-Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as long as the wallet can be re-generated from a memorized password. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search since a fingerprint of the associated public key will be in the global public ledger if the account holds any amount of Bitcoin. Rainbow tables~\cite{rainbowtables} for password-derived keys have been reportedly developed. Finally, it remains unclear whether memorization poses an advantage over maintaining a digital file when preventing loss---a forgotten password will orphan all funds in the account.
+Password-derived wallets are targeted at loss-prevention and simpler cross-device access. The challenges of preserving access to a digital file are no longer necessary as long as the wallet can be re-generated from a memorized password. The primary drawback of a password-derived wallet is that weak passwords can be found through unthrottled exhaustive search since a fingerprint of the associated public key will be in the global public ledger if the account holds any amount of Bitcoin. Rainbow tables~\cite{oechslin2003making} for password-derived keys have been reportedly developed. Finally, it remains unclear whether memorization poses an advantage over maintaining a digital file when preventing loss---a forgotten password will orphan all funds in the account.
 
 
 \subsection{Hosted Wallets} 
@@ -192,7 +192,7 @@ This criteria considers the absence of a persistent trusted third party (\full) 
 
 \paragraph{Resistant to Physical Theft}
 \label{Resistant to Physical Theft}
-If the cryptographic keys are stored on some media or device that can be physically stolen, we do not consider the tool to be resistant to physical theft. Within our framework, the only tools meeting this requirement rely on a human memorized password being necessary for key recovery. These are awarded \prt since passwords tend to be weak and may not resist the kind of unthrottled guessing possible against a stolen password-protected wallet. 
+If the cryptographic keys are stored on some media or device that can be physically stolen, we do not consider the tool to be resistant to physical theft. Within our framework, the only tools meeting this requirement rely on a human memorized password being necessary for key recovery. These are awarded (\prt) since passwords tend to be weak and may not resist the kind of unthrottled guessing possible against a stolen password-protected wallet. 
 
 \paragraph{Resistant to Physical Observation}
 \label{Resistant to Physical Observation}
@@ -200,7 +200,8 @@ Physical observation, such as observing key strokes or capturing QR codes with a
 
 \paragraph{Resilient to Password Loss}
 \label{Resilient to Password Loss}
-If passwords are used (\full~if not), the loss of a password could result in some Bitcoin becoming unrecoverable if it is a necessary authentication factor in obtaining access to the signing key. For solutions where funds are held by third parties, these entities could provide a password recovery/reset mechanism (\full).
+% NOTE: I changed the first score from (\full ~ if not) to (\prt), but it's somehow unclear and might need further explanation
+If passwords are used (\prt), the loss of a password could result in some Bitcoin becoming unrecoverable if it is a necessary authentication factor in obtaining access to the signing key. For solutions where funds are held by third parties, these entities could provide a password recovery/reset mechanism (\full).
 
 \paragraph{Resilient to Key Churn}
 \label{Compatible with Change Keys}
@@ -235,11 +236,11 @@ Based on our analysis, users can be given the concrete advice of treating digita
 
 We used a series of cognitive walkthroughs~\cite{WRLP94} to evaluate the usability of six Bitcoin clients. Cognitive walkthrough is a form of expert evaluation where an expert (or group of experts) steps through the design to evaluate aspects of its usability. The focus of the walkthrough is on the novice user and emphasizes \emph{learnability}. At each step, the evaluators ask three questions: Will the user see what to do? Will the user see how to do it? And once it is done, will the user know if they have done the right thing?
 
-We chose to use cognitive walkthroughs for several reasons. First, it allowed us to choose and compare standard tasks on disparate tools, and gave us easily compared insight into the common problems and successes of different Bitcoin clients. The cognitive walkthrough also allowed us to keep the focus on the novice user. Gathering novice users of Bitcoin for a user study could potentially be quite difficult; Bitcoin is still comparatively uncommon, and most users are also Bitcoin enthusiasts, often with additional knowledge of cryptography or PKI. Bitcoin is only in the process of developing a base of novice users~\cite{WhatToCite??}.
+We chose to use cognitive walkthroughs for several reasons. First, it allowed us to choose and compare standard tasks on disparate tools, and gave us easily compared insight into the common problems and successes of different Bitcoin clients. The cognitive walkthrough also allowed us to keep the focus on the novice user. Gathering novice users of Bitcoin for a user study could potentially be quite difficult; Bitcoin is still comparatively uncommon, and most users are also Bitcoin enthusiasts, often with additional knowledge of cryptography or PKI. Bitcoin is only in the process of developing a base of novice users~\cite{WhatToCite??}. %NOTE: Not sure what to cite here...!
 
 %A number of usability evaluation methodologies employ expert review. We use a cognitive walkthrough \cite{WRLP94}, which has been used previously to study closely-related subjects: public key technology~\cite{WT99} and software configuration~\cite{COA07}. A cognitive walkthrough is premised on the idea that users learn through exploration of the software, instead of reading manuals. They attempt to perform the task they want completed and rely on the interface to intuitively guide them through proper design, interface cues, and feedback. 
 
-For our cognitive walkthrough, we defined a set of core tasks that a typical user need to perform. We compared the results of each walkthrough against a standard set of evaluation guidelines, combining aspects of an heuristic evaluation~\cite{} with the walkthrough in order to effectively understand our results. 
+For our cognitive walkthrough, we defined a set of core tasks that a typical user need to perform. We compared the results of each walkthrough against a standard set of evaluation guidelines, combining aspects of an heuristic evaluation~\cite{HeuristicEvaluation} with the walkthrough in order to effectively understand our results. 
 
 We used the following four tasks to evaluate each of the tools.
 
