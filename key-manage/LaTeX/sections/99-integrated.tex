@@ -287,9 +287,10 @@ Real-world evaluation of the general approaches detailed in \autoref{sec:approac
 
 \paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
 
-
 \section{Results}
 For space reasons, we do not present the detailed results of each walkthrough. Instead, we categorize the results into several emergent themes and describe illustrative examples from the walkthroughs. 
+
+\subsection{Walkthroughs}
 
 \subsection{Metaphors}
 Bitcoin naturally invites a metaphor to traditional currency. This metaphor is often used in the clients (\eg send coins, receive coins, wallet), but does not always support the usability of the clients. The coin metaphor fails in both of the ways that user interface metaphors traditionally fail~\cite{metaphorpaper}: aspects of Bitcoin transactions do not easily fit the coin metaphor, and the coin metaphor encourages users to overextend the metaphor. Both of these lead to confusion on the part of users.   %citecheck for metaphorpaper
@@ -302,17 +303,31 @@ Related to the issue of sending and transacting is the notion of addresses. The 
 
 Another pervasive metaphor in the evaluated clients is the Bitcoin ``wallet'', where the user's Bitcoins are stored. The wallet metaphor is deeply entrenched in the foundations of Bitcoin. The reference client, \emph{Bitcoin Core}, stores private keys in a file named wallet.dat and the \emph{MultiBit} client invites users to ``create your first wallet!'' on first launch. The hosted clients also use the metaphor; Blockchain.info prominently shows a Wallet tab, under which users are invited to ``Create My Free Wallet".  
 
-The wallet metaphor is descriptive for users, but fails to encompass the complexity of a user's collection of keys. In reality, the Bitcoin wallet contains private keys, but the term wallet is used to describe both the main interface of Bitcoin clients (as in Blockchain.info), and the file storing the private keys. ``\fixme{My homepage}'' could be a more suitable term for the main interface of the Bitcoin client, which might include the wallet.
+The wallet metaphor is descriptive for users, but fails to encompass the complexity of a user's collection of keys. In reality, the Bitcoin wallet contains private keys, but the term wallet is used to describe both the file storing the private keys, and the main interface of Bitcoin clients (as in Blockchain.info). This main interface sometimes includes a variety of other information, such as transaction history, address book, currency exchange rates, \etc
+
+%``\fixme{My homepage}'' could be a more suitable term for the main interface of the Bitcoin client, which might include the wallet.
 
 \subsection{Abstractions}
 
-Abstraction and automation are complex issues for security software. Often, security is too complex to be completely automated, and the problem cases are often punted to the user (\eg in the case of TLS certificates~\cite{SSLSobey}).  %citecheck
+Abstraction and automation are complex issues for security software. Often, security is too complex to be completely automated, and the problem cases are often punted to the user (\eg in the case of TLS certificates~\cite{SSLSobey}).  
 
-At the time of first run, all of the evaluated clients transparently generate keypairs, without informing the user. This behaviour continues through transactions, where clients generate new addresses (\eg for receiving change) with no user notification. It is unclear how well this abstraction works: while users do not need to be burdened with the knowledge of each private key, there are still situations in which a user might need to manage those keys, and the abstraction prevents users from doing so. Error recovery depends on the existence of an up-to-date backup. While backup sounds like a simple task, in many of the evaluated clients, it involves finding the right menu (MultiBit), or the right file (Bitcoin Core). Some clients do prompt the user to backup their wallets (\eg Bitcoin Armory). With the private keys so completely abstracted away, users may not even understand what they are backing up, or why. The issues of key churn, and the need for semi-regular backups complicate the issue even farther (\eg even Bitcoin Armory's single key and user-prompted backups approach introduces privacy issues to avoid key churn).\
+On first run, all of the evaluated clients transparently generate keypairs without informing the user. This behaviour continues as new transactions are made, where clients generate new addresses with no user notification (\eg for receiving change). It is unclear how well this abstraction works: while users do not need to be burdened with the knowledge of each private key, there are still situations in which a user might need to manage those keys, and the abstraction prevents users from doing so. Recovery from key loss depends on the existence of an up-to-date backup. While backup sounds like a simple task, in many of the evaluated clients, it involves finding the right menu (MultiBit), or the right file (Bitcoin Core). Some clients do prompt the user to backup their wallets (\eg Bitcoin Armory). With the private keys so completely abstracted away, users may not even understand what they are backing up, or why. Key churn, and the consequent need for semi-regular backups complicate the issue even farther (\eg Bitcoin Armory's approach involving a single key and user-prompted backups introduces privacy issues to avoid key churn).\
 
-Abstractions are sometimes beneficial for users, for example in the case of displaying a user's balance. Typically, a user's Bitcoin balance is made up of many small amounts corresponding to many private keys. However, most of the evaluated clients abstracted these balances into a single figure. This highlights a usability disadvantage of paper wallets -- the user must manage these multiple balances manually, and there is no method of seeing an aggregate balance.
+Abstractions are sometimes beneficial for users, for example in the case of displaying a user's balance. Typically, a user's Bitcoin balance is made up of many small amounts corresponding to many private keys. However, most of the evaluated clients abstracted these balances into a single figure. This highlights a usability disadvantage of paper wallets -- the user must manage these multiple balances manually, and there is no method of seeing an aggregate balance when multiple paper wallets are in use.
 
+\subsection{Technical Language}
 
+%
+Throughout our walkthroughs, we identified multiple occurrences of highly specialized and technical language in the Bitcoin clients. Several clients (x, y and z) had messages that referenced the client being ``out of sync'', meaning that a full copy of the blockchain was pending download completion. Another message reported the number of peers to which the client was currently connected as simply ``x connections to the network''. The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
+
+%``no free outputs to spend'' 
+Sometimes, technical language was used when the metaphor might have provided a simpler explanation for users. Whatever client told the user that they had ``no free outputs to spend'' when they had no Bitcoin balance to spend. This error message is confusing, and would be more easily understood if it referred to the lack of coins. 
+
+\subsection{Help and Documentation}
+
+In the cognitive walkthroughs, the answer to the question of ``will the user know what to do?" was almost always unclear. Interface cues and features such as tool tips, wizards, or other contextual help were almost entirely lacking. Some actions were guided (\eg Multibit's prompted backups or create your first wallet), but many actions (in particular what?) were unsupported by help or documentation.  
+
+\begin{comment}
 %===========================================================
 
 \subsection{Keys in Local Storage}
@@ -444,11 +459,23 @@ One of the advantages of using hosted wallets is that it is accessible from any 
 \textbf{T4: Recovery}.
 There are two methods of recovering an account if the user's password is forgotten---one is to use the phrase given on account registration, and the other is to use a backup. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the `Recover Wallet' option, the site will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The second recovery option is to make backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the `Import/Export' option and `Export' either an encrypted or unencrypted backup. Unencrypted backups should be kept in a secure storage. There are different options for the unencrypted backup procedure that could confuse the user and might result in an unrecoverable backup (G5 and G6)---the back up is shown on a text field that the user has to copy and paste into a text file to be able to save it on her computer (G2, G3 and G7). To restore the backups, there is an `Import Wallet' option.
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
- 
 
+\end{comment}
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Concluding Remarks}
+\section{Discussion}
+% discuss more things from above. how do these things make it hard for novice users to get into bitcion (bring this into the intro as well)
+
+% consistency across tools, standards can make things fail. be careful. 
+
+%has anyone explicitly considered this stuff? let's try to do better, since there is an open question in the literature. bring bitcoin to the masses. 
+% tie back to general approaches, comment on whether any particular approach seems most promising. comment on the relationship of more coddled vs more control. the promises are decentralized, but centralized appears to be the way to go. 
+
+% bitcoin as an opportunity to usably do key management
+
+% design recommendations / research problems
+
+\section{Conclusion}
 Our detailed security and usability evaluation of six competing tools for key management in Bitcoin essentially demonstrates that no silver bullet solution has been deployed. Addressing the documented usability issues, fundamental to Bitcoin's design due to its reliance on cryptographic keys, is an important first step toward wider adoption of Bitcoin or similar cryptocurrencies. 
 
 While usability is often pitched with the novice user in mind, the issue of key management can be equally troubling for expert users. As a thought experiment, imagine how you would protect your Bitcoin wallet were it to contain XBT worth the equivalent of millions of dollars. With a complete lack of consumer protection, the reality that a loss of the associated private key will orphan the funds, and the threat of malware and targeted attacks tailored to Bitcoin theft, it is doubtful that anyone would prefer the dubious task of maintaining a Bitcoin wallet over depositing the funds into an insured bank account. 
