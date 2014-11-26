@@ -49,7 +49,7 @@ Bitcoin is a cryptographic currency deployed in 2009~\cite{Nak08} which has reac
 
 Every transaction must be digitally signed using the private signing key associated with each input address in the transaction. In order to spend XBT, users require access to the signing key of the account holding their Bitcoin. Thus users do not maintain any kind of units of currency; they maintain a set of keys that provide them signing authority over certain accounts recorded in the ledger. 
 
-The ledger (known as the \emph{blockchain}) is maintained and updated by a decentralized network using a novel method to reach consensus that involves incentivizing nodes in the network with the ability to generate (known as mining) new XBT and collect transaction fees. The details of the Bitcoin consensus model are not relevant to this paper.
+The ledger (known as the \emph{blockchain}) is maintained and updated by a decentralized network using a novel method to reach consensus that involves incentivizing nodes in the network with the ability to generate (known as mining) new XBT and collect transaction fees. The details of the Bitcoin consensus model are not relevant to this paper, but we note that clients in the network participate in the consensus model by downloading and verifying cryptographic integrity of the blocks in the blockchain. As of writing, the Bitcoin blockchain is roughly 25 GiB in size.\footnote{Due to the large size of the blockchain, thin clients running on mobile devices, as well as some desktop clients (\eg Multibit) connect to a trusted node and only request blocks relevant to keys in their wallet. This technique, known as Simplified Payment Verification (SPV), eliminates the need to download and verify all blocks but may create privacy risks~\cite{SPVbugs}.}
 
 One subtlety of Bitcoin's transaction architecture is that in order to spend Bitcoins, the entire value of unspent outputs (\ie from previous transactions) must be spent. To accommodate this, Bitcoin clients automatically spend the full amount of unspent outputs and create multiple transactions: one transaction will send part of the unspent coins to the intended recipient, and other transactions will send the remaining inputs back to the sender as \emph{change}. It is technically possible (and some clients behave this way) to send change back to the sending address. However, to enhance anonymity, most clients generate new change addresses to receive the remaining transaction amount. 
 
@@ -295,7 +295,7 @@ For space reasons, we do not present the detailed results of each walkthrough. I
 \subsection{Metaphors}
 Bitcoin naturally invites a metaphor to traditional currency. This metaphor is often used in the clients (\eg send coins, receive coins, wallet), but does not always support the usability of the clients. The coin metaphor fails in both of the ways that user interface metaphors traditionally fail~\cite{metaphorpaper}: aspects of Bitcoin transactions do not easily fit the coin metaphor, and the coin metaphor encourages users to overextend the metaphor. Both of these lead to confusion on the part of users.   %citecheck for metaphorpaper
 
-One way in which the metaphor of physical coins fails is in the sending and receiving of Bitcoin. In the physical world, the same physical token is almost always used to represent the same unit of currency (\ie giving a dollar to a friend involves handing them the coin). However, when Bitcoins are exchanged, the private key is not transferred along with the balance. Private keys remain in possession of the sender, and can be reused and associated with new coins. 
+One way in which the metaphor of physical coins fails is in the sending and receiving of Bitcoin. In the physical world, the same physical token is almost always used to represent the same unit of currency (\ie giving a dollar to a friend involves handing them the coin). However, when Bitcoins are exchanged, the private key is not transferred along with the balance. Private keys remain in possession of the sender, and can be reused and associated with new coins at a later time. 
 
 Many of the evaluated clients use the word ``Send'' to describe authorizing (digitally signing) a transaction. The notion of private keys never appears in any of the evaluated clients at the moment of transaction. It may appear counterintuitive that this is a bad thing, but never mentioning the existence of keys may cause further confusion. Some clients (password-protected wallets, \eg Multibit) require the user to input their password, but the program does not clarify the reason for the password.
 
@@ -311,17 +311,38 @@ The wallet metaphor is descriptive for users, but fails to encompass the complex
 
 Abstraction and automation are complex issues for security software. Often, security is too complex to be completely automated, and the problem cases are often punted to the user (\eg in the case of TLS certificates~\cite{SSLSobey}).  
 
-On first run, all of the evaluated clients transparently generate keypairs without informing the user. This behaviour continues as new transactions are made, where clients generate new addresses with no user notification (\eg for receiving change). It is unclear how well this abstraction works: while users do not need to be burdened with the knowledge of each private key, there are still situations in which a user might need to manage those keys, and the abstraction prevents users from doing so. Recovery from key loss depends on the existence of an up-to-date backup. While backup sounds like a simple task, in many of the evaluated clients, it involves finding the right menu (MultiBit), or the right file (Bitcoin Core). Some clients do prompt the user to backup their wallets (\eg Bitcoin Armory). With the private keys so completely abstracted away, users may not even understand what they are backing up, or why. Key churn, and the consequent need for semi-regular backups complicate the issue even farther (\eg Bitcoin Armory's approach involving a single key and user-prompted backups introduces privacy issues to avoid key churn).\
+On first run, all of the evaluated clients transparently generate keypairs without informing the user. This behaviour continues as new transactions are made, where clients generate new addresses with no user notification (\eg for receiving change). It is unclear how well this abstraction works: while users do not need to be burdened with the knowledge of each private key, there are still situations in which a user might need to manage those keys, and the abstraction prevents users from doing so. Recovery from key loss depends on the existence of an up-to-date backup. While backup sounds like a simple task, in many of the evaluated clients, it involves finding the right menu (MultiBit), or the right file (Bitcoin Core). Some clients do prompt the user to backup their wallets (\eg Bitcoin Armory). With the private keys so completely abstracted away, users may not even understand what they are backing up, or why. Key churn, and the consequent need for semi-regular backups complicate the issue even farther (\eg Bitcoin Armory's approach involving a single key and user-prompted backups introduces privacy issues to avoid key churn).
 
 Abstractions are sometimes beneficial for users, for example in the case of displaying a user's balance. Typically, a user's Bitcoin balance is made up of many small amounts corresponding to many private keys. However, most of the evaluated clients abstracted these balances into a single figure. This highlights a usability disadvantage of paper wallets -- the user must manage these multiple balances manually, and there is no method of seeing an aggregate balance when multiple paper wallets are in use.
 
 \subsection{Technical Language}
-
+\begin{figure}
+        \centering
+        \subfloat[Bitcoin Core]{
+        \includegraphics[width=.48\textwidth]{btcore-sync}
+        }
+        
+        \subfloat[MultiBit]{
+        \includegraphics[width=.48\textwidth]{multibit-sync}
+        }
+        \caption{Technical language}\label{fig:techlang}
+\end{figure}
 %
-Throughout our walkthroughs, we identified multiple occurrences of highly specialized and technical language in the Bitcoin clients. Several clients (x, y and z) had messages that referenced the client being ``out of sync'', meaning that a full copy of the blockchain was pending download completion. Another message reported the number of peers to which the client was currently connected as simply ``x connections to the network''. The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
+When performing our evaluation, we identified multiple occurrences of highly specialized and technical language used in the Bitcoin clients. Multibit and  Bitcoin Core displayed messages that referenced the client being ``out of sync'' or ``synchronizing'' referring the process of downloading a full copy of the blockchain or retrieving relevant blocks from a trusted peer. A related message in the Bitcoin Core client reported the number of peers to which the client was currently connected as simply ``8 connections to the network'' or ``Connected to 8 peer(s)'' (Multibit). The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
 
 %``no free outputs to spend'' 
 Sometimes, technical language was used when the metaphor might have provided a simpler explanation for users. Whatever client told the user that they had ``no free outputs to spend'' when they had no Bitcoin balance to spend. This error message is confusing, and would be more easily understood if it referred to the lack of coins. 
+
+%Number of blocks, date of last block, 
+
+Bitcoin Armory was by far the client that displayed the most technical language, but also the client with the greatest amount of contextual help. Most technical jargon in the client is neighbored by a question mark, which provides plain language explanations of what the setting or message means. 
+
+\begin{figure}[pt]
+  \centering
+  \includegraphics[width=.2\textwidth]{armorytechlang}
+  \caption{Detailed contextual help provided by the Bitcoin Armory client. Upon hovering over the ``?'' next to the Security field, an explanation is provided}
+  \label{fig:armorytechlang}
+\end{figure}
 
 \subsection{Help and Documentation}
 
