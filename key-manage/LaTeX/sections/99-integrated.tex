@@ -320,15 +320,16 @@ Abstractions are sometimes beneficial for users, for example in the case of disp
         \centering
         \subfloat[Bitcoin Core]{
         \includegraphics[width=.48\textwidth]{btcore-sync}
+        \label{fig:btcore-sync}
         }
-        
+                
         \subfloat[MultiBit]{
         \includegraphics[width=.48\textwidth]{multibit-sync}
         }
         \caption{Technical language}\label{fig:techlang}
 \end{figure}
 %
-When performing our evaluation, we identified multiple occurrences of highly specialized and technical language used in the Bitcoin clients. Multibit and  Bitcoin Core displayed messages that referenced the client being ``out of sync'' or ``synchronizing'' referring the process of downloading a full copy of the blockchain or retrieving relevant blocks from a trusted peer. A related message in the Bitcoin Core client reported the number of peers to which the client was currently connected as simply ``8 connections to the network'' or ``Connected to 8 peer(s)'' (Multibit). The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
+When performing our evaluation, we identified multiple occurrences of highly specialized or technical language used in the Bitcoin clients. \multibit and  \bitcoinclient displayed messages that referenced the client being ``out of sync'' or ``synchronizing with network'' (see Figure~\ref{fig:btcore-sync}) referring the process of downloading a full copy of the blockchain or retrieving relevant blocks from a trusted peer. A related message in the Bitcoin Core client reported the number of peers to which the client was currently connected as simply ``8 connections to the network'' or ``Connected to 8 peer(s)'' (Multibit). The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
 
 %``no free outputs to spend'' 
 Sometimes, technical language was used when the metaphor might have provided a simpler explanation for users. Whatever client told the user that they had ``no free outputs to spend'' when they had no Bitcoin balance to spend. This error message is confusing, and would be more easily understood if it referred to the lack of coins. 
@@ -339,8 +340,8 @@ Bitcoin Armory was by far the client that displayed the most technical language,
 
 \begin{figure}[pt]
   \centering
-  \includegraphics[width=.2\textwidth]{armorytechlang}
-  \caption{Detailed contextual help provided by the Bitcoin Armory client. Upon hovering over the ``?'' next to the Security field, an explanation is provided}
+  \includegraphics[width=.3\textwidth]{armorytechlang}
+  \caption{Detailed contextual help displayed in the Bitcoin Armory client user interface. Upon hovering over the ``?'' next to the Security field, a simple explanation is displayed.}
   \label{fig:armorytechlang}
 \end{figure}
 
