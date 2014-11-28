@@ -316,23 +316,29 @@ On first run, all of the evaluated clients transparently generate keypairs witho
 Abstractions are sometimes beneficial for users, for example in the case of displaying a user's balance. Typically, a user's Bitcoin balance is made up of many small amounts corresponding to many private keys. However, most of the evaluated clients abstracted these balances into a single figure. This highlights a usability disadvantage of paper wallets -- the user must manage these multiple balances manually, and there is no method of seeing an aggregate balance when multiple paper wallets are in use.
 
 \subsection{Technical Language}
-\begin{figure}
+\begin{figure}[htb]
         \centering
-        \subfloat[Bitcoin Core]{
+        \subfloat[\bitcoinclient]{
         \includegraphics[width=.48\textwidth]{btcore-sync}
         \label{fig:btcore-sync}
         }
                 
-        \subfloat[MultiBit]{
-        \includegraphics[width=.48\textwidth]{multibit-sync}
+        \subfloat[\multibit]{
+        \includegraphics[width=.45\textwidth]{multibit-sync}
+        \label{fig:multibit-sync}
         }
-        \caption{Technical language}\label{fig:techlang}
+        
+        \subfloat[\armory]{
+        \includegraphics[width=.45\textwidth]{armory-sync}
+        \label{fig:armory-sync}
+        }
+        \caption{Technical language displayed by three different clients. }\label{fig:techlang}
 \end{figure}
 %
-When performing our evaluation, we identified multiple occurrences of highly specialized or technical language used in the Bitcoin clients. \multibit and  \bitcoinclient displayed messages that referenced the client being ``out of sync'' or ``synchronizing with network'' (see Figure~\ref{fig:btcore-sync}) referring the process of downloading a full copy of the blockchain or retrieving relevant blocks from a trusted peer. A related message in the Bitcoin Core client reported the number of peers to which the client was currently connected as simply ``8 connections to the network'' or ``Connected to 8 peer(s)'' (Multibit). The decentralized architecture of Bitcoin benefits from a higher number of connections, but this is hard for the user to control, and has little significance to the functionality of the client as long as the number is greater than zero. Other clients communicated this network connectivity issue as simply ``online/offline'' which is a simpler abstraction of the concept. 
+When performing our evaluation, we identified multiple occurrences of highly specialized or technical language used in the Bitcoin clients. \multibit and  \bitcoinclient displayed messages that referenced the client being ``out of sync'' or ``synchronizing with network'' (see Figure~\ref{fig:btcore-sync}) referring the process of downloading a full copy of the blockchain or retrieving relevant blocks from a trusted peer. A related message in \multibit (Figure~\ref{fig:multibit-sync}) and \armory (Figure~\ref{fig:armory-sync}) displayed the number of blocks that had been downloaded, as well as the number of connections to the Bitcoin network. Clients may benefit from faster transaction notifications when connected to more peers. However, peer connectivity is difficult for users to control. Similarly, the number of blocks independently has little significance.
 
 %``no free outputs to spend'' 
-Sometimes, technical language was used when the metaphor might have provided a simpler explanation for users. Whatever client told the user that they had ``no free outputs to spend'' when they had no Bitcoin balance to spend. This error message is confusing, and would be more easily understood if it referred to the lack of coins. 
+We noticed that some clients used highly technical language when the metaphor might have provided a simpler explanation to users. When attempting to authorize a new transaction on \block with insufficient funds, the web interface displayed ``no free outputs to spend''. This error message is confusing, and would be more easily understood if it referred to the lack of coins. 
 
 %Number of blocks, date of last block, 
 
@@ -349,7 +355,7 @@ Bitcoin Armory was by far the client that displayed the most technical language,
 
 In the cognitive walkthroughs, the answer to the question of ``will the user know what to do?" was almost always unclear. Interface cues and features such as tool tips, wizards, or other contextual help were almost entirely lacking. Some actions were guided (\eg Multibit's prompted backups or create your first wallet), but many actions (in particular what?) were unsupported by help or documentation.  
 
-\begin{comment}
+
 %===========================================================
 
 \subsection{Keys in Local Storage}
@@ -482,7 +488,7 @@ One of the advantages of using hosted wallets is that it is accessible from any 
 There are two methods of recovering an account if the user's password is forgotten---one is to use the phrase given on account registration, and the other is to use a backup. For the wallet recovery mnemonic, on the login page, there are different options for anything that is forgotten (identifier or alias for username and/or password). By clicking on the `Recover Wallet' option, the site will ask for the mnemonic phrase and the email address or mobile phone number associated with the account to send the new confirmation details. The second recovery option is to make backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click on the `Import/Export' option and `Export' either an encrypted or unencrypted backup. Unencrypted backups should be kept in a secure storage. There are different options for the unencrypted backup procedure that could confuse the user and might result in an unrecoverable backup (G5 and G6)---the back up is shown on a text field that the user has to copy and paste into a text file to be able to save it on her computer (G2, G3 and G7). To restore the backups, there is an `Import Wallet' option.
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\end{comment}
+
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 \section{Discussion}
