@@ -141,7 +141,7 @@ Note that the consequences of obtaining unauthorized access to the private keys 
 \subsection{Password-derived Keys} 
 Thus far, all key management solutions have required users to maintain cryptographic keys. The remaining two solutions enable users to access their Bitcoin with a password instead. 
 
-The first general approach is to derive cryptographic keys from a password (\eg using PBKDF2~\cite{pbkdf2}), manipulating the output to produce a valid Bitcoin private key. The disadvantage of using this approach directly is that only one resulting keypair is created, requiring the user to select a new (different) password for a new keypair. 
+The first general approach is to derive cryptographic keys from a password (\eg using PBKDF2~\cite{pbkdf2}, manipulating the output to produce a valid Bitcoin private key). The disadvantage of using this approach directly is that only one resulting keypair is created, requiring the user to select a new (different) password for a new keypair. 
 
 A more robust approach is described in the Bitcoin Enhancement Proposal 32~\cite{bip32}, and is known as a Hierarchical Deterministic Wallet (HD Wallet). HD wallets take a master secret (the user's password) and deterministically derive a set of private keys, which themselves can be used to derive new private keys. The deterministic nature allows the password holder to view the balance, as well as spend the funds, of any sub-account derived from the password. However, if the private key on one of the sub-accounts is compromised, only the funds sent to that key (or sub-keys derived from it) may be spent. 
 
