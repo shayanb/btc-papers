@@ -230,7 +230,7 @@ Based on our analysis, users can be given the concrete advice of treating digita
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\section{Usability Evaluation of Bitcoin Tools}
+\section{Usability Evaluation of Bitcoin Clients}
 
 \subsection{Methodology}
 
@@ -245,10 +245,10 @@ For our cognitive walkthrough, we defined a set of core tasks that a typical use
 We used the following four tasks to evaluate each of the tools.
 
 \begin{compactlist}
-	\item[\bf T1] Configure a new Bitcoin address and obtain its balance.\label{sec:ct-1}
-	\item[\bf T2] Authorize a transaction.\label{sec:ct-2}
-	\item[\bf T3] Authorize a transaction from the same address on a secondary device.\label{sec:ct-3}
-	\item[\bf T4] Recover from the loss of the main credential.\label{sec:ct-4}
+	\item[\bf T1] Configure a new Bitcoin address and obtain its balance. This task involves launching the Bitcoin client (or logging into one if hosted online) for the first time. After a new address has been generated (either explicitly or transparently in the background), the user should be confident that the address' balance is XBT~0.00000000. The user should also be able to find their receiving Bitcoin address.\label{sec:ct-1}
+	\item[\bf T2] Spend Bitcoin. Send some amount of Bitcoin to an arbitrary (but valid) Bitcoin address. This task requires the user to create a new transaction, entering relevant information such as recipient, amount, \etc\label{sec:ct-2}
+	\item[\bf T3] Spend Bitcoin from the same address as above, but on a secondary device. This task may require copying private keys to the secondary device, entering passwords on multiple devices, or logging in to a hosted wallet provider on a different browser.\label{sec:ct-3}
+	\item[\bf T4] Recover from the loss of the main credential. In the case of locally stored keys, this task involves restoring a file from backup. Otherwise this task involves recovering from password loss.\label{sec:ct-4}
 \end{compactlist}
 
 Since the focus of our walkthrough was on configuration and learnability, we used a set of heuristics first developed for a usability evaluation of Tor~\cite{COA07}. We chose to use these guidelines because like the anonymity software, successfully managing Bitcoin involves the application of complex cryptographic knowledge in an everyday activity. The set of guidelines, from~\cite{COA07}, are: 
@@ -288,46 +288,25 @@ Real-world evaluation of the general approaches detailed in \autoref{sec:approac
 \paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
 
 \section{Results}
-For space reasons, we do not present the detailed results of each walkthrough. Instead, we categorize the results into several emergent themes and describe illustrative examples from the walkthroughs. 
+For space reasons, we summarize the results of each task for each client. Detailed walkthroughs can be found in our technical report~\cite{shayanTR}. 
 
-\subsection{Keys in Local Storage}
-We begin with an evaluation of \bitcoinclient, the original Bitcoin wallet client, which uses locally-stored keys. We assume the user has downloaded and installed the \bitcoinclient client (it has a straight forward wizard installation procedure).
+\subsection{Keys in Local Storage (\bitcoinclient)}
+\paragraph{T1: Configure} \bitcoinclient transparently generates a new set of addresses on first run, but shows no notification to the user that this has occurred (fails G3). The receiving address can be found under the \emph{Receive coins} tab, but this could be easily confused with the \emph{Addresses} tab which contains a contact list of other user addresses (fails G2). 
 
-\textbf{T1: Configuration}. 
-On the first run, the user will see an `Overview' page that indicates `Out of Sync' in red. The first part of the task, to obtain a Bitcoin address, is actually completed although not indicated (G3). She can find the address by clicking on the `Receive Coins' tab of the application, however this could be easily confused with the `Addresses' tab which contains a contact list of other addresses (G2).
+To retrieve the account balance, \bitcoinclient must be online and the user must wait until a full copy of the blockchain has been downloaded. Due to the size of the blockchain, this may take hours to days to complete. A status bar displaying ``Synchronizing with network'' shows the progress of the blockchain download (achieves G8), but the terminology may be too technical for novice users (fails G4 and G6). Once the blockchain has been downloaded, the balance is displayed on the \emph{Overview} tab (achieves G3). 
 
-In order to obtain the balance of the account, the application must be connected to internet to obtain the blockchain. Except for a small status indicator on the bottom-right side of the window that shows a small red cross in-between two black windows, there are no other alerts (G1). With a mouse over the icon, it says `0 active connections to bitcoin network' which is likely unfamiliar language that does not help resolve the error (G6, G4 and G8). With an active internet connection, a status bar at the bottom will complete synchronization with the blockchain, a process that may take days due to the large size of the blockchain. 
+\paragraph{T2: Spend} Spending Bitcoin is straightforward since the keys are readily available to the \bitcoinclient client. Users spend Bitcoin by navigating to the \emph{Spend} tab (achieves G1 and G2). Since our focus is on key management, we do not evaluate the actual completion of transactions (which may have additional usability issues). We focus on ensuring the key is available to the software tool (which is not so straightforward with \eg offline storage). 
 
-\textbf{T2: Authorization}.
-Authorizing a transaction is straightforward as the required keys are already loaded into the application from \walletfile. The user can use the `Send' tab to form a transaction. Since our focus is on key management, we do not evaluate the actual completion of transactions. We focus on ensuring the key is available to the software tool (which is not so straightforward with \eg offline storage). 
+\paragraph{T3: Spend from Secondary Device} Installing \bitcoinclient on a secondary device creates a new set of keys. Users may not understand that the keys must be copied to the secondary device (fails G1), and if so, what file must be copied (fails G2). No information is provided regarding the potential threats of transferring the key through an insecure channel (fails G5). After the key file has been transferred to the secondary device, there is no user facing menu to import the file (fails G2). The only way to import keys is to use an advanced debug menu, or to overwrite the key file on disk (fails G6 and G7). We note that replacing the key file may require  a re-scan of the blockchain to display the correct balance (fails G3).
 
-\textbf{T3: Authorization from Secondary Device}.
-By installing \bitcoinclient on a secondary device, a new wallet file is generated. In order to complete the task, the user may not understand that something must be copied from the first installation (G1) and if so, what exact file it is (G2). The correct procedure is to back up the \walletfile with the `backup wallet...' option in the `File' tab of the first installation and chose a directory to save the \walletfile. Next the user must securely transfer this file to the secondary device, and no guidance is provided on how to do this (G2) or the dangers of transferring it through an insecure mechanism (G5).
-
-Assuming the user has transferred \walletfile to the secondary device, she could try looking for import options in the newly installed wallet client, or drag and drop the \walletfile into the client, but she would fail to do so as no import option exists (G2). The documentation is inadequate here as well---there is actually nothing in the help menu except a debug window that is for advance user to tweak the application (G2 and G6)!
-
-The only mechanism to activate the wallet on a secondary file is to actually overwrite \walletfile on the secondary device with \walletfile from the first. It is unlikely any novice user would be able to complete this step. It is actually even difficult to find the path to copy \walletfile to on the new device---this could be possible by searching the local file system for \walletfile, which might not succeed due to non-searchable system reserved folders or not knowing the exact file name (spotlight does not return any result for \walletfile). More likely, the user will search online.\footnote{\url{https://en.bitcoin.it/wiki/Data_directory}} On OS X, the path is \texttt{/Users/User/Library/Application Support/Bitcoin/wallet.dat}.
-
-The next step is to replace the new \walletfile with the one from the primary device. It should be noted that the name of the file should be exactly \walletfile for the \bitcoinclient to be able to read the file. Some of errors that the user might encounter during this procedure are:
-\begin{itemize}
-	\item The user might copy \walletfile from the primary device wallet client path instead of the one exported through the back up option. This could cause a corrupted \walletfile that is not readable by the secondary device's \bitcoinclient. This is due to \bitcoinclient's procedure to lock \walletfile while it is in use. The error is recoverable by repeating the process correctly (G4). 
-	\item User should wait for the \bitcoinclient on the secondary device, to download and sync the Blockchain from the P2P network to be able to authorize a transaction.
-	\item On the secondary device, the final balance might be wrong and there would be the need to resynchronize and rescan the blockchain to have the correct final balance (G3).
-\end{itemize}
-%NOTE: if the blockchain is downloaded before the user replaces wallet.dat, the balance would be incorrect and user should run /rescan command and wait for hours to be able to see the final balace. but if wallet.dat is replaced after the first run but before any blockchain download it would probably do a scan and update the balance accordingly. Just in case some items should be changed in the above list!
-
-Finally, this process must be repeated if either client exhausts their keypool. If both do, there is no way to merge the new keys in the keypool, and replacing one \walletfile with the other will lead to unrecoverable funds (G5). 
-
-\textbf{T4: Recovery}.
-If only one device is used, there is no way to recover from loss of the \walletfile---\eg due to a memory failure, file corruption, or loss of the device itself (G5). If the user backed-up \walletfile using the mechanism described in core task 3, it would only be a meaningful backup if the file were moved to a different device. The process for recovering from a backup is the same as configuring a new device as described in core task 3 and shown to violate most of the usability guidelines.
+\paragraph{T4: Recovery} If only one device is used, there is no way to recover from loss of the key file (\eg due to a disk failure, file corruption, or loss of the device itself; fails G5). If the user backed-up the key file, the process for recovering from loss is equivalent to that of T3 above. 
 
 %===========================================================
 
-\subsection{Password Protected Wallets}
-Although it is possible to encrypt the \walletfile with a password in \bitcoinclient, it is not the default option nor is there any cue to do so. Instead we evaluate the \multibit client, where one of the recommended first steps is to password protect the wallet file. \multibit is a popular client in particular for its use of SPV\footnote{Simplified Payment Verification\ref{Nak08}} for lightweight blockchain validation that can complete within minutes instead of, relative to \bitcoinclient, days.
+\subsection{Password-protected Wallets (\multibit)}
+\paragraph{T1: Configure} On first run, a welcome page contains an explanation of common tasks that can be performed with \multibit---where the send, request and transaction tabs are and, importantly, how to password protect the wallet file (achieves G1 and G2). The client provides help options for other functionalities with direct and non-technical guides (achieves G6). 
 
-\textbf{T1: Configuration}.
-On the first run, a welcome page contains an explanation of common tasks that could be done with \multibit---where the send, request and transaction tabs are and, importantly, how to password protect the wallet file (good evaluation on G1 and G2). It provides help options for other functionalities with direct and non-technical guides (good G6). 
+\multibit automatically generates a new receiving address on first run, but does not notify the user (fails G3). The interface displays the system status (Online/Offline) at all times and attempts to minimize technical vocabulary (achieves G6 and G8). The account's balance is displayed clearly under the \emph{Wallets} pane. 
 
 After opening the application, a new receiving address is immediately created. The interface shows the status of the program (online, offline, or out of sync) on the bottom left status bar, the balance of the user's wallet on the upper left, and the latest price of bitcoin on the upper right of the window (G8). The interface seems to minimize jargon and technical vocabulary (G6). As it is mentioned on the `welcome page' of the application, every option in \multibit has the ability to show help tips by hovering the mouse over that option (G6 and G7).
 
