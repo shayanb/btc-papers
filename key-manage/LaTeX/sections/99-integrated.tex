@@ -169,7 +169,8 @@ Another approach that falls under the hosted wallet category is a hybrid hosted 
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-\input{sections/08-newtable}
+\input{sections/newtable}
+
 \section{Evaluation Framework}
 % In this paper, we evaluated different approaches to key management in Bitcoin from both a systems perspective and a usability persecutive. On the usability side, in particular, some findings are very specific to the exact design of the software evaluated and its interfaces. Other usability issues are more fundamental to the category of key management the particular tool falls under. 
 In this section, we systematize the major category-wide issues we have uncovered in describing the various key management approaches used by Bitcoin clients. We present an evaluation framework based on 10 criteria as shown in Table~\ref{tab:prims} and discussed in the following subsections. This framework both summarizes the advantages and disadvantages of the various approaches we have evaluated, while also providing a benchmark for evaluating future key management proposals. The framework is based on a similar framework for evaluating password replacement schemes~\cite{BHOS12}.
@@ -289,87 +290,10 @@ Real-world evaluation of the general approaches detailed in \autoref{sec:approac
 
 \paragraph{Hosted Wallets} We use \url{Blockchain.info}~\cite{blockchain} as our hosted wallet provider. As of writing, Blockchain.info advertises the management of over 2.5 million user wallets.
 
-\section{Results}
-For space reasons, we summarize the results of each task for each client. Detailed walkthroughs can be found in our technical report~\cite{shayanTR}. 
-
-\subsection{Keys in Local Storage (\bitcoinclient)}
-\paragraph{T1: Configure} \bitcoinclient transparently generates a new set of addresses on first run, but shows no notification to the user that this has occurred (fails G3). The receiving address can be found under the \emph{Receive coins} tab, but this could be easily confused with the \emph{Addresses} tab which contains a contact list of other user addresses (fails G2). 
-
-To retrieve the account balance, \bitcoinclient must be online and the user must wait until a full copy of the blockchain has been downloaded. Due to the size of the blockchain, this may take hours to days to complete. A status bar displaying ``Synchronizing with network'' shows the progress of the blockchain download (achieves G8), but the terminology may be too technical for novice users (fails G4 and G6). Once the blockchain has been downloaded, the balance is displayed on the \emph{Overview} tab (achieves G3). 
-
-\paragraph{T2: Spend} Spending Bitcoin is straightforward since the keys are readily available to the \bitcoinclient client. Users spend Bitcoin by navigating to the \emph{Spend} tab (achieves G1 and G2). Since our focus is on key management, we do not evaluate the actual completion of transactions (which may have additional usability issues). We focus on ensuring the key is available to the software tool (which is not so straightforward with \eg offline storage). 
-
-\paragraph{T3: Spend from Secondary Device} Installing \bitcoinclient on a secondary device creates a new set of keys. Users may not understand that the keys must be copied to the secondary device (fails G1), and if so, what file must be copied (fails G2). No information is provided regarding the potential threats of transferring the key through an insecure channel (fails G5). After the key file has been transferred to the secondary device, there is no user facing menu to import the file (fails G2). The only way to import keys is to use an advanced debug menu, or to overwrite the key file on disk (fails G6 and G7). We note that replacing the key file may require  a re-scan of the blockchain to display the correct balance (fails G3).
-
-\paragraph{T4: Recovery} If only one device is used, there is no way to recover from loss of the key file (\eg due to a disk failure, file corruption, or loss of the device itself; fails G5). If the user backed-up the key file, the process for recovering from loss is equivalent to that of T3 above. 
-
 %===========================================================
 
-\subsection{Password-protected Wallets (\multibit)}
-\paragraph{T1: Configure} On first run, a welcome page contains an explanation of common tasks that can be performed with \multibit---where the send, request and transaction tabs are and how to password protect the wallet file (achieves G1 and G2). The client provides help options for other functionalities with direct and non-technical guides (achieves G6). 
-
-\multibit automatically generates a new receiving address on first run, but does not notify the user (fails G3). Reading the newly generated address requires navigation to the \emph{Request} tab, which displays ``Your address'' (partially achieves G2).
-
-\paragraph{T2: Spend} The user must navigate to the tab labeled \emph{Send}, as instructed on the welcome screen (achieves G1 and G2). If the client is not synced, the send button is disabled (achieves G4). If it is synced, the user fills out the transaction details, destination address and amount and clicks send. The client prompts the user for the decryption password (achieves G2). An incorrect password displays the error `The wallet password is incorrect' but otherwise allows immediate and unlimited additional attempts. Entering the correct password authorizes the transaction (achieves G3).
-
-% =JC= Upon the transaction being authorize, how is this communicated to the user? %NOTE: a pop up window with the details of the transaction(amount, recipient, ...) and some technical details (e.g how many peers have seen the broadcast)
-
-\paragraph{T3: Spend from Secondary Device} On the primary device, the user must navigate to the \emph{Options} menu, and select \emph{Export private keys} under tools (fails G1 and G2). The interface displays a wizard requesting an export password as well as a file system path for the exported file to be saved. On the secondary device, the user must select \emph{Import private keys} from the \emph{Options} menu. After selecting the previously exported file, the wizard confirms the completion of the import (achieves G4) and the balance is updated to reflect the newly imported keys. The user can proceed to create a new transaction as in T2.
-
-% =JC= "details about the current wallet files" -> be more specific, what details? %NOTE: Name, number of addresses in the wallet, path of the wallet file (e.g ~/../multibit.key)
-% =JC= Can the wallet file have any name? %NOTE: Yes you can have multiple wallets with different names, changable from the interface 
-
-\paragraph{T4: Recovery}.
-As with \bitcoinclient, recovery is not possible if no backup of the wallet file was made. Creating a backup and importing it follows the same procedure as T3. As expected, both the password and the backed up wallet are necessary for recovery.
-
-\subsection{Air-gapped Key Storage (\armory)}
-\label{air gap}
-\paragraph{T1: Configure} On first run, \armory displays a welcome page offering the option to `Import Existing Wallet' and `Create Your First Wallet!' (achieves G1 and G2). Passphrase-protection is mandatory in \armory, and the user is warned about the importance of not forgetting the passphrase (achieves G5). \armory then displays a wizard to create a paper wallet or create a digital backup of the wallet (achieves G6). The user can then click on \emph{Receive Bitcoins} to display the Bitcoin address as well as balance (achieves G3 and G4). Similar to \bitcoinclient, \armory must download a full copy of the blockchain to display the account's balance. While the blockchain is being downloaded, status is displayed (achieves G6 and G8). A message is shown to the user when the blockchain download has completed (achieves G6). 
-
-\textbf{T2 \& T3: Spend}.
-With an air gap, the distinction between primary and secondary devices is less clear given that the basic setup itself includes two devices: one online and one offline, but authorization of transactions uses the offline device. To authorize a transaction, the user may begin from \armory on the online or offline device (may not fully achieve G2). On the either device, the user should click on `Offline Transactions' in the main window which displays a very detailed description of the steps involved (achieves G1, G2, and G6). On the online computer, the user clicks the option: \emph{Create New Offline Transaction}. The user will be asked to enter the transaction details to generate an unsigned transaction as a file. The user must transfer this file to the offline computer. As mentioned in this step's documentation, the unsigned transaction data has no private data (the exact data will ultimately be added to the public blockchain) and no harm can be done by an attacker who captures this file (achieves G5) other than learning the transaction is being prepared.
-
-On the offline computer, the user clicks on \textit{Offline Transactions} and then \emph{Sign Offline Transaction} which prompts the user for the unsigned transaction data file. \armory asks the user to review all the transaction information, such as the amount and the receiving addresses (achieves G5). By clicking on the \textit{sign} button signed transaction data can be saved to a file. Text at the top of the window describes the current state of the file (signed) and what must be done (move to online device) to complete the transaction (achieves G1 and G2).
-
-The signed file should be transferred to the online computer and be loaded through the same offline transaction window. When a signed transaction is detected, the \emph{Broadcast} button becomes clickable. By clicking on broadcast, the user can once more review transaction details, and receive confirmation that the Bitcoins have been sent (achieves G3 and G8).
-
-\paragraph{T4: Recovery} Like \bitcoinclient and \multibit, \armory requires a backup of the wallet to have been made. Without this backup, recovery is impossible. \armory encourages backups at many stages (achieves G1 and G2). Importing a backup is straightforward by using the \emph{Import or restore wallet} menu and then following the wizard depending on what type of backup was made (paper or digital). The restore wallet menu also allows users to verify the integrity of backups to ensure that files were correctly backed up or printouts have no inconsistencies. 
-
-%===========================================================
-\subsection{Offline Storage (\paper)}
-
-\paragraph{T1: Configure} Upon visiting the \url{bitaddress.org}, the user is asked to move the mouse or enter random characters in a text box to generate a high-entropy random seed to be used to generate a private key associated with the Bitcoin address (achieves G1 and G2). Once enough entropy has been collected, the site redirects the user to a page that shows the receiving Bitcoin address and it's associated private key (achieves G3). The public key (Bitcoin address) is labeled \emph{Share} in green text and the private key \emph{Secret} in red (helping achieve G5). The web site documentation provides link to 2 different services to obtain the balance of the newly generated address (achieves G2). In general \paper uses non-expert terminology and simple instructions (achieves G6).
-
-\paragraph{T2 \& T3: Spend} Since the keys are printed on paper, there is no difference between authorizing from a primary or secondary device so we collapse the analysis of core tasks 2 and 3.
- 
-To send funds from a Bitcoin address that has been stored on a paper wallet, the user must import the private key into one of the wallet clients such as \armory, \bitcoinclient, or \multibit. Importing the private key may require taking a picture of the QR code or typing in the private key manually, depending on the client. Once the key has been imported, the user can proceed to spend Bitcoins as instructed by the particular client. We note that if the client returns change to newly generated addresses, and the user does not spend the full amount on the paper wallet, subsequently importing the paper wallet onto a different device will likely display no funds (partially fails G5). 
-
-\paragraph{T4: Recovery} Loss of a paper wallet makes the funds unrecoverable (fails G5). \paper prompts the user to acknowledge this fact (also mentioned in its short documentation) when creating a paper wallet (achieves G1).
-
-%===========================================================
-\subsection{Password-Derived Keys (\brain)} 
-
-\paragraph{T1: Configure} The \brain website displays by default a pre-generated address corresponding to an empty passphrase. The passphrase input field displays ``Long original sentence that does not appear in any song or literature. Never use empty passphrase. (SHA256)'', but there is no corresponding documentation explaining the purpose of the passphrase or how it relates to the generated key (fails G1, G2, G6). As characters are typed, a new key is generated. User may not notice that generation of keys is happening dynamically, possibly preventing the user from noticing that the task is complete (fails G3). 
-
-Once the address has been generated, retrieving the balance of that address requires the use of an external service, but no suggestions are provided on the site (fails G1 and G2). The interface does display a number of other fields (\eg additional encodings of the public key) which may not be meaningful to novice users (fails G6 and G7). 
-
-\paragraph{T2 \& T3: Spend} Spending Bitcoins from a password-derived wallet requires the user to import the private key into another client. The user should experience similar usability challenges as those detailed in the Offline Storage client above.
-
-\paragraph{T4: Recovery} Forgetting the password of a password-derived key leads to funds becoming unrecoverable (fails G5). Users will typically return to the same website (\ie the \brain website) to extract private keys, but this may not be possible if the site is inaccessible (fails G5). 
-
-%===========================================================
-\subsection{Hosted Wallets (\block)}
-\label{hosted}
-
-\paragraph{T1: Configure} The user navigates to the \block site and creates a new wallet by providing an email address and a (min) 10 character password (achieves G1 and G2). A message warning the user about the importance of not forgetting the password is displayed during registration (achieves G5). Next, a \emph{Wallet Recovery Mnemonic} is show to the user as a backup in case the password is forgotten. The balance and address are immediately displayed (achieves G3). 
-
-\paragraph{T2 \& T3: Spend}
-\label{hosted transaction} 
-Hosted wallets are accessible from any web browser, so creating transactions from many devices is straightforward. The user logs in to the site, clicks \emph{Send money} (achieves G1 and G2). After filling in the required fields, the user is informed that the Bitcoins have been sent (achieves G3). Some of \block 's error messages may be too technical for novice users. For example, \emph{No free outputs to spend} is displayed when transactions are created without sufficient funds (fails G6). 
-
-\paragraph{T4: Recovery} To recover from a forgotten password, a wallet recovery mnemonic may be provided on the login page. By clicking the \emph{Recover Wallet} button, the site will ask for the mnemonic phrase and the email address send the new credentials (achieves G1 and G2). Another recovery option is to proactively make backups and import them in case recovery is needed. To do so, in the main wallet page, user has to click \emph{Import/Export} and exporting either an encrypted or unencrypted backup. 
-% = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
+\input{sections/walkthrough}
+%\input{sections/walkthrough-full}
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
