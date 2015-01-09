@@ -1,4 +1,6 @@
-\documentclass[10pt,conference,compsocconf]{IEEEtran}
+\documentclass[conference]{IEEEtran}
+\pagestyle{plain}
+
 
 % = = = = = Packages = = = = = %
 
@@ -12,7 +14,24 @@
 
 \title{A First Look at the Usability of Bitcoin Key Management}
 
-\author{\IEEEauthorblockN{Shayan Eskandari\IEEEauthorrefmark{1}, David Barrera\IEEEauthorrefmark{2}, Elizabeth Stobert\IEEEauthorrefmark{3}, and Jeremy Clark\IEEEauthorrefmark{1}} \IEEEauthorblockA{\IEEEauthorrefmark{1}Concordia University, \IEEEauthorrefmark{2}ETH Z{\"u}rich, \IEEEauthorrefmark{3}Carleton University}}
+\author{\IEEEauthorblockN{Shayan Eskandari\IEEEauthorrefmark{1}, David Barrera\IEEEauthorrefmark{2}, Elizabeth Stobert\IEEEauthorrefmark{3}, and Jeremy Clark\IEEEauthorrefmark{1}} \IEEEauthorblockA{\IEEEauthorrefmark{1}Concordia University, \IEEEauthorrefmark{2}ETH Z{\"u}rich, \IEEEauthorrefmark{3}Carleton University}
+}
+
+\IEEEoverridecommandlockouts
+\makeatletter\def\@IEEEpubidpullup{9\baselineskip}\makeatother
+\IEEEpubid{\parbox{\columnwidth}{Permission to freely reproduce all or part
+    of this paper for noncommercial purposes is granted provided that
+    copies bear this notice and the full citation on the first
+    page. Reproduction for commercial purposes is strictly prohibited
+    without the prior written consent of the Internet Society, the
+    first-named author (for reproduction of an entire paper only), and
+    the author's employer if the paper was prepared within the scope
+    of employment.  \\
+    USEC '15, 8 February 2015, San Diego, CA, USA\\
+    Copyright 2015 Internet Society, ISBN 1-891562-40-1\\
+    http://dx.doi.org/10.14722/usec.2015.23xxx
+}
+\hspace{\columnsep}\makebox[\columnwidth]{}}
 
 \maketitle
 
@@ -26,9 +45,11 @@
 
 % = = = = = Bibliography = = = = = %
 %\bibliographystyle{unsrt}
-\bibliographystyle{acm}
+%\bibliographystyle{acm}
+
+\bibliographystyle{IEEEtranS}
 \footnotesize
-\bibliography{bib/btc}
+\bibliography{IEEEabrv,bib/btc}
 \normalsize
 
 % = = = = = End Notes = = = = = %
