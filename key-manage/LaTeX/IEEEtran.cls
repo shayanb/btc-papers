@@ -1,4 +1,6 @@
 %%
+%% Repurposed for NDSS 2014 2013/12/1
+%%
 %% IEEEtran.cls 2011/11/03 version V1.8 based on
 %% IEEEtran.cls 2007/03/05 version V1.7a
 %% The changes in V1.8 are made with a single goal in mind:
@@ -3031,7 +3033,8 @@ between column types.}%
            \def\@oddfoot{\hss\normalfont\scriptsize\raisebox{-1.5\@IEEEnormalsizeunitybaselineskip}[0ex][0ex]{\@IEEEpubid}\hss}%
            \def\@evenfoot{\hss\normalfont\scriptsize\raisebox{-1.5\@IEEEnormalsizeunitybaselineskip}[0ex][0ex]{\@IEEEpubid}\hss}%
          \else
-           \def\@oddfoot{\hss\normalfont\footnotesize\raisebox{1.5ex}[1.5ex]{\@IEEEpubid}\hss}%
+           % LB 11/25/2013
+           \def\@oddfoot{\hss\normalfont\footnotesize\raisebox{11ex}[1.5ex]{ \@IEEEpubid}\hss}%
            \def\@evenfoot{\hss\normalfont\footnotesize\raisebox{1.5ex}[1.5ex]{\@IEEEpubid}\hss}%
          \fi
       \fi
@@ -4506,7 +4509,8 @@ between column types.}%
 % publisher's ID footer
 % IEEE uses about 1.3\baselineskip for journals, 
 % dynamic title spacing will clean up the fraction
-\def\@IEEEpubidpullup{1.3\baselineskip}
+%\def\@IEEEpubidpullup{1.3\baselineskip}
+\def\@IEEEpubidpullup{7\baselineskip}
 \ifCLASSOPTIONtechnote
 % for technotes it must be an integer of baselineskip as there can be no
 % dynamic title spacing for two column mode technotes (the title is in the
@@ -4516,12 +4520,14 @@ between column types.}%
 % Information Theory") in which IEEE really pulls the text off the ID for
 % technotes - about 0.55in (or 4\baselineskip). We'll use 2\baselineskip
 % and call it even.
-\def\@IEEEpubidpullup{2\baselineskip}
+%\def\@IEEEpubidpullup{2\baselineskip}
+\def\@IEEEpubidpullup{7\baselineskip}
 \fi
 
 % V1.7 compsoc does not use a pullup
 \ifCLASSOPTIONcompsoc
-\def\@IEEEpubidpullup{0pt}
+%\def\@IEEEpubidpullup{0pt}
+\def\@IEEEpubidpullup{7\baselineskip}
 \fi
 
 % holds the ID text
